@@ -52,10 +52,25 @@ const SomeButton = cm.button`
 
 ## Packages and Documentations:
 
-Public Packages:
+### React
 
-- [`@classmatejs/react`](packages/react) — React adapter 
-- [`@classmatejs/solid`](packages/solid) — SolidJs adapter 
+- [docs](packages/react)
+- [npmjs](https://www.npmjs.com/package/@classmatejs/react)
+
+```bash
+npm i @classmatejs/react
+# or yarn add or pnpm add ...
+```
+
+### SolidJs
+
+- [docs](packages/solid)
+- [npmjs](https://www.npmjs.com/package/@classmatejs/solid)
+
+```bash
+npm i @classmatejs/solid
+# or yarn add or pnpm add ...
+```
 
 ## Tailwind Merge
 
