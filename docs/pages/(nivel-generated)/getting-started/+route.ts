@@ -1,1 +1,1 @@
-export default '/docs/getting-started'
+export default "/docs/getting-started"

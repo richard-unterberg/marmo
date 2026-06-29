@@ -1,1 +1,1 @@
-export default 'Getting started with @unterberg/nivel.'
+export default "Getting started with @unterberg/nivel."

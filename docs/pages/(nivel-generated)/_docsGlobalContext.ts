@@ -1,77 +1,77 @@
 import type { DocsGlobalContextData, DocsGlobalContextSerializableData, DocsIconMap } from '@unterberg/nivel'
 
 const docsGlobalContextSerializableData: DocsGlobalContextSerializableData = {
-  siteTitle: '@classmatejs',
-  robots: false,
-  basePath: '/docs',
-  theme: {
-    light: 'consumer-light',
-    dark: 'consumer-dark',
-    defaultPreference: 'light',
+  "siteTitle": "@classmatejs",
+  "robots": false,
+  "basePath": "/docs",
+  "theme": {
+    "light": "consumer-light",
+    "dark": "consumer-dark",
+    "defaultPreference": "light"
   },
-  footer: {
-    pagination: false,
+  "footer": {
+    "pagination": false
   },
-  brand: {
-    text: '@classmatejs',
-    href: '/',
-    logoAlt: '@classmatejs logo',
+  "brand": {
+    "text": "@classmatejs",
+    "href": "/",
+    "logoAlt": "@classmatejs logo"
   },
-  head: {
-    customFonts: false,
-    fontPreset: 'none',
-    fontPreloadHrefs: [],
+  "head": {
+    "customFonts": false,
+    "fontPreset": "none",
+    "fontPreloadHrefs": []
   },
-  partners: {
-    primary: [],
-    gold: [],
+  "partners": {
+    "primary": [],
+    "gold": []
   },
-  social: {},
-  pages: [
+  "social": {},
+  "pages": [
     {
-      kind: 'page',
-      id: 'gettingStarted',
-      title: 'Getting Started',
-      slug: 'getting-started',
-      source: 'content/getting-started/content.mdx',
-      description: 'Getting started with @unterberg/nivel.',
-      aliases: [],
-      href: '/docs/getting-started/',
-      aliasHrefs: [],
-      tableOfContents: true,
-      sectionId: 'docs',
-      documentTitle: 'Getting Started | @classmatejs',
-    },
+      "kind": "page",
+      "id": "gettingStarted",
+      "title": "Getting Started",
+      "slug": "getting-started",
+      "source": "content/getting-started/content.mdx",
+      "description": "Getting started with @unterberg/nivel.",
+      "aliases": [],
+      "href": "/docs/getting-started/",
+      "aliasHrefs": [],
+      "tableOfContents": true,
+      "sectionId": "docs",
+      "documentTitle": "Getting Started | @classmatejs"
+    }
   ],
-  navbarItems: [
+  "navbarItems": [
     {
-      id: 'docs',
-      title: 'Docs',
-      href: '/docs/getting-started/',
-    },
+      "id": "docs",
+      "title": "Docs",
+      "href": "/docs/getting-started/"
+    }
   ],
-  topBarNav: {
-    kind: 'none',
-    items: [],
+  "topBarNav": {
+    "kind": "none",
+    "items": []
   },
-  sidebarSections: [
+  "sidebarSections": [
     {
-      id: 'docs',
-      title: 'Docs',
-      navTitle: 'Docs',
-      href: '/docs/getting-started/',
-      items: [
+      "id": "docs",
+      "title": "Docs",
+      "navTitle": "Docs",
+      "href": "/docs/getting-started/",
+      "items": [
         {
-          kind: 'page',
-          id: 'gettingStarted',
-          title: 'Getting Started',
-          navTitle: 'Getting Started',
-          href: '/docs/getting-started/',
-          showInNav: true,
-        },
-      ],
-    },
-  ],
+          "kind": "page",
+          "id": "gettingStarted",
+          "title": "Getting Started",
+          "navTitle": "Getting Started",
+          "href": "/docs/getting-started/",
+          "showInNav": true
+        }
+      ]
+    }
+  ]
 }
 
 const docsIconMap: DocsIconMap = {}
