@@ -1,6 +1,6 @@
-import cm from "../cm"
-import type { CmBaseComponent, VariantsConfig } from "../types"
-import type { AllowedTags } from "../util/domElements"
+import cm from '../cm'
+import type { CmBaseComponent, VariantsConfig } from '../types'
+import type { AllowedTags } from '../util/domElements'
 
 interface CreateVariantMapOptions<T extends AllowedTags> {
   elements: readonly T[]
@@ -53,7 +53,7 @@ const createVariantMap = <T extends AllowedTags>({
     const uniqueDuplicates = Array.from(new Set(duplicates))
     throw new Error(
       `solid-classmate: Duplicate elements detected in createVariantMap: ${uniqueDuplicates.join(
-        ", ",
+        ', ',
       )}. Each element must be unique.`,
     )
   }
@@ -63,9 +63,7 @@ const createVariantMap = <T extends AllowedTags>({
       if (cm[tag]) {
         acc[tag] = cm[tag].variants(variantsConfig)
       } else {
-        console.warn(
-          `solid-classmate: Element "${tag}" is not supported by solid-classmate. Falling back to 'div'.`,
-        )
+        console.warn(`solid-classmate: Element "${tag}" is not supported by solid-classmate. Falling back to 'div'.`)
         acc[tag] = cm.div.variants(variantsConfig) // Fallback to div if element not found
       }
       return acc

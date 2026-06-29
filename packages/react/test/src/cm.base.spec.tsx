@@ -1,75 +1,75 @@
-import "@testing-library/jest-dom"
-import { render } from "@testing-library/react"
-import React, { type JSX } from "react"
+import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
+import React, { type JSX } from 'react'
 
-import cm from "../../dist"
+import cm from '../../dist'
 
-describe("cm base", () => {
-  it("renders a cm.div with assigned classes", () => {
+describe('cm base', () => {
+  it('renders a cm.div with assigned classes', () => {
     const RenderDiv = cm.div`bg-red p-4`
 
     const { container } = render(<RenderDiv />)
-    expect(container.firstChild).toHaveClass("bg-red p-4")
+    expect(container.firstChild).toHaveClass('bg-red p-4')
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
 
-  it("filters $-prefixed props & renders the class attribute on a cm.button", () => {
+  it('filters $-prefixed props & renders the class attribute on a cm.button', () => {
     const HiddenButton = cm.button<{
       $disabled: boolean
-    }>`text-blue custom ${(p) => (p.$disabled ? "opacity-60" : "")}`
+    }>`text-blue custom ${(p) => (p.$disabled ? 'opacity-60' : '')}`
     const { container } = render(<HiddenButton aria-label="testlabel" $disabled />)
 
-    expect(container.firstChild).not.toHaveAttribute("$disabled")
-    expect(container.firstChild).toHaveClass("text-blue custom opacity-60")
-    expect(container.firstChild).toHaveAttribute("aria-label")
+    expect(container.firstChild).not.toHaveAttribute('$disabled')
+    expect(container.firstChild).toHaveClass('text-blue custom opacity-60')
+    expect(container.firstChild).toHaveAttribute('aria-label')
     expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
   })
 
-  it("allows boolean short-circuit in interpolations", () => {
+  it('allows boolean short-circuit in interpolations', () => {
     const LoadingDiv = cm.div<{ $isLoading?: boolean }>`
       base
-      ${(p) => p.$isLoading && "opacity-90 pointer-events-none"}
+      ${(p) => p.$isLoading && 'opacity-90 pointer-events-none'}
     `
 
     const { container, rerender } = render(<LoadingDiv $isLoading />)
-    expect(container.firstChild).toHaveClass("base opacity-90 pointer-events-none")
+    expect(container.firstChild).toHaveClass('base opacity-90 pointer-events-none')
 
     rerender(<LoadingDiv $isLoading={false} />)
-    expect(container.firstChild).toHaveClass("base")
+    expect(container.firstChild).toHaveClass('base')
   })
 
-  it("can use intrinsic properties of element", () => {
-    const HiddenButton = cm.button<JSX.IntrinsicElements["button"]>`
+  it('can use intrinsic properties of element', () => {
+    const HiddenButton = cm.button<JSX.IntrinsicElements['button']>`
       text-blue 
       custom 
-      ${(p) => (p.type === "button" ? "opacity-60" : "")}
+      ${(p) => (p.type === 'button' ? 'opacity-60' : '')}
     `
     const { container } = render(<HiddenButton aria-label="testlabel" type="button" />)
 
-    expect(container.firstChild).not.toHaveAttribute("$disabled")
-    expect(container.firstChild).toHaveClass("text-blue custom opacity-60")
-    expect(container.firstChild).toHaveAttribute("aria-label")
+    expect(container.firstChild).not.toHaveAttribute('$disabled')
+    expect(container.firstChild).toHaveClass('text-blue custom opacity-60')
+    expect(container.firstChild).toHaveAttribute('aria-label')
     expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
   })
 
   // define a test were we inject multiple classes "mt-2 mt-8 mt-1" - they should be merged by tailwind-merge
-  it("merges multiple classes using tailwind-merge", () => {
+  it('merges multiple classes using tailwind-merge', () => {
     const MergedDiv = cm.div`mt-2 mt-8 mt-1`
 
     const { container } = render(<MergedDiv />)
 
     // we expect the last class to be applied
-    expect(container.firstChild).toHaveClass("mt-1")
+    expect(container.firstChild).toHaveClass('mt-1')
 
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
 
-  it("merges multiple classes using tailwind-merge - overwrite on className", () => {
+  it('merges multiple classes using tailwind-merge - overwrite on className', () => {
     const MergedDiv = cm.div`mt-2 mt-8 mt-1`
 
     const { container } = render(<MergedDiv className="mt-10" />)
 
-    expect(container.firstChild).toHaveClass("mt-10")
+    expect(container.firstChild).toHaveClass('mt-10')
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
 })

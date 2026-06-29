@@ -1,4 +1,4 @@
-import type { LogicHandler } from "../types"
+import type { LogicHandler } from '../types'
 
 const applyLogicHandlers = <T extends object>(props: T, logicHandlers: LogicHandler<T>[] = []): T => {
   if (!logicHandlers.length) {
@@ -8,7 +8,7 @@ const applyLogicHandlers = <T extends object>(props: T, logicHandlers: LogicHand
   return logicHandlers.reduce<T>(
     (acc, handler) => {
       const result = handler(acc)
-      if (result && typeof result === "object") {
+      if (result && typeof result === 'object') {
         const { __rcOmit, ...rest } = result as { __rcOmit?: (keyof T | string)[] } & Partial<T>
         const next = Object.assign({}, acc, rest)
 

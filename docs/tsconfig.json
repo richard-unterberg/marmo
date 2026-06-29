@@ -12,6 +12,12 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "types": ["node", "vite/client"]
   },
-  "include": ["docs/**/*.ts", "global.d.ts", "pages/**/*.ts", "pages/**/*.tsx", "vite.config.ts"],
+  "include": [
+    "docs/**/*.ts",
+    "global.d.ts",
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
+    "vite.config.ts"
+  ],
   "exclude": ["dist", "node_modules"]
 }

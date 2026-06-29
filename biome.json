@@ -1,19 +1,40 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "vcs": {
-    "enabled": false,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
   "files": {
-    "ignoreUnknown": false
+    "includes": ["**", "!dist"]
   },
   "formatter": {
-    "enabled": true,
     "indentWidth": 2,
-    "indentStyle": "space",
-    "lineWidth": 110,
-    "lineEnding": "lf"
+    "indentStyle": "space"
+  },
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "lineWidth": 120,
+      "quoteStyle": "single",
+      "trailingCommas": "all"
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "warn"
+      },
+      "complexity": {
+        "noImportantStyles": "warn"
+      },
+      "nursery": {
+        "noInlineStyles": "warn"
+      }
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git"
   },
   "css": {
     "parser": {
@@ -23,22 +44,15 @@
       "quoteStyle": "single"
     }
   },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "suspicious": {
-        "noExplicitAny": "off"
+  "overrides": [
+    {
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
       }
     }
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "double",
-      "enabled": true,
-      "attributePosition": "auto",
-      "semicolons": "asNeeded",
-      "indentWidth": 2,
-      "indentStyle": "space"
-    }
-  }
+  ]
 }

@@ -1,5 +1,5 @@
-import { createNivelVikeConfig } from "@unterberg/nivel/vike"
-import docsConfig from "./+docs"
+import { createNivelVikeConfig } from '@unterberg/nivel/vike'
+import docsConfig from './+docs'
 
 const config = {
   ...createNivelVikeConfig(docsConfig),

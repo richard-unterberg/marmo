@@ -1,5 +1,5 @@
-import type { ReactNode } from "react"
-import "../styles/global.css"
+import type { ReactNode } from 'react'
+import '../styles/global.css'
 
 const Wrapper = ({ children }: { children: ReactNode }) => {
   return <>{children}</>

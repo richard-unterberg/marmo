@@ -1,6 +1,6 @@
-import type { JSX } from "react"
-import type { CmBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from "../types"
-import createReactElement from "../util/createReactElement"
+import type { JSX } from 'react'
+import type { CmBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from '../types'
+import createReactElement from '../util/createReactElement'
 
 interface CreateBaseComponentOptions<T extends object> {
   logic?: LogicHandler<T>[]
@@ -22,26 +22,26 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
   options: CreateBaseComponentOptions<MergeProps<E, T>> = {},
 ): CmBaseComponent<MergeProps<E, T>> => {
   const styles: Record<string, string | number> = {}
-  const displayName = `Styled(${typeof tag === "string" ? tag : "Component"})`
+  const displayName = `Styled(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
-  const resolveInterpolationValue = (value: unknown) => (typeof value === "string" ? value : "")
+  const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
 
   const computeClassName = (props: MergeProps<E, T>, collectedStyles: Record<string, string | number>) => {
     const styleUtility = (styleDef: StyleDefinition<MergeProps<E, T>>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     return strings
       .map((str, i) => {
         const interp = interpolations[i]
-        if (typeof interp === "function") {
+        if (typeof interp === 'function') {
           return str + resolveInterpolationValue(interp({ ...props, style: styleUtility }))
         }
         return str + resolveInterpolationValue(interp)
       })
-      .join("")
-      .replace(/\s+/g, " ")
+      .join('')
+      .replace(/\s+/g, ' ')
       .trim()
   }
 

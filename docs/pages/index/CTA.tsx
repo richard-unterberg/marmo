@@ -1,14 +1,11 @@
-import { cmMerge } from "@classmatejs/react"
-import { Link } from "@unterberg/nivel"
-import type { HTMLAttributes } from "react"
+import { cmMerge } from '@classmatejs/react'
+import { Link } from '@unterberg/nivel'
+import type { HTMLAttributes } from 'react'
 
 const CTAButtons = (props: HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={cmMerge(
-        "flex justify-center gap-x-3 sm:gap-x-5 mx-9 not-prose mb-10 mt-4 md:my-10",
-        props.className,
-      )}
+      className={cmMerge('flex justify-center gap-x-3 sm:gap-x-5 mx-9 not-prose mb-10 mt-4 md:my-10', props.className)}
       {...props}
     >
       <Link

@@ -1,22 +1,22 @@
 /** @jsxImportSource solid-js */
-import { render } from "@solidjs/testing-library"
+import { render } from '@solidjs/testing-library'
 
-import cm from "../../src"
+import cm from '../../src'
 
-describe("cm variants (solid)", () => {
-  it("renders a cm.div with assigned classes", () => {
+describe('cm variants (solid)', () => {
+  it('renders a cm.div with assigned classes', () => {
     interface AlertProps {
-      $severity: "info" | "warning" | "error"
+      $severity: 'info' | 'warning' | 'error'
       $isActive?: boolean
     }
 
     const Alert = cm.div.variants<AlertProps>({
-      base: "p-4 rounded-md",
+      base: 'p-4 rounded-md',
       variants: {
         $severity: {
-          info: (p) => `bg-blue-100 text-blue-800 ${p.$isActive ? "shadow-lg" : ""}`,
-          warning: (p) => `bg-yellow-100 text-yellow-800 ${p.$isActive ? "font-bold" : ""}`,
-          error: (p) => `bg-red-100 text-red-800 ${p.$isActive ? "ring ring-red-500" : ""}`,
+          info: (p) => `bg-blue-100 text-blue-800 ${p.$isActive ? 'shadow-lg' : ''}`,
+          warning: (p) => `bg-yellow-100 text-yellow-800 ${p.$isActive ? 'font-bold' : ''}`,
+          error: (p) => `bg-red-100 text-red-800 ${p.$isActive ? 'ring ring-red-500' : ''}`,
         },
       },
     })
@@ -26,23 +26,23 @@ describe("cm variants (solid)", () => {
         test
       </Alert>
     ))
-    expect(container.firstChild).toHaveClass("p-4 rounded-md bg-blue-100 text-blue-800 shadow-lg")
-    expect(container.firstChild).not.toHaveAttribute("$severity")
-    expect(container.firstChild).not.toHaveAttribute("$isActive")
+    expect(container.firstChild).toHaveClass('p-4 rounded-md bg-blue-100 text-blue-800 shadow-lg')
+    expect(container.firstChild).not.toHaveAttribute('$severity')
+    expect(container.firstChild).not.toHaveAttribute('$isActive')
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
 
-  it("supports boolean variants with default values", () => {
+  it('supports boolean variants with default values', () => {
     interface ToolBlockProps {
       $isEmpty?: boolean
     }
 
     const ToolBlock = cm.div.variants<ToolBlockProps>({
-      base: "flex flex-wrap gap-2",
+      base: 'flex flex-wrap gap-2',
       variants: {
         $isEmpty: {
-          true: "bg-base-100",
-          false: "bg-base-200",
+          true: 'bg-base-100',
+          false: 'bg-base-200',
         },
       },
       defaultVariants: {
@@ -51,56 +51,56 @@ describe("cm variants (solid)", () => {
     })
 
     const { container } = render(() => <ToolBlock $isEmpty />)
-    expect(container.firstChild).toHaveClass("flex flex-wrap gap-2 bg-base-100")
-    expect(container.firstChild).not.toHaveAttribute("$isEmpty")
+    expect(container.firstChild).toHaveClass('flex flex-wrap gap-2 bg-base-100')
+    expect(container.firstChild).not.toHaveAttribute('$isEmpty')
 
     const { container: containerFalse } = render(() => <ToolBlock $isEmpty={false} />)
-    expect(containerFalse.firstChild).toHaveClass("flex flex-wrap gap-2 bg-base-200")
+    expect(containerFalse.firstChild).toHaveClass('flex flex-wrap gap-2 bg-base-200')
 
     const { container: containerDefault } = render(() => <ToolBlock />)
-    expect(containerDefault.firstChild).toHaveClass("flex flex-wrap gap-2 bg-base-200")
+    expect(containerDefault.firstChild).toHaveClass('flex flex-wrap gap-2 bg-base-200')
   })
 })
 
-describe("extend cm variants component (solid)", () => {
-  it("renders a cm.input with assigned classes", () => {
+describe('extend cm variants component (solid)', () => {
+  it('renders a cm.input with assigned classes', () => {
     interface ButtonProps {
-      $severity: "info" | "warning" | "error"
+      $severity: 'info' | 'warning' | 'error'
       $isActive?: boolean
     }
 
     const Alert = cm.input.variants<ButtonProps>({
-      base: "p-4",
+      base: 'p-4',
       variants: {
         $severity: {
-          info: (p) => `${p.$isActive ? "shadow-lg" : ""}`,
+          info: (p) => `${p.$isActive ? 'shadow-lg' : ''}`,
         },
       },
     })
 
     const ExtendedButton = cm.extend(Alert)<{ $test: boolean }>`
-      ${(p) => (p.$test ? "bg-green-100 text-green-800" : "")}
+      ${(p) => (p.$test ? 'bg-green-100 text-green-800' : '')}
     `
 
     const { container } = render(() => <ExtendedButton type="submit" $severity="info" $isActive $test />)
-    expect(container.firstChild).toHaveClass("p-4 shadow-lg bg-green-100 text-green-800")
-    expect(container.firstChild).not.toHaveAttribute("$severity")
-    expect(container.firstChild).not.toHaveAttribute("$isActive")
-    expect(container.firstChild).not.toHaveAttribute("$test")
-    expect(container.firstChild).toHaveAttribute("type")
+    expect(container.firstChild).toHaveClass('p-4 shadow-lg bg-green-100 text-green-800')
+    expect(container.firstChild).not.toHaveAttribute('$severity')
+    expect(container.firstChild).not.toHaveAttribute('$isActive')
+    expect(container.firstChild).not.toHaveAttribute('$test')
+    expect(container.firstChild).toHaveAttribute('type')
     expect(container.firstChild).toBeInstanceOf(HTMLInputElement)
   })
 
-  it("extends variants component with specific props", () => {
+  it('extends variants component with specific props', () => {
     interface ButtonProps {
-      $size?: "small" | "default"
+      $size?: 'small' | 'default'
       $noGutter?: boolean
       $border?: boolean
     }
 
     const StyledButton = cm.button.variants<ButtonProps>({
       base: (p) => `
-        ${p.$noGutter ? "!p-0" : ""}
+        ${p.$noGutter ? '!p-0' : ''}
         flex
         items-center
         justify-center
@@ -108,14 +108,14 @@ describe("extend cm variants component (solid)", () => {
       `,
       variants: {
         $size: {
-          small: (p) => `${p.$border ? "border" : ""} px-2 py-1 text-small`,
-          default: "px-3 py-2",
+          small: (p) => `${p.$border ? 'border' : ''} px-2 py-1 text-small`,
+          default: 'px-3 py-2',
         },
       },
     })
 
     const ExtendedButton = cm.extend(StyledButton)<ButtonProps>`
-      ${(p) => (p.$size === "small" ? "text-small" : "")}
+      ${(p) => (p.$size === 'small' ? 'text-small' : '')}
     `
 
     const { container } = render(() => (
@@ -123,18 +123,16 @@ describe("extend cm variants component (solid)", () => {
         Hey
       </ExtendedButton>
     ))
-    expect(container.firstChild).toHaveClass(
-      "!p-0 px-2 py-1 flex items-center justify-center gap-1 text-small border",
-    )
-    expect(container.firstChild).not.toHaveAttribute("$size")
-    expect(container.firstChild).not.toHaveAttribute("$noGutter")
-    expect(container.firstChild).not.toHaveAttribute("$border")
-    expect(container.firstChild).toHaveAttribute("type")
+    expect(container.firstChild).toHaveClass('!p-0 px-2 py-1 flex items-center justify-center gap-1 text-small border')
+    expect(container.firstChild).not.toHaveAttribute('$size')
+    expect(container.firstChild).not.toHaveAttribute('$noGutter')
+    expect(container.firstChild).not.toHaveAttribute('$border')
+    expect(container.firstChild).toHaveAttribute('type')
     expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
   })
 
-  it("respects default variant values", () => {
-    const SomeButtonRcVariants = cm.button.variants<{ $test?: boolean }, { state?: "default"; size?: "" }>({
+  it('respects default variant values', () => {
+    const SomeButtonRcVariants = cm.button.variants<{ $test?: boolean }, { state?: 'default'; size?: '' }>({
       base: `
         mt-5
         border-1
@@ -144,27 +142,27 @@ describe("extend cm variants component (solid)", () => {
       `,
       variants: {
         state: {
-          default: "bg-blue-800 text-blue-200",
-          loading: "bg-blue-400 text-white opacity-90 pointer-events-none",
+          default: 'bg-blue-800 text-blue-200',
+          loading: 'bg-blue-400 text-white opacity-90 pointer-events-none',
         },
         size: {
-          sm: "text-sm py-1 px-2",
-          md: "text-base py-2 px-4",
-          lg: "text-lg py-3 px-6",
+          sm: 'text-sm py-1 px-2',
+          md: 'text-base py-2 px-4',
+          lg: 'text-lg py-3 px-6',
         },
       },
       defaultVariants: {
-        state: "default",
-        size: "md",
+        state: 'default',
+        size: 'md',
       },
     })
 
     const { container } = render(() => <SomeButtonRcVariants state="default">test</SomeButtonRcVariants>)
     expect(container.firstChild).toHaveClass(
-      "mt-5 border-1 transition-all bg-blue-800 text-blue-200 text-base py-2 px-4",
+      'mt-5 border-1 transition-all bg-blue-800 text-blue-200 text-base py-2 px-4',
     )
-    expect(container.firstChild).not.toHaveAttribute("state")
-    expect(container.firstChild).not.toHaveAttribute("size")
+    expect(container.firstChild).not.toHaveAttribute('state')
+    expect(container.firstChild).not.toHaveAttribute('size')
     expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
   })
 })

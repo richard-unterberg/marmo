@@ -1,18 +1,18 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  testEnvironment: "jsdom",
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  testEnvironment: 'jsdom',
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   transform: {
-    "^.+\\.(ts|tsx|jsx)$": [
-      "ts-jest",
+    '^.+\\.(ts|tsx|jsx)$': [
+      'ts-jest',
       {
         useESM: true,
-        tsconfig: "./tsconfig.json",
+        tsconfig: './tsconfig.json',
       },
     ],
   },
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   moduleNameMapper: {
-    "^\\.\\.\\/\\.\\.\\/dist$": "<rootDir>/dist/index.cjs.js",
+    '^\\.\\.\\/\\.\\.\\/dist$': '<rootDir>/dist/index.cjs.js',
   },
 }

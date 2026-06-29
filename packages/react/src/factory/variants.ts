@@ -1,4 +1,4 @@
-import type { JSX } from "react"
+import type { JSX } from 'react'
 import type {
   CmBaseComponent,
   InputComponent,
@@ -6,8 +6,8 @@ import type {
   MergeProps,
   StyleDefinition,
   VariantsConfig,
-} from "../types"
-import createReactElement from "../util/createReactElement"
+} from '../types'
+import createReactElement from '../util/createReactElement'
 
 interface CreateVariantsOptions<T extends object> {
   logic?: LogicHandler<T>[]
@@ -36,7 +36,7 @@ const createVariantsComponent = <
   const { base, variants, defaultVariants = {} } = config
   const propsToFilter = Object.keys(variants)
   const styles: Record<string, string | number> = {}
-  const displayName = `Variants(${typeof tag === "string" ? tag : "Component"})`
+  const displayName = `Variants(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
 
   const computeClassName = (
@@ -45,26 +45,25 @@ const createVariantsComponent = <
   ) => {
     const styleUtility = (styleDef: StyleDefinition<MergeProps<E, Partial<VariantProps> & ExtraProps>>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     // base classes and styles
-    const baseClasses = typeof base === "function" ? base({ ...props, style: styleUtility }) : base || ""
+    const baseClasses = typeof base === 'function' ? base({ ...props, style: styleUtility }) : base || ''
 
     // variant classes and styles
     const variantClasses = Object.entries(variants).map(([key, variantOptions]) => {
-      const propValue =
-        props[key] ?? (defaultVariants as Record<string, string | number | boolean | undefined>)[key]
+      const propValue = props[key] ?? (defaultVariants as Record<string, string | number | boolean | undefined>)[key]
       const hasValue = propValue !== undefined && propValue !== null
       const variantClass = hasValue ? (variantOptions as Record<string, any>)?.[String(propValue)] : undefined
 
-      if (typeof variantClass === "function") {
+      if (typeof variantClass === 'function') {
         return variantClass({ ...props, style: styleUtility })
       }
-      return variantClass || ""
+      return variantClass || ''
     })
 
-    return [baseClasses, ...variantClasses].filter(Boolean).join(" ").trim().replace(/\s+/g, " ").trim()
+    return [baseClasses, ...variantClasses].filter(Boolean).join(' ').trim().replace(/\s+/g, ' ').trim()
   }
 
   return createReactElement({

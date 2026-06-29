@@ -1,4 +1,4 @@
-import type { Component, JSX } from "solid-js"
+import type { Component, JSX } from 'solid-js'
 
 /**
  * Interpolation type for "styled components".
@@ -20,7 +20,7 @@ type DollarKeys<P> = Extract<keyof P, `$${string}`>
 type DollarProps<P> = Pick<P, DollarKeys<P>>
 type TransformProps<P, K extends keyof JSX.IntrinsicElements> = Omit<
   JSX.IntrinsicElements[K],
-  keyof DollarProps<P> | "$_as"
+  keyof DollarProps<P> | '$_as'
 > &
   DollarProps<P>
 type TransformAsProps<P, K extends keyof JSX.IntrinsicElements> = TransformProps<P, K> & {
@@ -87,9 +87,7 @@ type ExtendFunction =
    *   ${p => p.type === 'submit' ? 'font-bold' : ''}
    * ```
    */
-  <E extends InputComponent, I extends keyof JSX.IntrinsicElements>(
-    component: E,
-  ) => ExtendTemplateBuilder<E, I>
+  <E extends InputComponent, I extends keyof JSX.IntrinsicElements>(component: E) => ExtendTemplateBuilder<E, I>
 
 export interface ExtendTemplateBuilder<
   E extends InputComponent,
@@ -119,8 +117,7 @@ export interface ExtendTemplateBuilder<
 type VariantsConfigBase<VariantProps, ExtraProps> =
   | string
   | ((
-      props: VariantProps &
-        ExtraProps & { style: (styleDef: StyleDefinition<VariantProps & ExtraProps>) => string },
+      props: VariantProps & ExtraProps & { style: (styleDef: StyleDefinition<VariantProps & ExtraProps>) => string },
     ) => string)
 
 /**
@@ -136,8 +133,7 @@ type VariantsConfigVariants<VariantProps, ExtraProps> = {
     string,
     | string
     | ((
-        props: VariantProps &
-          ExtraProps & { style: (styleDef: StyleDefinition<VariantProps & ExtraProps>) => string },
+        props: VariantProps & ExtraProps & { style: (styleDef: StyleDefinition<VariantProps & ExtraProps>) => string },
       ) => string)
   >
 }
@@ -206,10 +202,8 @@ type VariantsFunction<K> =
     config: VariantsConfig<VariantProps, ExtraProps>,
   ) => CmBaseComponent<MergeProps<K, ExtraProps & Partial<VariantProps>>>
 
-type TransformComponentProps<
-  E extends CmBaseComponent<any>,
-  K extends keyof JSX.IntrinsicElements,
-> = E extends CmBaseComponent<infer P> ? TransformProps<P, K> : never
+type TransformComponentProps<E extends CmBaseComponent<any>, K extends keyof JSX.IntrinsicElements> =
+  E extends CmBaseComponent<infer P> ? TransformProps<P, K> : never
 
 export type TransformTemplateBuilder<
   E extends CmBaseComponent<any>,
@@ -241,9 +235,7 @@ export interface CmFactoryFunction<K extends keyof JSX.IntrinsicElements> {
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<T>[]
   ): CmBaseComponent<MergeProps<K, T>>
-  logic<LogicProps extends object = object>(
-    handler: LogicHandler<MergeProps<K, LogicProps>>,
-  ): CmFactoryFunction<K>
+  logic<LogicProps extends object = object>(handler: LogicHandler<MergeProps<K, LogicProps>>): CmFactoryFunction<K>
   variants: VariantsFunction<K>
 }
 

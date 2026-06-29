@@ -1,1 +1,1 @@
-export default "Getting Started | @classmatejs"
+export default 'Getting Started | @classmatejs'

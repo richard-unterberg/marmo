@@ -1,36 +1,36 @@
-import cm from "@classmatejs/react"
-import { LayoutComponent } from "@unterberg/nivel"
-import ClassmateCode from "./Compare/classmate.mdx"
-import CTAButtons from "./CTA"
+import cm from '@classmatejs/react'
+import { LayoutComponent } from '@unterberg/nivel'
+import ClassmateCode from './Compare/classmate.mdx'
+import CTAButtons from './CTA'
 
 interface AlertProps {
-  $severity?: "info" | "warning" | "error"
+  $severity?: 'info' | 'warning' | 'error'
   $isActive?: boolean
 }
 
 const Alert = cm.div.variants<AlertProps>({
   base: ({ $isActive }) => `
-    ${$isActive ? "custom-class-active" : "custom-class-inactive"}
+    ${$isActive ? 'custom-class-active' : 'custom-class-inactive'}
     p-4
     rounded-md
   `,
   variants: {
     $severity: {
-      warning: "bg-yellow-100 text-yellow-800 dark:bg-yellow-600/50 dark:text-yellow-200",
-      info: "bg-blue-100 text-blue-800 dark:bg-blue-600/50 dark:text-blue-200",
-      error: "bg-red-100 text-red-800 dark:bg-red-600/50 dark:text-red-200",
+      warning: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-600/50 dark:text-yellow-200',
+      info: 'bg-blue-100 text-blue-800 dark:bg-blue-600/50 dark:text-blue-200',
+      error: 'bg-red-100 text-red-800 dark:bg-red-600/50 dark:text-red-200',
     },
     $isActive: {
       true: ({ style }) =>
         style({
-          border: "1px solid color-mix(in oklab, currentColor 18%, transparent)",
-          boxShadow: "0 14px 40px color-mix(in oklab, currentColor 18%, transparent)",
+          border: '1px solid color-mix(in oklab, currentColor 18%, transparent)',
+          boxShadow: '0 14px 40px color-mix(in oklab, currentColor 18%, transparent)',
         }),
-      false: "border-gray-300 shadow-sm",
+      false: 'border-gray-300 shadow-sm',
     },
   },
   defaultVariants: {
-    $severity: "info",
+    $severity: 'info',
     $isActive: false,
   },
 })
@@ -68,9 +68,7 @@ const Page = () => {
           <div className="hidden md:grid md:grid-cols-2 gap-4">
             <h2 className="text-lg mb-2 text-center">The Pain</h2>
             <h2 className="text-lg mb-2 text-center">The Aid</h2>
-            <div className="flex  gap-4 p-3 border border-dashed border-base-muted rounded-md">
-              example follows
-            </div>
+            <div className="flex  gap-4 p-3 border border-dashed border-base-muted rounded-md">example follows</div>
             <div className="flex  gap-4 p-3 border border-dashed border-base-muted rounded-md">
               <LocalAlert>
                 <code>{`<Alert />`}</code>

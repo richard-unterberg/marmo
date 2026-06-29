@@ -1,6 +1,6 @@
-import { mergeProps } from "solid-js"
+import { mergeProps } from 'solid-js'
 
-import type { LogicHandler } from "../types"
+import type { LogicHandler } from '../types'
 
 const applyLogicHandlers = <T extends object>(props: T, logicHandlers: LogicHandler<T>[] = []): T => {
   if (!logicHandlers.length) {
@@ -12,7 +12,7 @@ const applyLogicHandlers = <T extends object>(props: T, logicHandlers: LogicHand
 
   for (const handler of logicHandlers) {
     const result = handler(accumulated)
-    if (result && typeof result === "object" && Object.keys(result).length > 0) {
+    if (result && typeof result === 'object' && Object.keys(result).length > 0) {
       const { __rcOmit, ...rest } = result as { __rcOmit?: (keyof T | string)[] } & Partial<T>
       if (Array.isArray(__rcOmit) && __rcOmit.length > 0) {
         omitKeys.push(...__rcOmit)
@@ -22,7 +22,7 @@ const applyLogicHandlers = <T extends object>(props: T, logicHandlers: LogicHand
   }
 
   if (omitKeys.length > 0) {
-    Object.defineProperty(accumulated as Record<string, any>, "__rcOmit", {
+    Object.defineProperty(accumulated as Record<string, any>, '__rcOmit', {
       value: Array.from(new Set(omitKeys)),
       enumerable: false,
       configurable: true,

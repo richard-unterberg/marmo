@@ -1,8 +1,8 @@
-import { createElement } from "react"
-import createBaseComponent from "./factory/base"
-import createExtendedComponent, { createExtendedVariantsComponent } from "./factory/extend"
-import createTransformedComponent from "./factory/transform"
-import createVariantsComponent from "./factory/variants"
+import { createElement } from 'react'
+import createBaseComponent from './factory/base'
+import createExtendedComponent, { createExtendedVariantsComponent } from './factory/extend'
+import createTransformedComponent from './factory/transform'
+import createVariantsComponent from './factory/variants'
 import type {
   CmBaseComponent,
   CmComponentFactory,
@@ -12,18 +12,14 @@ import type {
   LogicHandler,
   MergeProps,
   VariantsConfig,
-} from "./types"
-import { type AllowedTags, domElements } from "./util/domElements"
+} from './types'
+import { type AllowedTags, domElements } from './util/domElements'
 
-const emptyTemplate = Object.assign([""], { raw: [""] }) as unknown as TemplateStringsArray
+const emptyTemplate = Object.assign([''], { raw: [''] }) as unknown as TemplateStringsArray
 
-const isTemplateStringsArray = (value: unknown): value is TemplateStringsArray =>
-  Array.isArray(value) && "raw" in value
+const isTemplateStringsArray = (value: unknown): value is TemplateStringsArray => Array.isArray(value) && 'raw' in value
 
-const createExtendBuilder = (
-  baseComponent: CmBaseComponent<any>,
-  logicHandlers: LogicHandler<any>[] = [],
-) => {
+const createExtendBuilder = (baseComponent: CmBaseComponent<any>, logicHandlers: LogicHandler<any>[] = []) => {
   const builder = <T extends object>(strings: TemplateStringsArray, ...interpolations: Interpolation<T>[]) =>
     createExtendedComponent<T>(baseComponent, strings, interpolations, logicHandlers as LogicHandler<T>[])
 
@@ -79,7 +75,7 @@ const createTransformTarget = (baseComponent: CmBaseComponent<any>, tag: Allowed
 
 const createTransformBuilder = (baseComponent: CmBaseComponent<any>) => {
   if (baseComponent.__rcClassmate !== true) {
-    throw new Error("cm.transform can only transform classmate components")
+    throw new Error('cm.transform can only transform classmate components')
   }
 
   const builder = Object.create(null) as Record<AllowedTags, unknown>
@@ -114,7 +110,7 @@ const createFactoryFunction = <K extends AllowedTags>(
 }
 
 type CmFactoryMap = { [K in AllowedTags]: CmFactoryFunction<K> }
-const cmTarget = Object.create(null) as CmFactoryMap & Pick<CmComponentFactory, "extend" | "transform">
+const cmTarget = Object.create(null) as CmFactoryMap & Pick<CmComponentFactory, 'extend' | 'transform'>
 
 const registerFactory = <K extends AllowedTags>(tag: K) => {
   ;(cmTarget as Record<AllowedTags, unknown>)[tag] = createFactoryFunction(tag)

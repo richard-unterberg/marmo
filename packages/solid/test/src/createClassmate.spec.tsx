@@ -1,10 +1,10 @@
 /** @jsxImportSource solid-js */
-import { render, screen } from "@solidjs/testing-library"
+import { render, screen } from '@solidjs/testing-library'
 
-import cm, { createClassmate } from "../../src"
+import cm, { createClassmate } from '../../src'
 
-describe("createClassmate helper (solid)", () => {
-  it("evaluates the factory only once per invocation", () => {
+describe('createClassmate helper (solid)', () => {
+  it('evaluates the factory only once per invocation', () => {
     let executions = 0
 
     const RenderComponent = () => {
@@ -24,11 +24,11 @@ describe("createClassmate helper (solid)", () => {
     }
 
     render(() => <RenderComponent />)
-    expect(screen.getByTestId("styled-day")).toHaveClass("p-2 text-sm")
+    expect(screen.getByTestId('styled-day')).toHaveClass('p-2 text-sm')
     expect(executions).toBe(1)
   })
 
-  it("returns independent component factories for separate calls", () => {
+  it('returns independent component factories for separate calls', () => {
     const references: Array<ReturnType<typeof createClassmate>> = []
 
     const RenderComponent = ({ id }: { id: string }) => {
@@ -50,8 +50,8 @@ describe("createClassmate helper (solid)", () => {
       </>
     ))
 
-    expect(screen.getByTestId("styled-card-a")).toHaveClass("p-4 border")
-    expect(screen.getByTestId("styled-card-b")).toHaveClass("p-4 border")
+    expect(screen.getByTestId('styled-card-a')).toHaveClass('p-4 border')
+    expect(screen.getByTestId('styled-card-b')).toHaveClass('p-4 border')
     expect(references).toHaveLength(2)
     expect(references[0]).not.toBe(references[1])
   })

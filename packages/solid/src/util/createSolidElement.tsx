@@ -1,18 +1,18 @@
-import { createComponent, splitProps } from "solid-js"
-import type { Component, JSX } from "solid-js"
-import { Dynamic } from "solid-js/web"
-import { twMerge } from "tailwind-merge"
+import { createComponent, splitProps } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
+import { Dynamic } from 'solid-js/web'
+import { twMerge } from 'tailwind-merge'
 
-import type { CmBaseComponent, LogicHandler, StyleDefinition } from "../types"
-import applyLogicHandlers from "./applyLogicHandlers"
+import type { CmBaseComponent, LogicHandler, StyleDefinition } from '../types'
+import applyLogicHandlers from './applyLogicHandlers'
 
 const toKebabCase = (key: string) => {
-  if (key.startsWith("--")) {
+  if (key.startsWith('--')) {
     return key
   }
   return key
     .replace(/([A-Z])/g, (_, char: string) => `-${char.toLowerCase()}`)
-    .replace(/^-/, "")
+    .replace(/^-/, '')
     .toLowerCase()
 }
 
@@ -31,7 +31,7 @@ const resolveStyleDefinition = <P extends object>(
     if (rawValue === undefined || rawValue === null) {
       continue
     }
-    const resolvedValue = typeof rawValue === "function" ? rawValue(props) : rawValue
+    const resolvedValue = typeof rawValue === 'function' ? rawValue(props) : rawValue
     if (resolvedValue === undefined || resolvedValue === null) {
       continue
     }
@@ -79,16 +79,16 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       logicHandlers.length > 0 ? applyLogicHandlers(incomingProps, logicHandlers) : incomingProps
     const normalizedProps = normalizedPropsBase as T & Record<string, any>
     const renderTag =
-      typeof normalizedProps.$_as === "string" ? (normalizedProps.$_as as keyof JSX.IntrinsicElements) : tag
+      typeof normalizedProps.$_as === 'string' ? (normalizedProps.$_as as keyof JSX.IntrinsicElements) : tag
 
     const normalizedRecord = normalizedProps as Record<string, any>
     const reservedKeys = [
-      ...propsToFilter.filter((key): key is keyof T & string => typeof key === "string"),
-      "children",
-      "class",
-      "className",
-      "style",
-      "__rcOmit",
+      ...propsToFilter.filter((key): key is keyof T & string => typeof key === 'string'),
+      'children',
+      'class',
+      'className',
+      'style',
+      '__rcOmit',
     ] as readonly string[]
     const [local, forwardedSource] = splitProps(normalizedRecord, reservedKeys)
 
@@ -99,10 +99,10 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       Array.isArray(omitKeysSource) && omitKeysSource.length > 0
         ? new Set(
             omitKeysSource.map((key) => {
-              if (typeof key === "string") {
+              if (typeof key === 'string') {
                 return key
               }
-              if (typeof key === "number") {
+              if (typeof key === 'number') {
                 return String(key)
               }
               return String(key)
@@ -114,7 +114,7 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       if (omitKeys?.has(key)) {
         continue
       }
-      if (!key.startsWith("$")) {
+      if (!key.startsWith('$')) {
         filteredProps[key] = forwarded[key]
       }
     }
@@ -124,19 +124,18 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       ...filteredProps,
       get class() {
         const computedClassName = computeClassName(normalizedProps)
-        const initialClass = typeof local.class === "string" ? local.class : ""
-        const incomingClasses = [initialClass, typeof local.className === "string" ? local.className : ""]
+        const initialClass = typeof local.class === 'string' ? local.class : ''
+        const incomingClasses = [initialClass, typeof local.className === 'string' ? local.className : '']
           .filter(Boolean)
-          .join(" ")
+          .join(' ')
           .trim()
 
         return twMerge(computedClassName, incomingClasses)
       },
       get style() {
-        const dynamicStylesSource = typeof styles === "function" ? styles(normalizedProps) : styles
+        const dynamicStylesSource = typeof styles === 'function' ? styles(normalizedProps) : styles
         const dynamicStyles = resolveStyleDefinition(dynamicStylesSource, normalizedProps)
-        const localStyleSource =
-          typeof local.style === "object" && local.style !== null ? local.style : undefined
+        const localStyleSource = typeof local.style === 'object' && local.style !== null ? local.style : undefined
         const localStyles = normalizeInlineStyle(localStyleSource)
         return { ...dynamicStyles, ...localStyles }
       },
@@ -146,7 +145,7 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
     })
   }) as CmBaseComponent<T>
 
-  element.displayName = displayName || "Cm Component"
+  element.displayName = displayName || 'Cm Component'
   element.__scClassmate = true
   element.__scComputeClassName = (props: T) =>
     computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props)

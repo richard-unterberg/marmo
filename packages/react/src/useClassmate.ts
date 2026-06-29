@@ -1,6 +1,6 @@
-import { type DependencyList, useMemo } from "react"
+import { type DependencyList, useMemo } from 'react'
 
-import type { CmBaseComponent } from "./types"
+import type { CmBaseComponent } from './types'
 
 /**
  * Memoizes a classmate component factory within a React component.

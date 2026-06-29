@@ -1,8 +1,8 @@
-import { twMerge } from "tailwind-merge"
-import cmInit from "./cm"
-import convertCmProps from "./helper/convertCmProps"
-import createVariantMap from "./helper/createVariantMap"
-import type { CmComponentFactory } from "./types"
+import { twMerge } from 'tailwind-merge'
+import cmInit from './cm'
+import convertCmProps from './helper/convertCmProps'
+import createVariantMap from './helper/createVariantMap'
+import type { CmComponentFactory } from './types'
 
 /**
  * The `cm` instance is the main entry point for creating our classmate-components.
@@ -54,13 +54,13 @@ import type { CmComponentFactory } from "./types"
  */
 const cm = cmInit as CmComponentFactory
 
-export type { CmBaseComponent } from "./types"
-export type { ScBaseComponent } from "./types"
-export type { VariantsConfig } from "./types"
+export type { CmBaseComponent } from './types'
+export type { ScBaseComponent } from './types'
+export type { VariantsConfig } from './types'
 
 export { convertCmProps }
 export { createVariantMap }
-export { default as createClassmate } from "./createClassmate"
+export { default as createClassmate } from './createClassmate'
 
 export default cm
 

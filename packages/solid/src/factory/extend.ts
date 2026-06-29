@@ -1,7 +1,7 @@
-import { mergeProps } from "solid-js"
+import { mergeProps } from 'solid-js'
 
-import type { CmBaseComponent, Interpolation, LogicHandler, StyleDefinition, VariantsConfig } from "../types"
-import createSolidElement from "../util/createSolidElement"
+import type { CmBaseComponent, Interpolation, LogicHandler, StyleDefinition, VariantsConfig } from '../types'
+import createSolidElement from '../util/createSolidElement'
 
 /**
  * Create an extended component builder.
@@ -19,19 +19,19 @@ const createExtendedComponent = <T extends object>(
   interpolations: Interpolation<T>[],
   logicHandlers: LogicHandler<T>[] = [],
 ): CmBaseComponent<T> => {
-  const displayName = `Extended(${baseComponent.displayName || "Component"})`
-  const baseComputeClassName = baseComponent.__scComputeClassName || (() => "")
+  const displayName = `Extended(${baseComponent.displayName || 'Component'})`
+  const baseComputeClassName = baseComponent.__scComputeClassName || (() => '')
   const baseStyles = baseComponent.__scStyles || {}
   const tag = baseComponent.__scTag || baseComponent
   const baseLogic = (baseComponent.__scLogic as LogicHandler<any>[]) || []
   const basePropsToFilter = (baseComponent.__scPropsToFilter as (keyof T)[]) || []
   const combinedLogic = [...baseLogic, ...logicHandlers]
-  const resolveInterpolationValue = (value: unknown) => (typeof value === "string" ? value : "")
+  const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
 
   const computeClassName = (props: T, collectedStyles: Record<string, string | number>) => {
     const styleUtility = (styleDef: StyleDefinition<T>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     type InterpolationProps = T & { style: typeof styleUtility }
@@ -48,23 +48,23 @@ const createExtendedComponent = <T extends object>(
     const extendedClassName = strings
       .map((str, i) => {
         const interp = interpolations[i]
-        if (typeof interp === "function") {
+        if (typeof interp === 'function') {
           return str + resolveInterpolationValue(interp(getInterpolationProps()))
         }
         return str + resolveInterpolationValue(interp)
       })
-      .join("")
-      .replace(/\s+/g, " ")
+      .join('')
+      .replace(/\s+/g, ' ')
       .trim()
 
-    return [baseClassName, extendedClassName].filter(Boolean).join(" ")
+    return [baseClassName, extendedClassName].filter(Boolean).join(' ')
   }
 
   const computeMergedStyles = (props: T) => {
     const collectedStyles: Record<string, string | number> = {}
     computeClassName(props, collectedStyles)
     const resolvedBaseStyles =
-      typeof baseStyles === "function" ? (baseStyles as (props: T) => StyleDefinition<T>)(props) : baseStyles
+      typeof baseStyles === 'function' ? (baseStyles as (props: T) => StyleDefinition<T>)(props) : baseStyles
     return { ...resolvedBaseStyles, ...collectedStyles }
   }
 
@@ -78,7 +78,7 @@ const createExtendedComponent = <T extends object>(
   })
 }
 
-const normalizeClassName = (className: string) => className.replace(/\s+/g, " ").trim()
+const normalizeClassName = (className: string) => className.replace(/\s+/g, ' ').trim()
 
 const computeVariantClasses = <VariantProps extends object, ExtraProps extends object>(
   config: VariantsConfig<VariantProps, ExtraProps>,
@@ -87,7 +87,7 @@ const computeVariantClasses = <VariantProps extends object, ExtraProps extends o
 ) => {
   const { base, variants, defaultVariants = {} } = config
 
-  const baseClasses = typeof base === "function" ? base({ ...props, style: styleFactory }) : base || ""
+  const baseClasses = typeof base === 'function' ? base({ ...props, style: styleFactory }) : base || ''
 
   const variantClasses = Object.entries(variants || {}).map(([key, variantOptions]) => {
     const propValue = (props as Record<string, string | number | boolean | undefined>)[key]
@@ -95,19 +95,19 @@ const computeVariantClasses = <VariantProps extends object, ExtraProps extends o
     const resolvedValue = propValue ?? fallbackValue
 
     if (resolvedValue === undefined || resolvedValue === null) {
-      return ""
+      return ''
     }
 
     const option = (variantOptions as Record<string, any>)[String(resolvedValue)]
 
-    if (typeof option === "function") {
+    if (typeof option === 'function') {
       return option({ ...props, style: styleFactory })
     }
 
-    return option || ""
+    return option || ''
   })
 
-  return normalizeClassName([baseClasses, ...variantClasses].filter(Boolean).join(" "))
+  return normalizeClassName([baseClasses, ...variantClasses].filter(Boolean).join(' '))
 }
 
 const createExtendedVariantsComponent = <
@@ -119,8 +119,8 @@ const createExtendedVariantsComponent = <
   config: VariantsConfig<VariantProps, ExtraProps>,
   logicHandlers: LogicHandler<ComponentProps>[] = [],
 ): CmBaseComponent<ComponentProps> => {
-  const displayName = `ExtendedVariants(${baseComponent.displayName || "Component"})`
-  const baseComputeClassName = baseComponent.__scComputeClassName || (() => "")
+  const displayName = `ExtendedVariants(${baseComponent.displayName || 'Component'})`
+  const baseComputeClassName = baseComponent.__scComputeClassName || (() => '')
   const baseStyles = baseComponent.__scStyles || {}
   const tag = baseComponent.__scTag || baseComponent
   const baseLogic = (baseComponent.__scLogic as LogicHandler<any>[]) || []
@@ -132,7 +132,7 @@ const createExtendedVariantsComponent = <
   const computeClassName = (props: ComponentProps, collectedStyles: Record<string, string | number>) => {
     const styleUtility = (styleDef: StyleDefinition<ComponentProps>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     type InterpolationProps = ComponentProps & { style: typeof styleUtility }
@@ -147,20 +147,18 @@ const createExtendedVariantsComponent = <
     const baseClassName = baseComputeClassName(getInterpolationProps())
 
     const variantProps = props as unknown as VariantProps & ExtraProps
-    const styleForVariants = styleUtility as unknown as (
-      styleDef: StyleDefinition<VariantProps & ExtraProps>,
-    ) => string
+    const styleForVariants = styleUtility as unknown as (styleDef: StyleDefinition<VariantProps & ExtraProps>) => string
 
     const variantClassName = computeVariantClasses(config, variantProps, styleForVariants)
 
-    return [baseClassName, variantClassName].filter(Boolean).join(" ")
+    return [baseClassName, variantClassName].filter(Boolean).join(' ')
   }
 
   const computeMergedStyles = (props: ComponentProps) => {
     const collectedStyles: Record<string, string | number> = {}
     computeClassName(props, collectedStyles)
     const resolvedBaseStyles =
-      typeof baseStyles === "function"
+      typeof baseStyles === 'function'
         ? (baseStyles as (props: ComponentProps) => StyleDefinition<ComponentProps>)(props)
         : baseStyles
     return { ...resolvedBaseStyles, ...collectedStyles }
