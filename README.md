@@ -1,6 +1,6 @@
-# @classmatejs
+# classmate
 
-Styled components for class names. For React and SolidJS.
+Typed component factory for class names. For React and SolidJS.
 
 ## 🚩 Transform this
 

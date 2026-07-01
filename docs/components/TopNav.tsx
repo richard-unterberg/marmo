@@ -22,31 +22,23 @@ const topBarNav = [
     isCta: true,
   },
   {
-    pageId: 'extend',
+    pageId: 'api',
     fallbackHref: '/phase-2/overview/',
     activePathPrefix: '/phase-2/',
-    label: 'Extend',
-  },
-  {
-    pageId: 'transform',
-    fallbackHref: '/phase-3/overview/',
-    activePathPrefix: '/phase-3/',
-    label: 'Transform',
-  },
-  {
-    pageId: 'advanced-integration',
-    fallbackHref: '/phase-4/overview/',
-    activePathPrefix: '/phase-4/',
-    label: 'Advanced',
+    label: 'Documentation',
   },
 ] satisfies TopNavItem[]
 
 const TopNav = () => {
   const docs = useDocsContext()
   const runtime = useUniversalMdxRuntime()
-  const { urlPathname, is404 } = usePageContext()
+  const { urlPathname, urlParsed, is404 } = usePageContext()
   const pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.id, page])), [docs.pages])
   const currentPathname = stripBasePath(urlPathname, docs.basePath)
+
+  const isStartPage = urlParsed.pathname === '/'
+
+  if (isStartPage) return null
 
   return (
     <StyledTopNav>

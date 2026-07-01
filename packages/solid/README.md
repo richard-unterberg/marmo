@@ -1,6 +1,6 @@
-# @classmatejs/solid
+# classmate
 
-A tool for managing React component class names, variants and styles.
+Typed component factory for class names. For React and SolidJS.
 
 ## 🚩 Transform this
 

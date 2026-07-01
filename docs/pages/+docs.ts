@@ -3,8 +3,8 @@ import { docsGraph } from '../docs/docs.graph'
 
 const docsConfig = {
   graph: docsGraph,
-  siteTitle: '@classmatejs | Compose your class names',
-  siteDescription: 'Documentation site powered by @unterberg/nivel.',
+  siteTitle: 'Polished class composition for React and SolidJS | marmo',
+  siteDescription: 'Shape class names into typed components.',
   // Add siteUrl to enable automatic sitemap.xml and robots.txt generation.
   // siteUrl: 'https://docs.example.com',
   // Set robots to false to emit noindex/nofollow and a disallow-all robots.txt.
@@ -19,7 +19,7 @@ const docsConfig = {
     components: ['../components/TopNav'],
   },
   brand: {
-    text: 'classmatejs',
+    text: 'marmo',
     href: '/',
   },
   head: {

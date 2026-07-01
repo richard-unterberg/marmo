@@ -1,0 +1,11 @@
+```ts title="StyledAlert.ts"
+const SomeButton = cm.button<{ $isLoading?: boolean }>`
+  text-normal
+  md:text-lg
+  mt-5
+  border-1
+  transition-all
+  ${someConfig.transitionDurationEaseClass}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`;
+```

@@ -1,0 +1,22 @@
+```tsx title="StyledAlert.tsx"
+interface SomeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
+}
+
+const SomeButton = ({ isLoading, ...props }: SomeButtonProps) => {
+  const activeClass = isLoading
+    ? "bg-blue-400 text-white"
+    : "bg-blue-800 text-blue-200";
+
+  return (
+    <button
+      {...props}
+      className={`transition-all mt-5 border-1 md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
+        props.className || ""
+      }`}
+    >
+      {props.children}
+    </button>
+  );
+};
+```

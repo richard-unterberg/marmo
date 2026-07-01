@@ -8,10 +8,19 @@ const SmallBox = cm.div`
 `
 
 const SmallBoxGradient = cm.div<{ $dir?: 'left' | 'right' }>`
-  ${({ $dir }) => ($dir === 'right' ? 'bg-linear-to-r' : 'bg-linear-to-l')}
+  ${({ $dir }) =>
+    $dir === 'right'
+      ? `
+    bg-linear-to-r
+    4-left-20
+  `
+      : `
+    bg-linear-to-l
+    4-right-20
+  `}
   from-base-100/90
   hidden md:block 
-  absolute top-13 left-0 right-0 w-full
+  absolute top-13 w-full
   z-20 pointer-events-none
 `
 
