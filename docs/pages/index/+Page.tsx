@@ -3,6 +3,7 @@ import CTAButtons from './CTA'
 
 import './startpage.css'
 import BaseSection from './Base'
+import ExtendTransformSection from './ExtendTransform'
 import VariantsSection from './Variants'
 
 const Page = () => {
@@ -20,9 +21,9 @@ const Page = () => {
         <div className="mt-24 mb-16">
           <LayoutComponent className="relative">
             <div className="text-center mx-auto z-2 relative">
-              <div>
-                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
-                  Component factory for utility-first UI
+              <div className=" px-8">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+                  Component factory for <span className="text-nowrap">utility-first UI</span>
                 </h1>
                 <p className="font-normal text-base-muted text-lg md:text-2xl lg:text-3xl mt-4">
                   Typed layer for class names. For React and SolidJS.
@@ -35,7 +36,7 @@ const Page = () => {
           </LayoutComponent>
         </div>
         <BaseSection />
-
+        <ExtendTransformSection />
         <VariantsSection />
       </div>
     </div>

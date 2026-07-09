@@ -20,6 +20,8 @@ const docsConfig = {
   },
   brand: {
     text: 'marmo',
+    logoLight: '/marmo-dark.svg',
+    logoDark: '/marmo-light.svg',
     href: '/',
   },
   head: {

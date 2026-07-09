@@ -13,7 +13,7 @@ const SomeButton = ({ isLoading, ...props }) => {
   return (
     <button
       {...props}
-      className={`transition-all mt-5 border-1 md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
+      className={`transition-all mt-5 border md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
         props.className || ""
       }`}
     >
@@ -96,17 +96,6 @@ Use a regular dependency for packages/libraries or deployments that resolve
 `classmatejs` core using [tailwind-merge](https://github.com/dcastil/tailwind-merge)
 under the hood to merge class names. The last class name will always win, so you
 can use it to override classes.
-
-## Upcoming
-
-- core package rework and publish
-- SolidJS package rework and publish
-- More adapters (Vue, Svelte, etc)
-- More examples and recipes in the docs
-- Advanced IDE integration
-  - show generated default class on hover
-  - enforce autocompletion and tooltips from the used libs
-- Integrate more tests, benchmarks focused on SSR, SSG, react and solid
 
 ## Inspiration
 

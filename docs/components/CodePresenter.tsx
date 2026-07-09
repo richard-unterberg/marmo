@@ -3,7 +3,7 @@ import type { JSX } from 'react'
 
 const SmallBox = cm.div`
   small-text 
-  col-span-3 relative z-1 
+  col-span-2 lg:col-span-3 relative z-1 
   pointer-events-none
 `
 
@@ -12,20 +12,18 @@ const SmallBoxGradient = cm.div<{ $dir?: 'left' | 'right' }>`
     $dir === 'right'
       ? `
     bg-linear-to-r
-    4-left-20
   `
       : `
     bg-linear-to-l
-    4-right-20
   `}
   from-base-100/90
   hidden md:block 
-  absolute top-13 w-full
+  absolute top-12 w-full
   z-20 pointer-events-none
 `
 
 const BigBox = cm.div`
-  col-span-6 md:-translate-y-10 md:h-170 relative z-20
+  col-span-8 lg:col-span-6 md:-translate-y-10 md:h-170 relative z-20
 `
 
 const BigBoxShadow = cm.div`
@@ -62,7 +60,7 @@ const CodePresenter = ({
     <div className="landing-code-samples md:grid grid-cols-12 gap-4 mt-16">
       <SmallBox style={{ height: `${smallBoxHeight}px` }}>
         <SmallBoxGradient style={{ height: `${smallBoxHeight}px` }} $dir="left" />
-        <h2 className="text-lg mb-2 text-center">{leftCodeLabel}</h2>
+        <h2 className="text-center text-base-muted-medium italic mb-2">{leftCodeLabel}</h2>
         {leftCode}
       </SmallBox>
       <BigBox style={{ height: `${hightlightBoxHeight}px` }}>
@@ -72,7 +70,7 @@ const CodePresenter = ({
       </BigBox>
       <SmallBox style={{ height: `${smallBoxHeight}px` }}>
         <SmallBoxGradient style={{ height: `${smallBoxHeight}px` }} $dir="right" />
-        <h2 className="text-lg mb-2 text-center">{rightCodeLabel}</h2>
+        <h2 className="text-center text-base-muted-medium italic mb-2">{rightCodeLabel}</h2>
         {rightCode}
       </SmallBox>
     </div>
