@@ -17,10 +17,15 @@
     "pretypecheck": "npm run generate:docs"
   },
   "dependencies": {
-    "@unterberg/nivel": "^0.3.0-alpha-5",
+    "@gsap/react": "^2.1.2",
+    "@unterberg/nivel": "^0.3.0-alpha-6",
+    "gsap": "^3.15.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "vike": "^0.4.260",
     "vike-react": "^0.6.25"
+  },
+  "devDependencies": {
+    "@unterberg/vite-beasties-output": "^0.1.4"
   }
 }

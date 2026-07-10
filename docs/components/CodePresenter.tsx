@@ -47,9 +47,9 @@ const CodePresenter = ({
           {leftCode}
         </SmallBoxCodeBlock>
       </SmallBox>
-      <BigBox>
+      <BigBox data-code-presenter-highlight>
         {/* <BigBoxShadow $height={hightlightBoxHeight} /> */}
-        <h2 className="text-lg mb-2 text-center flex items-center justify-center gap-2">
+        <h2 className="text-lg mb-4 text-center flex items-center justify-center gap-2">
           {hasGitUrl && highlightCodeRepoLink ? (
             <BigBoxLink href={withGithubUrl(highlightCodeRepoLink)}>
               {highlightCodeLabel} <ExternalLinkIcon />
@@ -59,7 +59,7 @@ const CodePresenter = ({
           )}
         </h2>
         <span
-          className="absolute left-1 right-1 aura aura-dual bg-primary-muted-medium text-primary-muted bottom-0 rounded-2xl z-1"
+          className="absolute left-1 right-1 aura aura-dual bg-accent/50 text-primary bottom-0 rounded-2xl z-1"
           style={{ height: `${hightlightBoxHeight}px` }}
         />
         <span
@@ -130,7 +130,7 @@ const SmallBoxCodeBlock = cm.div<{ $height: CodePresenterProps['smallBoxHeight']
 const SmallBoxHeadline = cm.h2`
   text-base-muted-medium 
   italic 
-  mb-2
+  mb-4
   flex items-center justify-center gap-2
 `
 

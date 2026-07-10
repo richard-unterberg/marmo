@@ -9,8 +9,18 @@ const VariantsSection = () => {
   return (
     <div className="relative">
       <div className="absolute top-0 left-0 right-0 h-[70svh] z-0">
-        <img src="/bg-dark-alt.png" alt="" className="hidden dark:block absolute w-full h-full object-fill" />
-        <img src="/bg-light-alt.png" alt="" className="dark:hidden absolute w-full h-full object-fill opacity-50" />
+        <img
+          src="/bg-dark-alt.png"
+          alt=""
+          className="hidden dark:block absolute w-full h-full object-fill"
+          loading="lazy"
+        />
+        <img
+          src="/bg-light-alt.png"
+          alt=""
+          className="dark:hidden absolute w-full h-full object-fill opacity-50"
+          loading="lazy"
+        />
         <div className="absolute top-0 left-0 right-0 h-full bg-linear-to-b from-base-100 from-10% via-transparent to-base-100" />
       </div>
       <LayoutComponent $size="xs" className="mt-32 mb-16 flex flex-col gap-8">

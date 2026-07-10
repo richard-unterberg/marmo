@@ -1,0 +1,25 @@
+```tsx choice=react title="components/TodoList.jsx" 
+import { onNewTodo } from './TodoList.telefunc'
+
+function TodoList() {
+  /** @param {string} text */
+  const onSubmit = async (text) => {
+    const todos = await onNewTodo(text)
+    // ...
+  }
+}
+```
+
+```tsx choice=solid title="components/TodoList.tsx" 
+<script>
+import { onNewTodo } from './TodoList.telefunc.js'
+
+export default {
+    methods: {
+        async onSubmit(_event) {
+            this.todoItems = await onNewTodo(this.text)
+        }
+    }
+}
+</script>
+```

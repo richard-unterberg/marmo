@@ -40,6 +40,9 @@
       },
       "performance": {
         "noAccumulatingSpread": "warn"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
     }
   },
