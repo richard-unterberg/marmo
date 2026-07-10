@@ -15,6 +15,7 @@ const docsConfig = {
   contentDir: 'content',
   social: {
     github: 'https://github.com/richard-unterberg/marmo',
+    editLinkBranch: 'master',
   },
   topBarNav: {
     components: ['../components/TopNav'],
