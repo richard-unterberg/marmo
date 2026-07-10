@@ -1,5 +1,5 @@
 import type { DocsConfig } from '@unterberg/nivel'
-import { docsGraph } from '../docs/docs.graph'
+import { docsGraph } from '../content/docs.graph'
 
 const docsConfig = {
   graph: docsGraph,
@@ -11,9 +11,10 @@ const docsConfig = {
   robots: false,
   // Set customFonts to false if you want to fully own font loading in consumer CSS.
   customFonts: false,
-  basePath: '/docs',
+  basePath: '/',
+  contentDir: 'content',
   social: {
-    github: 'https://github.com/richard-unterberg/classmatejs',
+    github: 'https://github.com/richard-unterberg/marmo',
   },
   topBarNav: {
     components: ['../components/TopNav'],

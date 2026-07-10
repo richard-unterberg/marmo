@@ -11,7 +11,7 @@ const SomeButton = ({ isLoading, ...props }: SomeButtonProps) => {
   return (
     <button
       {...props}
-      className={`transition-all mt-5 border-1 md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
+      className={`transition-all mt-5 border md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
         props.className || ""
       }`}
     >
