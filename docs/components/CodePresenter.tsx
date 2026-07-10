@@ -48,7 +48,7 @@ const CodePresenter = ({
         </SmallBoxCodeBlock>
       </SmallBox>
       <BigBox>
-        <BigBoxShadow $height={hightlightBoxHeight} />
+        {/* <BigBoxShadow $height={hightlightBoxHeight} /> */}
         <h2 className="text-lg mb-2 text-center flex items-center justify-center gap-2">
           {hasGitUrl && highlightCodeRepoLink ? (
             <BigBoxLink href={withGithubUrl(highlightCodeRepoLink)}>
@@ -58,6 +58,14 @@ const CodePresenter = ({
             highlightCodeLabel
           )}
         </h2>
+        <span
+          className="absolute left-1 right-1 aura aura-dual bg-primary-muted-medium text-primary-muted bottom-0 rounded-2xl z-1"
+          style={{ height: `${hightlightBoxHeight}px` }}
+        />
+        <span
+          className="absolute bottom-0 bg-base-100 block left-0 w-full rounded-2xl z-3"
+          style={{ height: `${hightlightBoxHeight}px` }}
+        />
         <BigBoxCodeBlock $height={hightlightBoxHeight}>{highlightCode}</BigBoxCodeBlock>
       </BigBox>
       <SmallBox>
@@ -84,6 +92,8 @@ const Outer = cm.div`
   landing-code-samples 
   md:grid grid-cols-12 
   gap-4 mt-16
+  [&_[data-nivel-component="code-choice-group"]]:my-0
+  [&_pre]:pb-12
 `
 
 const ExternalLinkIcon = cm.extend(ExternalLink)`
@@ -110,8 +120,7 @@ const SmallBoxGradient = cm.div<{ $dir?: 'left' | 'right'; $height: CodePresente
 
 const SmallBoxCodeBlock = cm.div<{ $height: CodePresenterProps['smallBoxHeight'] }>`
   h-full w-full relative z-20
-  [&_[data-nivel-component="code-choice-group"]]:bg-primary-muted-light
-  [&_pre]:pb-12
+
   ${({ style, $height }) =>
     style({
       height: `${$height}px`,
@@ -127,7 +136,6 @@ const SmallBoxHeadline = cm.h2`
 
 const SmallBoxLink = cm.a`
   text-base-muted-medium 
-  mb-2
   flex items-center justify-center gap-2
 `
 
@@ -138,13 +146,12 @@ const BigBoxLink = cm.extend(SmallBoxLink)`
 const BigBox = cm.div`
   col-span-8 lg:col-span-6 relative z-20
   md:-translate-y-10
+  relative
 `
 
-const BigBoxShadow = cm.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
+const _BigBoxShadow = cm.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
   hidden md:block 
-  absolute top-13 left-px right-px 
-  bg-primary-muted-superlight
-  shadow-2xl shadow-primary-muted rounded-2xl overflow-hidden
+  absolute top-16 left-px right-px 
   ${({ style, $height }) => style({ height: `${$height - 24}px` })}
 `
 

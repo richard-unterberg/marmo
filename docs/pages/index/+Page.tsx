@@ -37,8 +37,11 @@ const Page = () => {
                   width={20}
                   height={20}
                 />
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-                  Component factory for <span className="text-nowrap">utility-first UI</span>
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-base-content">
+                  Component factory for{' '}
+                  <span className="text-nowrap text-shadow-xl text-shadow-primary-muted-medium text-primary">
+                    utility-first UI
+                  </span>
                 </h1>
                 <p className="font-normal text-base-muted text-lg md:text-2xl lg:text-3xl mt-4">
                   Typed layer for class names. For React and SolidJS.
