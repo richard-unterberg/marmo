@@ -1,0 +1,138 @@
+import { Alert } from "@unterberg/nivel"
+
+Create a component by calling `ma` (or any name of your choice) with a tag name and a template literal string.
+
+## Example
+
+```js choice="react"
+import ma from "@marmo/react"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+```
+
+```js choice="solidjs"
+import ma from "@marmo/solid"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+```
+
+---
+
+## With Wrapper
+
+```jsx choice="react" 
+import ma from "@marmo/react"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+
+const MyPage = () => {
+  return (
+    <Container>
+      <h1>Hello World</h1>
+    </Container>
+  )
+}
+
+export default MyPage
+```
+
+```jsx choice="solidjs"
+import ma from "@marmo/solid"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+
+const MyPage = () => {
+  return (
+    <Container>
+      <h1>Hello World</h1>
+    </Container>
+  )
+}
+
+export default MyPage
+```
+
+### Result
+
+```html title="output.html"
+<div class="py-2 px-5 min-h-24">
+  <h1>Hello World</h1>
+</div>
+```
+
+## Pass and Receive properties
+
+Pass props to the component and use them in the template literal string and in the component prop validation.
+
+```tsx choice="react"
+import ma from "@marmo/react"
+
+interface ButtonProps {
+  $isActive?: boolean
+  $isLoading?: boolean
+}
+
+const SomeButton = ma.button<ButtonProps>`
+  text-lg
+  mt-5
+  ${({ $isActive }) => ($isActive ? "bg-blue-400 text-white" : "bg-blue-400 text-blue-200")}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`
+
+const MyComponent = () => {
+  return (
+    <SomeButton $isActive $isLoading>
+      Click Me
+    </SomeButton>
+  )
+}
+```
+
+```tsx choice="solidjs"
+import ma from "@marmo/solid"
+
+interface ButtonProps {
+  $isActive?: boolean
+  $isLoading?: boolean
+}
+
+const SomeButton = ma.button<ButtonProps>`
+  text-lg
+  mt-5
+  ${({ $isActive }) => ($isActive ? "bg-blue-400 text-white" : "bg-blue-400 text-blue-200")}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`
+
+const MyComponent = () => {
+  return (
+    <SomeButton $isActive $isLoading>
+      Click Me
+    </SomeButton>
+  )
+}
+```
+
+### Result
+
+```html title="output.html"
+<button class="text-lg mt-5 bg-blue-400 text-white opacity-90 pointer-events-none">
+  Click Me
+</button>
+```
+
+<Alert heading="Prefix incoming props with `$`" type="info">
+You should prefix the props incoming to `marmo` with a `$` sign. This is a classic convention to distinguish dynamic props from the ones we pass to the component.
+This pattern should also avoid conflicts with reserved prop names.
+</Alert>

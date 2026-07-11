@@ -26,6 +26,8 @@ const Page = () => {
       const outer = root.querySelector<HTMLElement>('[data-outer]')
       const scroller = root.querySelector<HTMLElement>('[data-scroller]')
       const heroHeadline = root.querySelector<HTMLElement>('[data-hero-headline]')
+      const codeLeft = root.querySelector<HTMLElement>('[data-code-presenter-small-left]')
+      const codeRight = root.querySelector<HTMLElement>('[data-code-presenter-small-right]')
       const codeHighlight = root.querySelector<HTMLElement>(
         '[data-hero-code-presenter] [data-code-presenter-highlight]',
       )
@@ -44,12 +46,14 @@ const Page = () => {
               scrub: 2,
               markers: import.meta.env.DEV,
               start: 'top top',
-              end: '+=60%',
+              end: '+=50%',
             },
           })
-          .to(scroller, { yPercent: 20 }, 0)
-          .to(heroHeadline, { yPercent: 14, autoAlpha: 0 }, 0)
-          .to(codeHighlight, { yPercent: 10 }, 0)
+          // .to(scroller, { yPercent: 20 }, 0)
+          .to(heroHeadline, { yPercent: 5, autoAlpha: 0, delay: 0.1, duration: 0.6 }, 0)
+          .to(codeHighlight, { yPercent: 8 }, 0)
+          .to(codeLeft, { yPercent: 4, autoAlpha: 0 }, 0)
+          .to(codeRight, { yPercent: -6, autoAlpha: 0 }, 0)
       })
 
       return () => media.revert()

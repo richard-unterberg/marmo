@@ -22,6 +22,10 @@ export default {
           /data-theme=.*light/,
           /^:root:has\(input\.theme-controller/,
           /^:where\(:root\)$/,
+          // all starting with .h-
+          /^\.h-/,
+          // include all with .basis-
+          /^\.basis-/,
         ],
       },
     }),

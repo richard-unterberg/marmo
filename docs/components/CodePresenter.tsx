@@ -32,7 +32,7 @@ const CodePresenter = ({
 }: CodePresenterProps) => {
   return (
     <Outer>
-      <SmallBox>
+      <SmallBox data-code-presenter-small-left>
         <SmallBoxHeadline>
           {hasGitUrl && leftCodeRepoLink ? (
             <SmallBoxLink href={withGithubUrl(leftCodeRepoLink)}>
@@ -68,7 +68,7 @@ const CodePresenter = ({
         />
         <BigBoxCodeBlock $height={hightlightBoxHeight}>{highlightCode}</BigBoxCodeBlock>
       </BigBox>
-      <SmallBox>
+      <SmallBox data-code-presenter-small-right>
         <SmallBoxHeadline>
           {hasGitUrl && rightCodeRepoLink ? (
             <SmallBoxLink href={withGithubUrl(rightCodeRepoLink)}>

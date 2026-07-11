@@ -1,13 +1,10 @@
 import cm from '@classmatejs/react'
-import { useUniversalMdxRuntime } from '@unterberg/nivel'
 import { useDocsContext } from '@unterberg/nivel/client'
 import { useMemo } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
-import { normalizePathname, stripBasePath, withDocsBasePath } from '../util/withBasePath'
+import { stripBasePath } from '../util/withBasePath'
 
 type TopNavItem = {
-  activePathPrefix: string
-  fallbackHref: string
   label: string
   isCta?: boolean
   pageId: string
@@ -15,26 +12,21 @@ type TopNavItem = {
 
 const topBarNav = [
   {
-    pageId: 'get-started',
-    fallbackHref: '/phase-1/overview/',
-    activePathPrefix: '/phase-1/',
+    pageId: '/get-started',
     label: 'Get started',
     isCta: true,
   },
   {
-    pageId: 'api',
-    fallbackHref: '/phase-2/overview/',
-    activePathPrefix: '/phase-2/',
-    label: 'Documentation',
+    pageId: '/case-study',
+    label: 'Case Studies',
   },
 ] satisfies TopNavItem[]
 
 const TopNav = () => {
   const docs = useDocsContext()
-  const runtime = useUniversalMdxRuntime()
-  const { urlPathname, urlParsed, is404 } = usePageContext()
-  const pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.id, page])), [docs.pages])
-  const currentPathname = stripBasePath(urlPathname, docs.basePath)
+  const { urlPathname, urlParsed } = usePageContext()
+  const _pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.id, page])), [docs.pages])
+  const _currentPathname = stripBasePath(urlPathname, docs.basePath)
 
   const isStartPage = urlParsed.pathname === '/'
 
@@ -42,19 +34,11 @@ const TopNav = () => {
 
   return (
     <StyledTopNav>
-      {topBarNav.map(({ pageId, ...item }) => (
-        <TopNavItem
-          key={pageId}
-          {...item}
-          href={
-            runtime?.localizeHref?.(pagesById.get(pageId)?.href ?? item.fallbackHref) ??
-            withDocsBasePath(item.fallbackHref, docs.basePath)
-          }
-          isActive={
-            !!(item.activePathPrefix && currentPathname.startsWith(normalizePathname(item.activePathPrefix)) && !is404)
-          }
-        />
-      ))}
+      {topBarNav.map(({ pageId, ...item }) => {
+        const isActive = urlParsed.pathname.includes(pageId)
+
+        return <TopNavItem key={pageId} {...item} href={pageId} isActive={isActive} />
+      })}
     </StyledTopNav>
   )
 }
@@ -81,5 +65,5 @@ const StyleTopNavItem = cm.a<{ $isActive: boolean; $isCta?: boolean }>`
   btn btn-sm tracking-tight
   text-xs xl:text-sm 
   ${({ $isActive }) => $isActive && 'btn-primary'}
-  ${({ $isCta }) => $isCta && 'btn-primary btn-outline'}
+  ${({ $isCta, $isActive }) => !$isActive && $isCta && 'btn-primary btn-outline'}
 `

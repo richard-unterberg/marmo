@@ -1,13 +1,13 @@
 @custom-variant dark (
-  &:where([data-theme='consumer-dark'], [data-theme='consumer-dark'] *)
+  &:where([data-theme='marmo-dark'], [data-theme='marmo-dark'] *)
 );
 
 @plugin '@unterberg/nivel/daisyui-theme' {
-  name: 'consumer-light';
+  name: 'marmo-light';
   default: true;
   prefersdark: false;
   color-scheme: 'light';
-  --color-base-100: #f6f6f4;
+  --color-base-100: #fdfdfd;
   --color-base-200: #ffffff;
   --color-base-300: #ecebe7;
   --color-base-content: #151515;
@@ -38,7 +38,7 @@
 }
 
 @plugin '@unterberg/nivel/daisyui-theme' {
-  name: 'consumer-dark';
+  name: 'marmo-dark';
   default: false;
   prefersdark: false;
   color-scheme: 'dark';

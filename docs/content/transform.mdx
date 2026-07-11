@@ -1,0 +1,120 @@
+Transform renders an existing classmate component as another intrinsic element. It keeps the original class logic and $ props, but TypeScript validates props against the new element.
+
+Features
+: works with any marmo component
+: automatically infers the new element's props
+: preserve types and class logic of the original component
+
+## One the spot transformation
+
+Passing a `$_as` prop to a classmate component will transform it into the specified intrinsic element.
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+const MyButton = ma.button`
+  absolute
+  min-w-300
+`
+
+const MyComponent = () => {
+  const myClickEvent = (e: MouseEvent) => {
+    console.log(e.clientX, e.clientY)
+  }
+
+  return (
+    <>
+      <MyButton $_as="span" />
+      <MyButton onClick={() => null} />
+    </>
+  )
+}
+```
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+const MyButton = ma.button`
+  absolute
+  min-w-300
+`
+
+const MyComponent = () => {
+  const myClickEvent = (e: MouseEvent) => {
+    console.log(e.clientX, e.clientY)
+  }
+
+  return (
+    <>
+      <MyButton $_as="span" />
+      <MyButton onClick={() => null} />
+    </>
+  )
+}
+```
+
+### Result
+
+```html title=output.html
+<span class="absolute min-w-300"></span>
+<button class="absolute min-w-300"></button>
+```
+
+## Builder API
+
+Use the builder API when you want a reusable transformed component, or add more classes with a tagged template.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+const MyButton = ma.button`
+  absolute min-w-300
+`
+
+const TransformButton = ma.transform(MyButton).span``
+
+const TransformButtonWithClasses = ma.transform(MyButton).span`
+  bg-primary
+  text-white
+`
+
+const MyComponent = () => {
+  return (
+    <>
+      <TransformButton />
+      <TransformButtonWithClasses />
+    </>
+  )
+}
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+const MyButton = ma.button`
+  absolute min-w-300
+`
+
+const TransformButton = ma.transform(MyButton).span``
+
+const TransformButtonWithClasses = ma.transform(MyButton).span`
+  bg-primary
+  text-white
+`
+
+const MyComponent = () => {
+  return (
+    <>
+      <TransformButton />
+      <TransformButtonWithClasses />
+    </>
+  )
+}
+```
+
+### Result
+
+```html title=output.html
+<span class="absolute min-w-300"></span>
+<span class="absolute min-w-300 bg-primary text-white"></span>
+```

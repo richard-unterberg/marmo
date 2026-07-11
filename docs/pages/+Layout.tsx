@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { urlParsed } = usePageContext()
 
   return (
-    <div data-is-startpage={urlParsed.pathname === '/'}>
+    <div data-is-startpage={urlParsed.pathname === '/'} data-beasties-container>
       <AppLayout>{children}</AppLayout>
     </div>
   )

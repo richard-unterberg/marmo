@@ -13,6 +13,10 @@ const docsConfig = {
   customFonts: false,
   basePath: '/',
   contentDir: 'content',
+  theme: {
+    dark: 'marmo-dark',
+    light: 'marmo-light',
+  },
   social: {
     github: 'https://github.com/richard-unterberg/marmo',
     editLinkBranch: 'master',
@@ -25,6 +29,10 @@ const docsConfig = {
     logoLight: '/marmo-dark.svg',
     logoDark: '/marmo-light.svg',
     href: '/',
+  },
+
+  footer: {
+    pagination: true,
   },
   head: {
     faviconSvg: '/favicon.svg',

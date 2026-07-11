@@ -26,6 +26,14 @@
     @apply prose-blockquote:not-italic;
     @apply prose-blockquote:bg-base-200;
     @apply prose-blockquote:py-2;
+
+    @apply prose-dd:pl-8;
+    @apply prose-dd:before:content-['>'];
+    @apply prose-dd:before:inline-block;
+    @apply prose-dd:before:absolute;
+    @apply prose-dd:before:-ml-4;
+    @apply prose-dd:before:text-primary;
+    @apply prose-dd:before:scale-75;
   }
 
   .prose-container :where(p, li, blockquote, td, th, a) {

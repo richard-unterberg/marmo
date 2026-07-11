@@ -1,9 +1,9 @@
-import cm, { cmMerge } from '@classmatejs/react'
+import cm from '@classmatejs/react'
 import { Link } from '@unterberg/nivel'
 import type { HTMLAttributes } from 'react'
 
-const MyLink = cm.extend(Link).variants({
-  base: 'btn btn-primary sm:btn-lg',
+const CTAButton = cm.extend(Link).variants({
+  base: 'btn btn-primary sm:btn-lg min-w-50',
   variants: {
     type: {
       primary: 'btn-primary',
@@ -15,19 +15,22 @@ const MyLink = cm.extend(Link).variants({
   },
 })
 
+const CTAOuter = cm.div`
+  not-prose
+  flex justify-center gap-x-3 xl:gap-x-3 
+  mx-9 mb-10 mt-4 md:my-10
+`
+
 const CTAButtons = (props: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      className={cmMerge('flex justify-center gap-x-3 sm:gap-x-5 mx-9 not-prose mb-10 mt-4 md:my-10', props.className)}
-      {...props}
-    >
-      <MyLink href={`getting-started`} aria-label="Get started with telefunc by following the quick start guide">
+    <CTAOuter {...props}>
+      <CTAButton href="/get-started" aria-label="Get started with marmo by following the quick start guide and recipes">
         Get started
-      </MyLink>
-      <MyLink href={`/concepts`} aria-label="Learn more about the concepts behind telefunc" type="secondary">
-        Learn more
-      </MyLink>
-    </div>
+      </CTAButton>
+      <CTAButton href="/concepts" aria-label="Learn more about the real world examples" type="secondary">
+        See case studies
+      </CTAButton>
+    </CTAOuter>
   )
 }
 
