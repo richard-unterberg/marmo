@@ -1,7 +1,42 @@
-This page is scaffolded by `nivel init` and wired through `docs/docs.graph.ts`.
+import { StyledDualGrid, StyledGridCol } from './components/Grid'
 
-## Next steps
+## Base Install
 
-- Update `pages/+docs.ts` with your site metadata.
-- Expand `docs/docs.graph.ts` with your docs structure.
-- Replace this page with your real getting-started guide.
+- `React` >=16.8 or `SolidJS` >=1.7.
+- package manager: npm, yarn, or pnpm.
+
+<StyledDualGrid>
+  <StyledGridCol>
+
+  ### React
+
+```sh
+npm i @marmo/react
+```
+</StyledGridCol>
+<StyledGridCol>
+
+  ### SolidJS
+
+```sh
+npm i @marmo/solid
+```
+
+  </StyledGridCol>
+</StyledDualGrid>
+
+## Pair Marmo with your styling system
+
+Marmo is style-agnostic. It does not include CSS or prescribe how your application should look.
+
+Its benefits become especially visible when paired with utility-first CSS frameworks such as Tailwind CSS: classes, variants, responsive states, and component logic can be expressed through one typed component API.
+
+You can also use Marmo with CSS Modules, global CSS, or any existing class-based design system.
+
+## Start small or make it foundational
+
+Marmo can be introduced one component at a time. You can use it for a single button, alongside existing components, or as the foundation of an entire design system.
+
+While its API is intentionally small, adopting Marmo broadly can shape how components, variants, styling props, and class composition are structured throughout your codebase.
+
+There is no need to migrate everything at once. Start with a few reusable components and expand where the abstraction improves consistency and readability.

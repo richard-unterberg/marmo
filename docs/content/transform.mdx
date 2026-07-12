@@ -53,7 +53,7 @@ const MyComponent = () => {
 }
 ```
 
-### Result
+**Result**
 
 ```html title=output.html
 <span class="absolute min-w-300"></span>
@@ -112,9 +112,101 @@ const MyComponent = () => {
 }
 ```
 
-### Result
+**Result**
 
 ```html title=output.html
 <span class="absolute min-w-300"></span>
 <span class="absolute min-w-300 bg-primary text-white"></span>
+```
+
+---
+### Support for non-marmo components `upcoming`
+
+<Alert type="warning" heading="No support for non-marmo components yet">
+marmo's `transform` only accepts marmo components in v1. This is a planned feature for v2, where you can transform any component into another element.
+
+```tsx
+const SomeComponent = () => <div className="pt-10" />
+
+// ❌ does not work:
+const MarmoComponent = ma.transform(SomeComponent).span``
+
+// ✅ works:
+const MarmoComponent = ma.extend(SomeComponent)``
+const TransformedComponent = ma.transform(MarmoComponent).span``
+```
+
+For now you can use `.extend` before tranforming a component to add marmo's class logic and $ props to it.
+
+</Alert>
+
+
+## Transform variants
+
+```tsx choice=react
+import cm from "@marmo/react"
+
+const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
+  base: "absolute min-w-300",
+  variants: {
+    $size: {
+      sm: "w-10 h-10",
+      md: "w-20 h-20",
+    },
+  },
+  defaultVariants: {
+    $size: "md",
+  },
+});
+
+const Main = cm.transform(VariantDiv).main`
+  text-neutral
+  tracking-wide
+`;
+
+const MyComponent = () => {
+  return (
+    <>
+      <Main $size="sm" />
+      <Main $size="md" />
+    </>
+  )
+}
+```
+
+```tsx choice=solidjs
+import cm from "@marmo/solid"
+const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
+  base: "absolute min-w-300",
+  variants: {
+    $size: {
+      sm: "w-10 h-10",
+      md: "w-20 h-20",
+    },
+  },
+  defaultVariants: {
+    $size: "md",
+  },
+});
+
+const Main = cm.transform(VariantDiv).main`
+  text-neutral
+  tracking-wide
+`;
+
+const MyComponent = () => {
+  return (
+    <>
+      <Main $size="sm" />
+      <Main $size="md" />
+    </>
+  )
+}
+```
+
+**Result**
+
+```html title=output.html
+<main class="absolute min-w-300 w-10 h-10 text-neutral tracking-wide"></main>
+<main class="absolute min-w-300 w-20 h-20 text-neutral tracking-wide"></main>
 ```

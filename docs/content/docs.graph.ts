@@ -14,26 +14,26 @@ export const docsGraph = {
           items: [
             {
               kind: 'page',
-              id: 'gettingStarted',
-              title: 'Getting Started',
-              slug: 'get-started',
-              source: 'gettingStarted.mdx',
-              description: 'Getting started with marmo',
-            },
-            {
-              kind: 'page',
               id: 'caseStudy',
               title: 'Case Study',
               slug: 'case-study',
               source: 'caseStudy.mdx',
               description: 'marmo case study',
             },
+            {
+              kind: 'page',
+              id: 'gettingStarted',
+              title: 'Getting Started',
+              slug: 'get-started',
+              source: 'gettingStarted.mdx',
+              description: 'Getting started with marmo',
+            },
           ],
         },
         {
           kind: 'group',
-          id: 'functions',
-          title: 'Functions',
+          id: 'api-member',
+          title: 'API Members',
           icon: 'Calculator',
           items: [
             {

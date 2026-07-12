@@ -1,4 +1,5 @@
 import { Alert } from "@unterberg/nivel"
+import { Hand } from "@unterberg/nivel/icons"
 
 Create a component by calling `ma` (or any name of your choice) with a tag name and a template literal string.
 
@@ -74,6 +75,13 @@ export default MyPage
 
 ## Pass and Receive properties
 
+<Alert heading="Prefix incoming props with `$`" type="info" icon={<Hand className="size-4" />}>
+You should prefix the props incoming to `marmo` with a `$` sign. This is a classic convention to distinguish dynamic props from the ones we pass to the component.
+This pattern should also avoid conflicts with reserved prop names.
+
+That said, **marmo will remove** any props that are not valid HTML attributes and will not pass them to the rendered DOM element. It should not produce invalid html.
+</Alert>
+
 Pass props to the component and use them in the template literal string and in the component prop validation.
 
 ```tsx choice="react"
@@ -131,8 +139,3 @@ const MyComponent = () => {
   Click Me
 </button>
 ```
-
-<Alert heading="Prefix incoming props with `$`" type="info">
-You should prefix the props incoming to `marmo` with a `$` sign. This is a classic convention to distinguish dynamic props from the ones we pass to the component.
-This pattern should also avoid conflicts with reserved prop names.
-</Alert>
