@@ -17,8 +17,20 @@ const topBarNav = [
     isCta: true,
   },
   {
-    pageId: '/case-study',
-    label: 'Case Studies',
+    pageId: '/base-composition',
+    label: 'Base',
+  },
+  {
+    pageId: '/variants',
+    label: 'Variants',
+  },
+  {
+    pageId: '/extend',
+    label: 'Extend',
+  },
+  {
+    pageId: '/transform',
+    label: 'Transform',
   },
 ] satisfies TopNavItem[]
 
@@ -64,6 +76,6 @@ const StyledTopNav = cm.nav`
 const StyleTopNavItem = cm.a<{ $isActive: boolean; $isCta?: boolean }>`
   btn btn-sm tracking-tight
   text-xs xl:text-sm 
-  ${({ $isActive }) => $isActive && 'btn-primary'}
+  ${({ $isActive }) => $isActive && 'btn-primary btn-soft'}
   ${({ $isCta, $isActive }) => !$isActive && $isCta && 'btn-primary btn-outline'}
 `

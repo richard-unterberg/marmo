@@ -8,22 +8,14 @@ export const docsGraph = {
       items: [
         {
           kind: 'group',
-          id: 'jumpstart',
-          title: 'Jumpstart',
+          id: 'get-started',
+          title: 'Get Started',
           icon: 'Rocket',
           items: [
             {
               kind: 'page',
-              id: 'caseStudy',
-              title: 'Case Study',
-              slug: 'case-study',
-              source: 'caseStudy.mdx',
-              description: 'marmo case study',
-            },
-            {
-              kind: 'page',
-              id: 'gettingStarted',
-              title: 'Getting Started',
+              id: 'get-started',
+              title: 'Install & Quick Start',
               slug: 'get-started',
               source: 'gettingStarted.mdx',
               description: 'Getting started with marmo',
@@ -32,8 +24,8 @@ export const docsGraph = {
         },
         {
           kind: 'group',
-          id: 'api-member',
-          title: 'API Members',
+          id: 'api',
+          title: 'API',
           icon: 'Calculator',
           items: [
             {
@@ -41,7 +33,7 @@ export const docsGraph = {
               id: 'baseComposition',
               title: 'Base Composition',
               navTitle: 'Base Composition',
-              slug: 'base-coposition',
+              slug: 'base-composition',
               source: 'base.mdx',
               description: 'Base composition functions for marmo',
             },
@@ -54,6 +46,15 @@ export const docsGraph = {
               source: 'variants.mdx',
               description: 'Advanced components with variants',
             },
+            {
+              kind: 'page',
+              id: 'extend',
+              navTitle: 'Extend',
+              title: 'Extend',
+              slug: 'extend',
+              source: 'extend.mdx',
+              description: 'Build a Marmo component on top of an existing component.',
+            },
             // transform.mdx
             {
               kind: 'page',
@@ -63,6 +64,41 @@ export const docsGraph = {
               slug: 'transform',
               source: 'transform.mdx',
               description: 'Render existing classmate component as another intrinsic element.',
+            },
+          ],
+        },
+        {
+          kind: 'group',
+          id: 'utils',
+          title: 'Utils',
+          icon: 'Wrench',
+          items: [
+            {
+              kind: 'page',
+              id: 'style',
+              navTitle: 'Compose Inline Styles',
+              title: 'Style composition with `.style()`',
+              slug: 'style',
+              source: 'style.mdx',
+              description: 'Add style to your Marmo component.',
+            },
+            {
+              kind: 'page',
+              id: 'logic',
+              navTitle: 'Logic Headers',
+              title: 'Logic composition with `.logic()`',
+              slug: 'logic',
+              source: 'logic.mdx',
+              description: 'Add logic to your Marmo component.',
+            },
+            {
+              kind: 'page',
+              id: 'useMarmoCreateMarmo',
+              navTitle: 'Usage in Components',
+              title: 'Usage in Components',
+              slug: 'use-marmo-create-marmo',
+              source: 'useMarmoCreateMarmo.mdx',
+              description: 'Add logic to your Marmo component.',
             },
           ],
         },

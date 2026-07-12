@@ -8,7 +8,7 @@ Typed component factory for class names. For React and SolidJS.
 const SomeButton = ({ isLoading, ...props }) => {
   const activeClass = isLoading
     ? "bg-blue-400 text-white"
-    : "bg-blue-800 text-blue-200";
+    : "bg-blue-800 text-blue-200"
 
   return (
     <button
@@ -19,8 +19,8 @@ const SomeButton = ({ isLoading, ...props }) => {
     >
       {props.children}
     </button>
-  );
-};
+  )
+}
 ```
 
 ## 🌤️ Into
@@ -34,7 +34,7 @@ const SomeButton = cm.button`
   transition-all
   ${someConfig.transitionDurationEaseClass}
   ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
-`;
+`
 ```
 
 *Very simplified examples—see the package docs for many more features!*

@@ -57,71 +57,6 @@ The selected element's props are inferred automatically. Other semantic transfor
 </>
 ```
 
-## Dynamic transformations
-
-The value of `$_as` can be derived from props or reactive state.
-
-```tsx choice=react
-import { useState } from "react"
-import ma from "@marmo/react"
-
-const Alert = ma.div`rounded-box p-4`
-
-const Example = () => {
-  const [inline, setInline] = useState(false)
-
-  return (
-    <>
-      <button onClick={() => setInline((value) => !value)}>Toggle</button>
-      <Alert $_as={inline ? "span" : "div"}>Status</Alert>
-    </>
-  )
-}
-```
-
-```tsx choice=solidjs
-import { createSignal } from "solid-js"
-import ma from "@marmo/solid"
-
-const Alert = ma.div`rounded-box p-4`
-
-const Example = () => {
-  const [inline, setInline] = createSignal(false)
-
-  return (
-    <>
-      <button onClick={() => setInline((value) => !value)}>Toggle</button>
-      <Alert $_as={inline() ? "span" : "div"}>Status</Alert>
-    </>
-  )
-}
-```
-
-Changing `$_as` replaces the underlying DOM element. This can reset refs, focus, text selection, DOM-local state, and nested component state. Prefer keeping the semantic element stable when only its appearance or layout changes:
-
-```tsx
-<Alert className={inline ? "inline" : "block"} />
-```
-
-For reusable display choices, use a variant instead:
-
-```tsx
-const Alert = ma.div.variants<{ $display: "block" | "inline" }>({
-  variants: {
-    $display: {
-      block: "block",
-      inline: "inline",
-    },
-  },
-})
-```
-
-### Server rendering and hydration
-
-Dynamic transformations are SSR-safe when the server render and the first client render resolve to the same intrinsic element. A value derived from stable props is safe, but a value read directly from `window.matchMedia`, `localStorage`, or `Math.random()` can cause a hydration mismatch.
-
-Use a deterministic initial value shared by the server and client, then update it after hydration when necessary. Marmo does not suppress or repair hydration mismatches caused by application state.
-
 ## Builder API
 
 Use the builder API when you want a reusable transformed component, or add more classes with a tagged template.
@@ -203,6 +138,71 @@ For now, use `.extend` before transforming a component to add Marmo's class logi
 </Alert>
 
 
+## Dynamic transformations
+
+The value of `$_as` can be derived from props or reactive state.
+
+```tsx choice=react
+import { useState } from "react"
+import ma from "@marmo/react"
+
+const Alert = ma.div`rounded-box p-4`
+
+const Example = () => {
+  const [inline, setInline] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setInline((value) => !value)}>Toggle</button>
+      <Alert $_as={inline ? "span" : "div"}>Status</Alert>
+    </>
+  )
+}
+```
+
+```tsx choice=solidjs
+import { createSignal } from "solid-js"
+import ma from "@marmo/solid"
+
+const Alert = ma.div`rounded-box p-4`
+
+const Example = () => {
+  const [inline, setInline] = createSignal(false)
+
+  return (
+    <>
+      <button onClick={() => setInline((value) => !value)}>Toggle</button>
+      <Alert $_as={inline() ? "span" : "div"}>Status</Alert>
+    </>
+  )
+}
+```
+
+Changing `$_as` replaces the underlying DOM element. This can reset refs, focus, text selection, DOM-local state, and nested component state. Prefer keeping the semantic element stable when only its appearance or layout changes:
+
+```jsx
+<Alert className={inline ? "inline" : "block"} />
+```
+
+For reusable display choices, use a variant instead:
+
+```tsx
+const Alert = ma.div.variants<{ $display: "block" | "inline" }>({
+  variants: {
+    $display: {
+      block: "block",
+      inline: "inline",
+    },
+  },
+})
+```
+
+### Server rendering and hydration
+
+Dynamic transformations are SSR-safe when the server render and the first client render resolve to the same intrinsic element. A value derived from stable props is safe, but a value read directly from `window.matchMedia`, `localStorage`, or `Math.random()` can cause a hydration mismatch.
+
+Use a deterministic initial value shared by the server and client, then update it after hydration when necessary. Marmo does not suppress or repair hydration mismatches caused by application state.
+
 ## Transform variants
 
 ```tsx choice=react
@@ -272,3 +272,4 @@ const MyComponent = () => {
 <main class="absolute min-w-300 w-10 h-10 text-neutral tracking-wide"></main>
 <main class="absolute min-w-300 w-20 h-20 text-neutral tracking-wide"></main>
 ```
+
