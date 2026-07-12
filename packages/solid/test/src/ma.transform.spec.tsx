@@ -1,19 +1,18 @@
-import '@testing-library/jest-dom'
-import { fireEvent, render } from '@testing-library/react'
-import React, { useState } from 'react'
-import { renderToStaticMarkup } from 'react-dom/server.node'
+/** @jsxImportSource solid-js */
+import { fireEvent, render } from '@solidjs/testing-library'
+import { createSignal } from 'solid-js'
 
-import cm from '../../dist'
+import ma from '../../src'
 
-describe('cm.transform', () => {
-  it('renders a classmate component as another element with $_as', () => {
-    const MyButton = cm.button<{ $toggleCta?: boolean }>`
+describe('ma.transform (solid)', () => {
+  it('renders a marmo component as another element with $_as', () => {
+    const MyButton = ma.button<{ $toggleCta?: boolean }>`
       absolute
       min-w-300
       ${({ $toggleCta }) => ($toggleCta ? 'bg-red-500' : 'bg-blue-500')}
     `
 
-    const { container } = render(<MyButton $_as="span" $toggleCta />)
+    const { container } = render(() => <MyButton $_as="span" $toggleCta />)
 
     expect(container.firstChild).toBeInstanceOf(HTMLSpanElement)
     expect(container.firstChild).toHaveClass('absolute min-w-300 bg-red-500')
@@ -21,31 +20,31 @@ describe('cm.transform', () => {
     expect(container.firstChild).not.toHaveAttribute('$toggleCta')
   })
 
-  it('reacts to $_as changes and replaces the underlying element', () => {
-    const Alert = cm.div<{ $active?: boolean }>`
+  it('reacts to $_as changes and replaces the underlying element', async () => {
+    const Alert = ma.div<{ $active?: boolean }>`
       base-class
       ${({ $active }) => $active && 'active-class'}
     `
     const Example = () => {
-      const [inline, setInline] = useState(false)
+      const [inline, setInline] = createSignal(false)
 
       return (
         <>
           <button type="button" onClick={() => setInline((value) => !value)}>
             Toggle
           </button>
-          <Alert data-testid="alert" $_as={inline ? 'span' : 'div'} $active />
+          <Alert data-testid="alert" $_as={inline() ? 'span' : 'div'} $active />
         </>
       )
     }
 
-    const { getByRole, getByTestId } = render(<Example />)
+    const { getByRole, getByTestId } = render(() => <Example />)
     const initialElement = getByTestId('alert')
 
     expect(initialElement).toBeInstanceOf(HTMLDivElement)
     expect(initialElement).toHaveClass('base-class active-class')
 
-    fireEvent.click(getByRole('button', { name: 'Toggle' }))
+    await fireEvent.click(getByRole('button', { name: 'Toggle' }))
 
     const updatedElement = getByTestId('alert')
     expect(updatedElement).toBeInstanceOf(HTMLSpanElement)
@@ -55,25 +54,15 @@ describe('cm.transform', () => {
     expect(updatedElement).not.toHaveAttribute('$active')
   })
 
-  it('server-renders a deterministic $_as element without private props', () => {
-    const Alert = cm.div<{ $active?: boolean }>`base-class ${({ $active }) => $active && 'active-class'}`
-
-    const markup = renderToStaticMarkup(<Alert $_as="span" $active data-kind="alert" />)
-
-    expect(markup).toBe('<span data-kind="alert" class="base-class active-class"></span>')
-    expect(markup).not.toContain('$_as')
-    expect(markup).not.toContain('$active')
-  })
-
-  it('transforms a classmate component with the builder API', () => {
-    const MyButton = cm.button<{ $toggleCta?: boolean }>`
+  it('transforms a marmo component with the builder API', () => {
+    const MyButton = ma.button<{ $toggleCta?: boolean }>`
       absolute
       min-w-300
       ${({ $toggleCta }) => ($toggleCta ? 'bg-red-500' : 'bg-blue-500')}
     `
 
-    const TransformButtonElement = cm.transform(MyButton).span
-    const { container } = render(<TransformButtonElement $toggleCta />)
+    const TransformButtonElement = ma.transform(MyButton).span
+    const { container } = render(() => <TransformButtonElement $toggleCta />)
 
     expect(container.firstChild).toBeInstanceOf(HTMLSpanElement)
     expect(container.firstChild).toHaveClass('absolute min-w-300 bg-red-500')
@@ -81,18 +70,22 @@ describe('cm.transform', () => {
   })
 
   it('adds classes to the transformed component and merges conflicts', () => {
-    const MyButton = cm.button<{ $toggleCta?: boolean }>`
+    const MyButton = ma.button<{ $toggleCta?: boolean }>`
       absolute
       min-w-300
       text-sm
       ${({ $toggleCta }) => ($toggleCta ? 'bg-red-500' : 'bg-blue-500')}
     `
 
-    const TransformButtonAddClasses = cm.transform(MyButton).span`
+    const TransformButtonAddClasses = ma.transform(MyButton).span`
       text-lg
       tracking-wide
     `
-    const { container } = render(<TransformButtonAddClasses $toggleCta className="tracking-tight" />)
+    const { container } = render(() => (
+      <TransformButtonAddClasses $toggleCta class="tracking-tight">
+        Transform
+      </TransformButtonAddClasses>
+    ))
 
     expect(container.firstChild).toBeInstanceOf(HTMLSpanElement)
     expect(container.firstChild).toHaveClass('absolute min-w-300 bg-red-500 text-lg tracking-tight')
@@ -101,22 +94,22 @@ describe('cm.transform', () => {
   })
 
   it('transforms an already transformed component', () => {
-    const MyButton = cm.button<{ $toggleCta?: boolean }>`
+    const MyButton = ma.button<{ $toggleCta?: boolean }>`
       absolute
       min-w-300
       ${({ $toggleCta }) => ($toggleCta ? 'bg-red-500' : 'bg-blue-500')}
     `
 
-    const TransformButtonElement = cm.transform(MyButton).span
-    const TransformButtonAgain = cm.transform(TransformButtonElement).p
-    const { container } = render(<TransformButtonAgain $toggleCta />)
+    const TransformButtonElement = ma.transform(MyButton).span
+    const TransformButtonAgain = ma.transform(TransformButtonElement).p
+    const { container } = render(() => <TransformButtonAgain $toggleCta />)
 
     expect(container.firstChild).toBeInstanceOf(HTMLParagraphElement)
     expect(container.firstChild).toHaveClass('absolute min-w-300 bg-red-500')
   })
 
   it('transforms variants and preserves variant prop filtering', () => {
-    const VariantDiv = cm.div.variants<{ $isActive?: boolean }, { $size: 'sm' | 'md' }>({
+    const VariantDiv = ma.div.variants<{ $isActive?: boolean }, { $size: 'sm' | 'md' }>({
       base: ({ $isActive }) => `absolute min-w-300 ${$isActive ? 'opacity-100' : 'opacity-50'}`,
       variants: {
         $size: {
@@ -129,15 +122,15 @@ describe('cm.transform', () => {
       },
     })
 
-    const TransformVariantDiv = cm.transform(VariantDiv).main`
+    const TransformVariantDiv = ma.transform(VariantDiv).main`
       text-neutral
       tracking-wide
     `
-    const { container } = render(
+    const { container } = render(() => (
       <TransformVariantDiv $isActive $size="sm" aria-label="Main content">
         Content
-      </TransformVariantDiv>,
-    )
+      </TransformVariantDiv>
+    ))
 
     expect(container.firstChild).toBeInstanceOf(HTMLElement)
     expect(container.firstChild?.nodeName.toLowerCase()).toBe('main')
@@ -147,24 +140,24 @@ describe('cm.transform', () => {
     expect(container.firstChild).not.toHaveAttribute('$isActive')
   })
 
-  it('transforms extended classmate components', () => {
-    const BaseButton = cm.button<{ $isActive?: boolean }>`
+  it('transforms extended marmo components', () => {
+    const BaseButton = ma.button<{ $isActive?: boolean }>`
       text-lg
       mt-5
       ${({ $isActive }) => ($isActive ? 'bg-blue-500' : 'bg-slate-500')}
     `
 
-    const Container = cm.extend(BaseButton)`
+    const Container = ma.extend(BaseButton)`
       py-2
       px-5
       min-h-24
     `
 
-    const TransformContainer = cm.transform(Container).span`
+    const TransformContainer = ma.transform(Container).span`
       text-neutral
       tracking-wide
     `
-    const { container } = render(<TransformContainer $isActive />)
+    const { container } = render(() => <TransformContainer $isActive />)
 
     expect(container.firstChild).toBeInstanceOf(HTMLSpanElement)
     expect(container.firstChild).toHaveClass('text-lg mt-5 bg-blue-500 py-2 px-5 min-h-24 text-neutral tracking-wide')
@@ -173,6 +166,6 @@ describe('cm.transform', () => {
   it('rejects regular components at runtime', () => {
     const MyComponent = () => <div>hello</div>
 
-    expect(() => cm.transform(MyComponent as any).span).toThrow('cm.transform')
+    expect(() => ma.transform(MyComponent as any).span).toThrow('ma.transform')
   })
 })

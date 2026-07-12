@@ -1,10 +1,12 @@
-import '@testing-library/jest-dom'
-import { render } from '@testing-library/react'
-import React, { type ReactNode, type HTMLAttributes } from 'react'
+/** @jsxImportSource solid-js */
+import { render } from '@solidjs/testing-library'
+import type { JSX } from 'solid-js'
 
-import cm, { type VariantsConfig, convertCmProps } from '../../dist'
+import ma, { type VariantsConfig, convertMaProps } from '../../src'
 
-interface ButtonBaseProps extends HTMLAttributes<HTMLAnchorElement | HTMLButtonElement> {
+type ButtonElementProps = JSX.HTMLAttributes<HTMLButtonElement> & JSX.HTMLAttributes<HTMLAnchorElement>
+
+interface ButtonBaseProps extends ButtonElementProps {
   $size?: 'sm' | 'md' | 'lg'
   $color?: 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'card'
   $disabled?: boolean
@@ -16,7 +18,7 @@ interface ButtonBaseProps extends HTMLAttributes<HTMLAnchorElement | HTMLButtonE
 const buttonVariants: VariantsConfig<ButtonBaseProps, object> = {
   base: (p) => `
     transition-colors
-    inline-flex items-center justify-center gap-2 
+    inline-flex items-center justify-center gap-2
     font-bold
     text-lightNeutral
     shadow-darkNeutral/20
@@ -35,18 +37,13 @@ const buttonVariants: VariantsConfig<ButtonBaseProps, object> = {
       primary: ({ $disabled }) => `bg-primaryDarkNeutral ${!$disabled ? 'hover:bg-primary' : ''}`,
       card: ({ $disabled }) => `
         bg-light
-        dark:bg-gray/30
         !text-dark
         active:bg-successDarkNeutral
-        active:!text-lightNeutral
-        active:dark:bg-successDarkNeutral
-        active:dark:!text-lightNeutral
         ${
           !$disabled
             ? `
-          hover:!text-dark 
-          hover:bg-gray/10 
-          hover:dark:bg-gray/50
+            hover:!text-dark
+            hover:bg-gray/10
           `
             : ''
         }`,
@@ -61,15 +58,13 @@ const buttonVariants: VariantsConfig<ButtonBaseProps, object> = {
   },
 }
 
-const ButtonBase = cm.button.variants(buttonVariants)
-const LinkButton = cm.a.variants(buttonVariants)
+const ButtonBase = ma.button.variants(buttonVariants)
+const LinkButton = ma.a.variants(buttonVariants)
 
-interface ButtonProps extends HTMLAttributes<HTMLAnchorElement | HTMLButtonElement> {
-  icon?: ReactNode
+interface ButtonProps extends ButtonElementProps {
+  icon?: JSX.Element
   link?: string
   type: 'button' | 'submit' | 'reset'
-
-  // we must redeclare these props here because $-props are not inherited from ButtonBaseProps
   size?: ButtonBaseProps['$size']
   color?: ButtonBaseProps['$color']
   disabled?: ButtonBaseProps['$disabled']
@@ -81,12 +76,13 @@ interface ButtonProps extends HTMLAttributes<HTMLAnchorElement | HTMLButtonEleme
 const Button = ({ children, icon, link, ...buttonProps }: ButtonProps) => {
   const Component = link ? LinkButton : ButtonBase
 
-  const preparedProps = convertCmProps(buttonProps, {
+  const preparedProps = convertMaProps(buttonProps, {
     size: '$size',
     noShadow: '$noShadow',
     noGutter: '$noGutter',
     loading: '$loading',
     disabled: '$disabled',
+    color: '$color',
   })
 
   return (
@@ -97,23 +93,24 @@ const Button = ({ children, icon, link, ...buttonProps }: ButtonProps) => {
   )
 }
 
-const CustomButton = cm.extend(Button)`
-  w-7 
+const CustomButton = ma.extend(Button)`
+  w-7
   lg:w-8
-  h-7 
+  h-7
   lg:h-8
 `
 
-describe('cm advanced button', () => {
+describe('ma advanced button (solid)', () => {
   it('extends the base component with new props', () => {
-    const { container } = render(
-      <CustomButton type="button" aria-label="test" color="card" noGutter noShadow size="lg" />,
-    )
+    const { container } = render(() => (
+      <CustomButton type="button" aria-label="test" color="card" noGutter noShadow size="lg">
+        Custom
+      </CustomButton>
+    ))
 
     expect(container.firstChild).toHaveClass(
       'transition-colors inline-flex items-center justify-center gap-2 font-bold text-lightNeutral',
     )
-
     expect(container.firstChild).toHaveClass('!shadow-none')
     expect(container.firstChild).toHaveClass('!p-0')
     expect(container.firstChild).toHaveAttribute('aria-label', 'test')

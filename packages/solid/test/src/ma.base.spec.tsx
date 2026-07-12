@@ -2,19 +2,19 @@
 import { render } from '@solidjs/testing-library'
 import type { JSX } from 'solid-js'
 
-import cm from '../../src'
+import ma from '../../src'
 
-describe('cm base (solid)', () => {
-  it('renders a cm.div with assigned classes', () => {
-    const RenderDiv = cm.div`bg-red p-4`
+describe('ma base (solid)', () => {
+  it('renders a ma.div with assigned classes', () => {
+    const RenderDiv = ma.div`bg-red p-4`
 
     const { container } = render(() => <RenderDiv />)
     expect(container.firstChild).toHaveClass('bg-red p-4')
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
 
-  it('filters $-prefixed props & renders the class attribute on a cm.button', () => {
-    const HiddenButton = cm.button<{ $disabled: boolean }>`
+  it('filters $-prefixed props & renders the class attribute on a ma.button', () => {
+    const HiddenButton = ma.button<{ $disabled: boolean }>`
       text-blue custom ${(p) => (p.$disabled ? 'opacity-60' : '')}
     `
     const { container } = render(() => <HiddenButton aria-label="testlabel" $disabled />)
@@ -26,7 +26,7 @@ describe('cm base (solid)', () => {
   })
 
   it('allows boolean short-circuit in interpolations', () => {
-    const LoadingDiv = cm.div<{ $isLoading?: boolean }>`
+    const LoadingDiv = ma.div<{ $isLoading?: boolean }>`
       base
       ${(p) => p.$isLoading && 'opacity-90 pointer-events-none'}
     `
@@ -39,7 +39,7 @@ describe('cm base (solid)', () => {
   })
 
   it('can use intrinsic properties of element', () => {
-    const HiddenButton = cm.button<JSX.IntrinsicElements['button']>`
+    const HiddenButton = ma.button<JSX.IntrinsicElements['button']>`
       text-blue
       custom
       ${(p) => (p.type === 'button' ? 'opacity-60' : '')}
@@ -52,7 +52,7 @@ describe('cm base (solid)', () => {
   })
 
   it('merges multiple classes using tailwind-merge', () => {
-    const MergedDiv = cm.div`mt-2 mt-8 mt-1`
+    const MergedDiv = ma.div`mt-2 mt-8 mt-1`
 
     const { container } = render(() => <MergedDiv />)
 
@@ -61,7 +61,7 @@ describe('cm base (solid)', () => {
   })
 
   it('allows overwriting classes via incoming class attribute', () => {
-    const MergedDiv = cm.div`mt-2 mt-8 mt-1`
+    const MergedDiv = ma.div`mt-2 mt-8 mt-1`
 
     const { container } = render(() => <MergedDiv class="mt-10" />)
 
@@ -70,7 +70,7 @@ describe('cm base (solid)', () => {
   })
 
   it('normalizes inline style objects passed to the component', () => {
-    const StyledDiv = cm.div`bg-red`
+    const StyledDiv = ma.div`bg-red`
 
     const { container } = render(() => <StyledDiv style={{ backgroundColor: 'blue', fontSize: '14px' }} />)
     expect(container.firstChild).toHaveStyle('background-color: blue')

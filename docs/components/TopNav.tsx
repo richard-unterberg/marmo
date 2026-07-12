@@ -1,4 +1,4 @@
-import cm from '@classmatejs/react'
+import ma from '@marmo/react'
 import { useDocsContext } from '@unterberg/nivel/client'
 import { useMemo } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
@@ -67,13 +67,13 @@ const TopNavItem = (
 
 export default TopNav
 
-const StyledTopNav = cm.nav`
+const StyledTopNav = ma.nav`
   flex items-center justify-center 
   w-full 
   gap-1.5 xl:gap-3
 `
 
-const StyleTopNavItem = cm.a<{ $isActive: boolean; $isCta?: boolean }>`
+const StyleTopNavItem = ma.a<{ $isActive: boolean; $isCta?: boolean }>`
   btn btn-sm tracking-tight
   text-xs xl:text-sm 
   ${({ $isActive }) => $isActive && 'btn-primary btn-soft'}

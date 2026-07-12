@@ -27,11 +27,11 @@ export default defineConfig({
     if (context.format === 'cjs') {
       options.footer.js = `
 if (module && module.exports && module.exports.default) {
-  const __cmExports = module.exports
-  const __cmDefault = __cmExports.default
-  if (__cmDefault && (typeof __cmDefault === "object" || typeof __cmDefault === "function")) {
-    Object.assign(__cmDefault, __cmExports)
-    module.exports = __cmDefault
+  const __maExports = module.exports
+  const __maDefault = __maExports.default
+  if (__maDefault && (typeof __maDefault === "object" || typeof __maDefault === "function")) {
+    Object.assign(__maDefault, __maExports)
+    module.exports = __maDefault
     module.exports.default = module.exports
   }
 }

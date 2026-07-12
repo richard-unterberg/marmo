@@ -1,16 +1,16 @@
 /** @jsxImportSource solid-js */
 import { render, screen } from '@solidjs/testing-library'
 
-import cm, { createClassmate } from '../../src'
+import ma, { createMarmo } from '../../src'
 
-describe('createClassmate helper (solid)', () => {
+describe('createMarmo helper (solid)', () => {
   it('evaluates the factory only once per invocation', () => {
     let executions = 0
 
     const RenderComponent = () => {
-      const StyledDay = createClassmate(() => {
+      const StyledDay = createMarmo(() => {
         executions += 1
-        return cm.div`
+        return ma.div`
           p-2
           text-sm
         `
@@ -29,12 +29,12 @@ describe('createClassmate helper (solid)', () => {
   })
 
   it('returns independent component factories for separate calls', () => {
-    const references: Array<ReturnType<typeof createClassmate>> = []
+    const references: Array<ReturnType<typeof createMarmo>> = []
 
     const RenderComponent = ({ id }: { id: string }) => {
-      const StyledCard = createClassmate(
+      const StyledCard = createMarmo(
         () =>
-          cm.div`
+          ma.div`
           p-4 border
         `,
       )

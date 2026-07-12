@@ -1,6 +1,6 @@
-import cm from '../../src'
+import ma from '../../src'
 
-const Element = cm.button<{ $active?: boolean }>`base-class`
+const Element = ma.button<{ $active?: boolean }>`base-class`
 const conditionalTag: 'div' | 'span' = Math.random() > 0.5 ? 'div' : 'span'
 
 ;<Element $_as="a" href="/settings" $active />

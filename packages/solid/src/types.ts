@@ -27,22 +27,22 @@ type TransformAsProps<P, K extends keyof JSX.IntrinsicElements> = TransformProps
   $_as: K
 }
 
-export type InputComponent = Component<any> | CmBaseComponent<any>
+export type InputComponent = Component<any> | MaBaseComponent<any>
 
 /**
  * Base type for styled React components with forward refs.
  *
  * @typeParam P - Props of the component.
  */
-export interface CmBaseComponent<P extends object = object> extends Component<P> {
+export interface MaBaseComponent<P extends object = object> extends Component<P> {
   <K extends keyof JSX.IntrinsicElements>(props: TransformAsProps<P, K>): JSX.Element
   displayName?: string
-  __scClassmate: true
-  __scComputeClassName?: (props: P, collectedStyles?: StyleDefinition<P>) => string
-  __scTag?: keyof JSX.IntrinsicElements | Component<any>
-  __scStyles?: StyleDefinition<P> | ((props: P) => StyleDefinition<P>)
-  __scLogic?: LogicHandler<P>[]
-  __scPropsToFilter?: (keyof P)[]
+  __maMarmo: true
+  __maComputeClassName?: (props: P, collectedStyles?: StyleDefinition<P>) => string
+  __maTag?: keyof JSX.IntrinsicElements | Component<any>
+  __maStyles?: StyleDefinition<P> | ((props: P) => StyleDefinition<P>)
+  __maLogic?: LogicHandler<P>[]
+  __maPropsToFilter?: (keyof P)[]
 }
 
 /**
@@ -54,14 +54,14 @@ export interface CmBaseComponent<P extends object = object> extends Component<P>
  * @example
  * ```tsx
  * // Extending a custom component without intrinsic element type
- * const SomeBase = sc.div<{ $active?: boolean }>`color: red;`
- * const Extended = sc.extend(SomeBase)<{ $highlighted?: boolean }>`
+ * const SomeBase = ma.div<{ $active?: boolean }>`color: red;`
+ * const Extended = ma.extend(SomeBase)<{ $highlighted?: boolean }>`
  *   ${p => p.$highlighted ? 'bg-yellow' : ''}
  *   ${p => p.$active ? 'text-red' : ''}
  * `
  *
  * // Extending with specific props:
- * const ExtendedButton = sc.extend(StyledButton)<ButtonHTMLAttributes<HTMLButtonElement>>`
+ * const ExtendedButton = ma.extend(StyledButton)<ButtonHTMLAttributes<HTMLButtonElement>>`
  *   ${p => p.type === 'submit' ? 'font-bold' : ''}
  * ```
  */
@@ -76,14 +76,14 @@ type ExtendFunction =
    * @example
    * ```tsx
    * // Extending a custom component without intrinsic element type
-   * const SomeBase = sc.div<{ $active?: boolean }>`color: red;`
-   * const Extended = sc.extend(SomeBase)<{ $highlighted?: boolean }>`
+   * const SomeBase = ma.div<{ $active?: boolean }>`color: red;`
+   * const Extended = ma.extend(SomeBase)<{ $highlighted?: boolean }>`
    *   ${p => p.$highlighted ? 'bg-yellow' : ''}
    *   ${p => p.$active ? 'text-red' : ''}
    * `
    *
    * // Extending with specific props:
-   * const ExtendedButton = sc.extend(StyledButton)<ButtonHTMLAttributes<HTMLButtonElement>>`
+   * const ExtendedButton = ma.extend(StyledButton)<ButtonHTMLAttributes<HTMLButtonElement>>`
    *   ${p => p.type === 'submit' ? 'font-bold' : ''}
    * ```
    */
@@ -97,13 +97,13 @@ export interface ExtendTemplateBuilder<
   <T extends object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<MergeProps<E, T> & JSX.IntrinsicElements[I]>[]
-  ): CmBaseComponent<MergeProps<E, T>>
+  ): MaBaseComponent<MergeProps<E, T>>
   logic<NextLogic extends object = object>(
     handler: LogicHandler<MergeProps<E, LogicProps & NextLogic>>,
   ): ExtendTemplateBuilder<E, I, LogicProps & NextLogic>
   variants<ExtraProps extends object, VariantProps extends object = ExtraProps>(
     config: VariantsConfig<VariantProps, ExtraProps>,
-  ): CmBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>>
+  ): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>>
 }
 
 /**
@@ -183,7 +183,7 @@ type VariantsFunction<K> =
    *   $severity: "info" | "warning" | "error";
    * }
    *
-   * const Alert = sc.div.variants<AlertProps, AlertVariants>({
+   * const Alert = ma.div.variants<AlertProps, AlertVariants>({
    *   base: p => `${p.$isActive ? "pointer-cursor" : ""} p-4 rounded-md`,
    *   variants: {
    *     $severity: {
@@ -200,28 +200,28 @@ type VariantsFunction<K> =
    */
   <ExtraProps extends object, VariantProps extends object = ExtraProps>(
     config: VariantsConfig<VariantProps, ExtraProps>,
-  ) => CmBaseComponent<MergeProps<K, ExtraProps & Partial<VariantProps>>>
+  ) => MaBaseComponent<MergeProps<K, ExtraProps & Partial<VariantProps>>>
 
-type TransformComponentProps<E extends CmBaseComponent<any>, K extends keyof JSX.IntrinsicElements> =
-  E extends CmBaseComponent<infer P> ? TransformProps<P, K> : never
+type TransformComponentProps<E extends MaBaseComponent<any>, K extends keyof JSX.IntrinsicElements> =
+  E extends MaBaseComponent<infer P> ? TransformProps<P, K> : never
 
 export type TransformTemplateBuilder<
-  E extends CmBaseComponent<any>,
+  E extends MaBaseComponent<any>,
   K extends keyof JSX.IntrinsicElements,
-> = CmBaseComponent<TransformComponentProps<E, K>> &
+> = MaBaseComponent<TransformComponentProps<E, K>> &
   (<T extends object = object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<TransformComponentProps<E, K> & T>[]
-  ) => CmBaseComponent<TransformComponentProps<E, K> & T>)
+  ) => MaBaseComponent<TransformComponentProps<E, K> & T>)
 
 type TransformFunction =
   /**
-   * The `transform` method renders a classmate component as another intrinsic element.
+   * The `transform` method renders a marmo component as another intrinsic element.
    *
-   * @param component - A classmate component created by `cm`, `cm.extend`, variants, or transform.
+   * @param component - A marmo component created by `ma`, `ma.extend`, variants, or transform.
    * @returns Intrinsic element builders for transforming the component.
    */
-  <E extends CmBaseComponent<any>>(
+  <E extends MaBaseComponent<any>>(
     component: E,
   ) => {
     [K in keyof JSX.IntrinsicElements]: TransformTemplateBuilder<E, K>
@@ -230,17 +230,17 @@ type TransformFunction =
 /**
  * Factory for creating styled components with intrinsic elements.
  */
-export interface CmFactoryFunction<K extends keyof JSX.IntrinsicElements> {
+export interface MaFactoryFunction<K extends keyof JSX.IntrinsicElements> {
   <T extends object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<T>[]
-  ): CmBaseComponent<MergeProps<K, T>>
-  logic<LogicProps extends object = object>(handler: LogicHandler<MergeProps<K, LogicProps>>): CmFactoryFunction<K>
+  ): MaBaseComponent<MergeProps<K, T>>
+  logic<LogicProps extends object = object>(handler: LogicHandler<MergeProps<K, LogicProps>>): MaFactoryFunction<K>
   variants: VariantsFunction<K>
 }
 
-export type CmComponentFactory = {
-  [K in keyof JSX.IntrinsicElements]: CmFactoryFunction<K>
+export type MaComponentFactory = {
+  [K in keyof JSX.IntrinsicElements]: MaFactoryFunction<K>
 } & {
   extend: ExtendFunction
   transform: TransformFunction
@@ -274,7 +274,3 @@ type DynamicStyleValue<P> = (props: P) => StaticStyleValue
 export type StyleDefinition<P> = {
   [Key in keyof JSX.CSSProperties]?: StaticStyleValue | DynamicStyleValue<P>
 }
-
-export type ScBaseComponent<P extends object = object> = CmBaseComponent<P>
-export type ScComponentFactory = CmComponentFactory
-export type ScFactoryFunction<K extends keyof JSX.IntrinsicElements> = CmFactoryFunction<K>

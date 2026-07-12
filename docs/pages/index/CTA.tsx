@@ -1,8 +1,8 @@
-import cm from '@classmatejs/react'
+import ma from '@marmo/react'
 import { Link } from '@unterberg/nivel'
 import type { HTMLAttributes } from 'react'
 
-const CTAButton = cm.extend(Link).variants({
+const CTAButton = ma.extend(Link).variants({
   base: 'btn btn-primary sm:btn-lg min-w-50',
   variants: {
     type: {
@@ -15,7 +15,7 @@ const CTAButton = cm.extend(Link).variants({
   },
 })
 
-const CTAOuter = cm.div`
+const CTAOuter = ma.div`
   not-prose
   flex justify-center gap-x-3 xl:gap-x-3 
   mx-9 mb-10 mt-4 md:my-10

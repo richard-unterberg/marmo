@@ -1,16 +1,16 @@
 /** @jsxImportSource solid-js */
 import { render } from '@solidjs/testing-library'
 
-import cm from '../../src'
+import ma from '../../src'
 
-describe('cm variants (solid)', () => {
-  it('renders a cm.div with assigned classes', () => {
+describe('ma variants (solid)', () => {
+  it('renders a ma.div with assigned classes', () => {
     interface AlertProps {
       $severity: 'info' | 'warning' | 'error'
       $isActive?: boolean
     }
 
-    const Alert = cm.div.variants<AlertProps>({
+    const Alert = ma.div.variants<AlertProps>({
       base: 'p-4 rounded-md',
       variants: {
         $severity: {
@@ -37,7 +37,7 @@ describe('cm variants (solid)', () => {
       $isEmpty?: boolean
     }
 
-    const ToolBlock = cm.div.variants<ToolBlockProps>({
+    const ToolBlock = ma.div.variants<ToolBlockProps>({
       base: 'flex flex-wrap gap-2',
       variants: {
         $isEmpty: {
@@ -62,14 +62,14 @@ describe('cm variants (solid)', () => {
   })
 })
 
-describe('extend cm variants component (solid)', () => {
-  it('renders a cm.input with assigned classes', () => {
+describe('extend ma variants component (solid)', () => {
+  it('renders a ma.input with assigned classes', () => {
     interface ButtonProps {
       $severity: 'info' | 'warning' | 'error'
       $isActive?: boolean
     }
 
-    const Alert = cm.input.variants<ButtonProps>({
+    const Alert = ma.input.variants<ButtonProps>({
       base: 'p-4',
       variants: {
         $severity: {
@@ -78,7 +78,7 @@ describe('extend cm variants component (solid)', () => {
       },
     })
 
-    const ExtendedButton = cm.extend(Alert)<{ $test: boolean }>`
+    const ExtendedButton = ma.extend(Alert)<{ $test: boolean }>`
       ${(p) => (p.$test ? 'bg-green-100 text-green-800' : '')}
     `
 
@@ -98,7 +98,7 @@ describe('extend cm variants component (solid)', () => {
       $border?: boolean
     }
 
-    const StyledButton = cm.button.variants<ButtonProps>({
+    const StyledButton = ma.button.variants<ButtonProps>({
       base: (p) => `
         ${p.$noGutter ? '!p-0' : ''}
         flex
@@ -114,7 +114,7 @@ describe('extend cm variants component (solid)', () => {
       },
     })
 
-    const ExtendedButton = cm.extend(StyledButton)<ButtonProps>`
+    const ExtendedButton = ma.extend(StyledButton)<ButtonProps>`
       ${(p) => (p.$size === 'small' ? 'text-small' : '')}
     `
 
@@ -132,7 +132,7 @@ describe('extend cm variants component (solid)', () => {
   })
 
   it('respects default variant values', () => {
-    const SomeButtonRcVariants = cm.button.variants<{ $test?: boolean }, { state?: 'default'; size?: '' }>({
+    const SomeButtonMaVariants = ma.button.variants<{ $test?: boolean }, { state?: 'default'; size?: '' }>({
       base: `
         mt-5
         border-1
@@ -157,7 +157,7 @@ describe('extend cm variants component (solid)', () => {
       },
     })
 
-    const { container } = render(() => <SomeButtonRcVariants state="default">test</SomeButtonRcVariants>)
+    const { container } = render(() => <SomeButtonMaVariants state="default">test</SomeButtonMaVariants>)
     expect(container.firstChild).toHaveClass(
       'mt-5 border-1 transition-all bg-blue-800 text-blue-200 text-base py-2 px-4',
     )

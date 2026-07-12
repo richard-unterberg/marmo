@@ -1,7 +1,7 @@
-import cm from '@classmatejs/react'
+import ma from '@marmo/react'
 import { LayoutComponent } from '@unterberg/nivel'
 import CodePresenter from '../../../components/CodePresenter'
-import ClassmateCode from './classmate.mdx'
+import MarmoCode from './marmo.mdx'
 import CVACode from './cva.mdx'
 import NativeCode from './native.mdx'
 
@@ -62,8 +62,8 @@ const VariantsSection = () => {
           leftCodeLabel="Native"
           rightCode={<CVACode />}
           rightCodeLabel="CVA"
-          highlightCode={<ClassmateCode />}
-          highlightCodeLabel="Classmate"
+          highlightCode={<MarmoCode />}
+          highlightCodeLabel="Marmo"
           hightlightBoxHeight={660}
           smallBoxHeight={560}
         />
@@ -79,7 +79,7 @@ interface AlertProps {
   $isActive?: boolean
 }
 
-const Alert = cm.div.variants<AlertProps>({
+const Alert = ma.div.variants<AlertProps>({
   base: ({ $isActive }) => `
     ${$isActive ? 'custom-class-active' : 'custom-class-inactive'}
     p-4
@@ -102,4 +102,4 @@ const Alert = cm.div.variants<AlertProps>({
   },
 })
 
-const LocalAlert = cm.extend(Alert)`flex items-center justify-center text-sm text-center flex-1 text-xs`
+const LocalAlert = ma.extend(Alert)`flex items-center justify-center text-sm text-center flex-1 text-xs`

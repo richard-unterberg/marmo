@@ -2,15 +2,15 @@ import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
 import React, { type ButtonHTMLAttributes, type InputHTMLAttributes } from 'react'
 
-import cm from '../../dist'
+import ma from '../../dist'
 
-describe('cm.extends', () => {
+describe('ma.extends', () => {
   it('extends the base component with new props', () => {
     interface StyledSliderItemBaseProps {
       $isActive: boolean
     }
 
-    const StyledSliderItemBase = cm.button<StyledSliderItemBaseProps>`
+    const StyledSliderItemBase = ma.button<StyledSliderItemBaseProps>`
       absolute
       top-0
       ${(p) => (p.$isActive ? 'animate-in fade-in' : 'animate-out fade-out')}
@@ -20,7 +20,7 @@ describe('cm.extends', () => {
       $secondBool: boolean
     }
 
-    const NewStyledSliderItemWithNewProps = cm.extend(StyledSliderItemBase)<NewStyledSliderItemProps>`
+    const NewStyledSliderItemWithNewProps = ma.extend(StyledSliderItemBase)<NewStyledSliderItemProps>`
       rounded-lg
       text-lg
       ${(p) => (p.$isActive ? 'bg-blue' : 'bg-red')}
@@ -36,8 +36,8 @@ describe('cm.extends', () => {
     expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
   })
 
-  it("assign a cm component and infer it's base types", () => {
-    const StyledButton = cm.extend(cm.button``)<{ $trigger?: boolean }>`
+  it("assign a ma component and infer it's base types", () => {
+    const StyledButton = ma.extend(ma.button``)<{ $trigger?: boolean }>`
       bg-white
       ${(p) => (p.type === 'button' ? 'border-primary' : '')}
     `
@@ -49,7 +49,7 @@ describe('cm.extends', () => {
   it('extend a react component with an assigned class', () => {
     const MyInput = ({ ...props }: InputHTMLAttributes<HTMLInputElement>) => <input {...props} />
 
-    const StyledInput = cm.extend(MyInput)<{ $trigger?: boolean }>`
+    const StyledInput = ma.extend(MyInput)<{ $trigger?: boolean }>`
       bg-white
       border-1
       ${(p) => (p.$trigger ? 'border-error' : 'border-gray')}
@@ -65,13 +65,13 @@ describe('cm.extends', () => {
   it('extend a extended react component', () => {
     const MyInput = ({ ...props }: InputHTMLAttributes<HTMLInputElement>) => <input {...props} />
 
-    const StyledInput = cm.extend(MyInput)<{ $trigger?: boolean }>`
+    const StyledInput = ma.extend(MyInput)<{ $trigger?: boolean }>`
       bg-white
       border-1
       ${(p) => (p.$trigger ? 'border-error' : 'border-gray')}
     `
 
-    const ExtendedStyledInput = cm.extend(StyledInput)<{ $someBool?: boolean }>`
+    const ExtendedStyledInput = ma.extend(StyledInput)<{ $someBool?: boolean }>`
       custom-class
       ${(p) => (p.$someBool ? 'shadow' : '')}
       ${(p) => (p.type === 'text' ? 'text-lg' : '')}
@@ -97,7 +97,7 @@ describe('cm.extends', () => {
       $color?: 'red' | 'blue'
     }
 
-    const StyledSliderItemBase = cm.div.variants<StyledSliderItemBaseProps>({
+    const StyledSliderItemBase = ma.div.variants<StyledSliderItemBaseProps>({
       base: ({ $isActive }) => `absolute top-0 ${$isActive ? 'animate-in fade-in' : 'animate-out fade-out'}`,
       variants: {
         $color: {
@@ -110,7 +110,7 @@ describe('cm.extends', () => {
       },
     })
 
-    const Extended = cm.extend(StyledSliderItemBase)`
+    const Extended = ma.extend(StyledSliderItemBase)`
       rounded-lg
       text-lg
       ${({ $isActive }) => ($isActive ? 'pointer-events-none' : '')}
@@ -130,7 +130,7 @@ describe('cm.extends', () => {
       $isLoading?: boolean
     }
 
-    const BaseButton = cm.button<ButtonProps>`
+    const BaseButton = ma.button<ButtonProps>`
       font-semibold
       ${(p) => (p.$isLoading ? 'opacity-40' : 'opacity-100')}
     `
@@ -141,7 +141,7 @@ describe('cm.extends', () => {
 
     type VariantConfigProps = VariantExtras & ButtonHTMLAttributes<HTMLButtonElement>
 
-    const ExtendedWithVariants = cm.extend(BaseButton).variants<VariantConfigProps, { $size: 'sm' | 'lg' }>({
+    const ExtendedWithVariants = ma.extend(BaseButton).variants<VariantConfigProps, { $size: 'sm' | 'lg' }>({
       base: ({ $tone, $isLoading }) => `
         ${$tone === 'muted' ? 'text-slate-500' : 'text-slate-900'}
         ${$isLoading ? 'pointer-events-none' : ''}
@@ -187,7 +187,7 @@ describe('cm.extends', () => {
       size?: 'sm' | 'lg'
     }
 
-    const BaseButton = cm.button.variants<ButtonProps, ButtonVariants>({
+    const BaseButton = ma.button.variants<ButtonProps, ButtonVariants>({
       base: 'font-semibold',
       variants: {
         size: {
@@ -200,7 +200,7 @@ describe('cm.extends', () => {
       },
     })
 
-    const ExtendedButton = cm.extend(BaseButton)<{ $emphasis?: boolean }>`
+    const ExtendedButton = ma.extend(BaseButton)<{ $emphasis?: boolean }>`
       ${(p) => (p.$emphasis ? 'tracking-wide' : '')}
     `
 

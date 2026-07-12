@@ -13,7 +13,7 @@ interface AlertProps {
   $isActive?: boolean
 }
 
-export const Alert = cm.div.variants<AlertProps>({
+export const Alert = ma.div.variants<AlertProps>({
   // optional base
   base: ({ $isActive }) => `
     ${isActive ? "custom-active" : "custom-inactive"}
@@ -42,7 +42,7 @@ interface AlertProps {
   $isActive?: boolean
 }
 
-export const Alert = cm.div.variants<AlertProps>({
+export const Alert = ma.div.variants<AlertProps>({
   // optional base
   base: ({ $isActive }) => `
     ${isActive ? "custom-active" : "custom-inactive"}

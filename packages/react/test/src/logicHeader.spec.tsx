@@ -2,7 +2,7 @@ import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 
-import cm from '../../dist'
+import ma from '../../dist'
 
 type DayStatus = 'completed' | 'partlyCompleted' | 'skipped' | 'partlySkipped' | 'pending' | 'none'
 
@@ -29,15 +29,15 @@ const deriveDayStatus = ({ workouts, allResolved, hasCompleted, hasSkipped }: Wo
 }
 
 describe('logic header concept', () => {
-  it('allows colocating derived status logic inside a classmate component', () => {
-    const StyledDay = cm.div.logic<WorkoutProps>((props) => {
+  it('allows colocating derived status logic inside a marmo component', () => {
+    const StyledDay = ma.div.logic<WorkoutProps>((props) => {
       const { workouts, allResolved, hasCompleted, hasSkipped } = props
       const status = deriveDayStatus(props)
 
       return {
         $status: status,
         'data-status': status,
-        __rcOmit: ['allResolved', 'hasCompleted', 'hasSkipped', 'workouts'],
+        __maOmit: ['allResolved', 'hasCompleted', 'hasSkipped', 'workouts'],
       }
     })<WorkoutProps>`
         ${(p) => (p.$status === 'completed' ? 'text-green-600' : 'text-gray-600')}
@@ -56,13 +56,13 @@ describe('logic header concept', () => {
   })
 
   it('feeds derived props into variants automatically', () => {
-    const WorkoutDayWithVariants = cm.div
+    const WorkoutDayWithVariants = ma.div
       .logic<WorkoutProps>((props) => {
         const status = deriveDayStatus(props)
 
         return {
           $status: status,
-          __rcOmit: ['allResolved', 'hasCompleted', 'hasSkipped', 'workouts'],
+          __maOmit: ['allResolved', 'hasCompleted', 'hasSkipped', 'workouts'],
         }
       })
       .variants<WorkoutProps, { $status: DayStatus }>({

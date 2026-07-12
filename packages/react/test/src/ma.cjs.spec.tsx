@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
 
-const cm: typeof import('../../dist').default = require('../../dist/index.cjs.js')
+const ma: typeof import('../../dist').default = require('../../dist/index.cjs.js')
 
 describe('CommonJS Build', () => {
   it('should import the library using require', () => {
-    const RenderDiv = cm.div`bg-red p-4`
+    const RenderDiv = ma.div`bg-red p-4`
 
     const { container } = render(<RenderDiv />)
     expect(container.firstChild).toHaveClass('bg-red p-4')
@@ -13,15 +13,15 @@ describe('CommonJS Build', () => {
   })
 })
 
-describe('cm base test', () => {
+describe('ma base test', () => {
   it('extends the base component with new props', () => {
-    const StyledSliderItemBase = cm.button`
+    const StyledSliderItemBase = ma.button`
       absolute
       top-0
       ${(p: { $isActive: boolean }) => (p.$isActive ? 'animate-in fade-in' : 'animate-out fade-out')}
     `
 
-    const NewStyledSliderItemWithNewProps = cm.extend(StyledSliderItemBase)<{ $secondBool: boolean }>`
+    const NewStyledSliderItemWithNewProps = ma.extend(StyledSliderItemBase)<{ $secondBool: boolean }>`
       rounded-lg
       text-lg
       ${(p) => (p.$isActive ? 'bg-blue' : 'bg-red')}

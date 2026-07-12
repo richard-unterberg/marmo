@@ -1,13 +1,13 @@
 import { mergeProps } from 'solid-js'
 import type { JSX } from 'solid-js'
-import type { CmBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from '../types'
+import type { MaBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from '../types'
 import createSolidElement from '../util/createSolidElement'
 
 interface CreateBaseComponentOptions<T extends object> {
   logic?: LogicHandler<T>[]
 }
 /**
- * Core function to create classmate components.
+ * Core function to create marmo components.
  *
  * @typeParam T - The type of the props passed to the interpolation function.
  * @typeParam E - The type of the component or intrinsic element.
@@ -21,7 +21,7 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
   options: CreateBaseComponentOptions<MergeProps<E, T>> = {},
-): CmBaseComponent<MergeProps<E, T>> => {
+): MaBaseComponent<MergeProps<E, T>> => {
   const displayName = `Styled(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
   const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')

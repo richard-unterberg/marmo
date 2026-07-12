@@ -1,27 +1,27 @@
 /**
-  benchmark for cm
+  benchmark for ma
 */
 import '@testing-library/jest-dom'
 import { render } from '@testing-library/react'
 import type { InputHTMLAttributes, ReactNode } from 'react'
 import React from 'react'
 
-import cm from '../../dist'
+import ma from '../../dist'
 
 const NUM_COMPONENTS = 50
 
 // unique map
 const numMap = Array.from({ length: NUM_COMPONENTS }, (_, i) => i)
 
-describe('cm stress benchmark', () => {
-  it('cm benchmark warmup', () => {
+describe('ma stress benchmark', () => {
+  it('ma benchmark warmup', () => {
     const start = performance.now()
 
-    const CmDiv = cm.div`bg-red p-4`
+    const MaDiv = ma.div`bg-red p-4`
     const ReactDiv = (props: { className?: string }) => <div className={props.className} />
 
     const components = numMap.map((i) =>
-      i % 2 === 0 ? <CmDiv key={i} /> : <ReactDiv key={i} className="bg-red p-4" />,
+      i % 2 === 0 ? <MaDiv key={i} /> : <ReactDiv key={i} className="bg-red p-4" />,
     )
 
     const { container } = render(components)
@@ -31,17 +31,17 @@ describe('cm stress benchmark', () => {
     console.log(`000) ${NUM_COMPONENTS}x rsx and react elements - warmup: ${(end - start).toFixed(2)} ms`)
   })
 
-  it('cm creation', () => {
+  it('ma creation', () => {
     const start = performance.now()
 
-    const CmDiv = cm.div`bg-red p-4`
-    const components = numMap.map((i) => <CmDiv key={i} />)
+    const MaDiv = ma.div`bg-red p-4`
+    const components = numMap.map((i) => <MaDiv key={i} />)
 
     const { container } = render(components)
     const end = performance.now()
 
     expect(container.firstChild).toBeTruthy()
-    console.log(`A) ${NUM_COMPONENTS}x cm base: ${(end - start).toFixed(2)} ms`)
+    console.log(`A) ${NUM_COMPONENTS}x ma base: ${(end - start).toFixed(2)} ms`)
   })
 
   it('react creation', () => {
@@ -57,18 +57,18 @@ describe('cm stress benchmark', () => {
     console.log(`A) ${NUM_COMPONENTS}x react base: ${(end - start).toFixed(2)} ms`)
   })
 
-  it('cm.extend', () => {
+  it('ma.extend', () => {
     const start = performance.now()
 
     interface BaseProps {
       $isActive: boolean
     }
 
-    const BaseButton = cm.button<BaseProps>`
+    const BaseButton = ma.button<BaseProps>`
       ${(p) => (p.$isActive ? 'bg-active' : 'bg-inactive')}
     `
 
-    const ExtendedButton = cm.extend(BaseButton)<{ $isDisabled?: boolean }>`
+    const ExtendedButton = ma.extend(BaseButton)<{ $isDisabled?: boolean }>`
       ${(p) => (p.$isDisabled ? 'opacity-50' : 'opacity-100')}
       ${(p) => (p.$isActive ? 'text-bold' : 'text-normal')}
     `
@@ -79,7 +79,7 @@ describe('cm stress benchmark', () => {
     const end = performance.now()
 
     expect(container.firstChild).toBeTruthy()
-    console.log(`B) ${NUM_COMPONENTS}x cm base + cm.extend: ${(end - start).toFixed(2)} ms`)
+    console.log(`B) ${NUM_COMPONENTS}x ma base + ma.extend: ${(end - start).toFixed(2)} ms`)
   })
 
   it('react prop nesting', () => {
@@ -122,7 +122,7 @@ describe('cm stress benchmark', () => {
     console.log(`B) ${NUM_COMPONENTS}x react extend: ${(end - start).toFixed(2)} ms`)
   })
 
-  it('cm extend variants', () => {
+  it('ma extend variants', () => {
     const start = performance.now()
 
     interface ButtonProps extends InputHTMLAttributes<HTMLInputElement> {
@@ -130,7 +130,7 @@ describe('cm stress benchmark', () => {
       $isActive?: boolean
     }
 
-    const Alert = cm.input.variants<ButtonProps>({
+    const Alert = ma.input.variants<ButtonProps>({
       base: 'p-4',
       variants: {
         $severity: {
@@ -139,7 +139,7 @@ describe('cm stress benchmark', () => {
       },
     })
 
-    const ExtendedButton = cm.extend(Alert)<{ $test: boolean }>`
+    const ExtendedButton = ma.extend(Alert)<{ $test: boolean }>`
       ${(p) => (p.$test ? 'bg-green-100 text-green-800' : '')}
     `
 
@@ -149,10 +149,10 @@ describe('cm stress benchmark', () => {
     const end = performance.now()
 
     expect(container.firstChild).toBeTruthy()
-    console.log(`C) ${NUM_COMPONENTS}x cm variants: ${(end - start).toFixed(2)} ms`)
+    console.log(`C) ${NUM_COMPONENTS}x ma variants: ${(end - start).toFixed(2)} ms`)
   })
 
-  it('cm.extend with variants config', () => {
+  it('ma.extend with variants config', () => {
     const start = performance.now()
 
     interface BaseProps {
@@ -163,12 +163,12 @@ describe('cm stress benchmark', () => {
       $tone?: 'muted' | 'loud'
     }
 
-    const BaseButton = cm.button<BaseProps>`
+    const BaseButton = ma.button<BaseProps>`
       font-semibold
       ${(p) => (p.$isLoading ? 'opacity-40' : 'opacity-100')}
     `
 
-    const ExtendedWithVariants = cm.extend(BaseButton).variants<VariantExtras, { $size: 'sm' | 'lg' }>({
+    const ExtendedWithVariants = ma.extend(BaseButton).variants<VariantExtras, { $size: 'sm' | 'lg' }>({
       base: ({ $tone, $isLoading }) => `
         ${$tone === 'muted' ? 'text-slate-500' : 'text-slate-900'}
         ${$isLoading ? 'pointer-events-none' : ''}
@@ -198,7 +198,7 @@ describe('cm stress benchmark', () => {
     const end = performance.now()
 
     expect(container.firstChild).toBeTruthy()
-    console.log(`C2) ${NUM_COMPONENTS}x cm.extend.variants: ${(end - start).toFixed(2)} ms`)
+    console.log(`C2) ${NUM_COMPONENTS}x ma.extend.variants: ${(end - start).toFixed(2)} ms`)
   })
 
   it('react extend variants', () => {
@@ -212,7 +212,7 @@ describe('cm stress benchmark', () => {
       type?: 'button' | 'submit' | 'reset'
     }
 
-    // Base component mimicking cm.input.variants
+    // Base component mimicking ma.input.variants
     const Alert = ({ severity, isActive, className, ...props }: ButtonProps) => {
       const baseClass = 'p-4'
       const severityClass = severity === 'info' ? `bg-blue-100 text-blue-800 ${isActive ? 'shadow-lg' : ''}` : ''
@@ -222,7 +222,7 @@ describe('cm stress benchmark', () => {
       return <input className={finalClass} {...props} />
     }
 
-    // Extended component mimicking cm.extend
+    // Extended component mimicking ma.extend
     const ExtendedButton = ({ severity, isActive, test, className, ...props }: ButtonProps & { test?: boolean }) => {
       const extendedClass = test ? 'bg-green-100 text-green-800' : ''
 
@@ -243,7 +243,7 @@ describe('cm stress benchmark', () => {
     console.log(`C) ${NUM_COMPONENTS}x react variants: ${(end - start).toFixed(2)} ms`)
   })
 
-  it('cm.variants with styles', () => {
+  it('ma.variants with styles', () => {
     const start = performance.now()
 
     interface ButtonProps extends InputHTMLAttributes<HTMLButtonElement> {
@@ -251,7 +251,7 @@ describe('cm stress benchmark', () => {
       $isActive?: boolean
     }
 
-    const AlertButton = cm.button.variants<ButtonProps>({
+    const AlertButton = ma.button.variants<ButtonProps>({
       base: 'p-4 border rounded',
       variants: {
         $severity: {
@@ -277,7 +277,7 @@ describe('cm stress benchmark', () => {
     const end = performance.now()
 
     expect(container.firstChild).toBeTruthy()
-    console.log(`D) ${NUM_COMPONENTS}x cm.variants with styles: ${(end - start).toFixed(2)} ms`)
+    console.log(`D) ${NUM_COMPONENTS}x ma.variants with styles: ${(end - start).toFixed(2)} ms`)
   })
 
   it('react equivalent with prop-based styles', () => {

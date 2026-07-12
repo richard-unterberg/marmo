@@ -1,54 +1,50 @@
-import '@testing-library/jest-dom'
-import { render } from '@testing-library/react'
-import React from 'react'
+/** @jsxImportSource solid-js */
+import { render } from '@solidjs/testing-library'
 
-import cm from '../../dist'
+import ma from '../../src'
 
-describe('Style Capabilities', () => {
-  it('applies styles correctly in createBaseComponent', () => {
-    const BaseButton = cm.button<{ $disabled?: boolean }>`
+describe('Style capabilities (solid)', () => {
+  it('applies styles correctly in base components', () => {
+    const BaseButton = ma.button<{ $disabled?: boolean }>`
       ${(p) => (p.$disabled ? 'text-gray' : 'text-blue')}
       ${(p) => p.style({ color: p.$disabled ? 'gray' : 'blue' })}
     `
 
-    const { container } = render(<BaseButton $disabled={false}>Base Button</BaseButton>)
+    const { container } = render(() => <BaseButton $disabled={false}>Base Button</BaseButton>)
     const button = container.firstChild as HTMLElement
 
     expect(button).toHaveClass('text-blue')
     expect(button).toHaveStyle('color: blue')
   })
 
-  it('merges and overrides styles in createExtendedComponent', () => {
-    const BaseButton = cm.button<{ $disabled?: boolean }>`
+  it('merges and overrides styles in extended components', () => {
+    const BaseButton = ma.button<{ $disabled?: boolean }>`
       text-blue
       ${(p) => p.style({ color: p.$disabled ? 'gray' : 'blue' })}
     `
 
-    const { container: baseButtonContainer } = render(<BaseButton $disabled={true}>Base Button</BaseButton>)
-
-    const baseButton = baseButtonContainer.firstChild as HTMLElement
+    const { container: baseContainer } = render(() => <BaseButton $disabled>Base Button</BaseButton>)
+    const baseButton = baseContainer.firstChild as HTMLElement
     expect(baseButton).toHaveClass('text-blue')
     expect(baseButton).toHaveStyle('color: gray')
 
-    const ExtendedButton = cm.extend(BaseButton)<{ $test?: boolean }>`
+    const ExtendedButton = ma.extend(BaseButton)<{ $test?: boolean }>`
       ${(p) => p.style({ outlineColor: p.$test ? 'black' : 'red' })}
     `
-    const { container: extendedButtonContainer } = render(
-      <ExtendedButton $disabled={true} $test={false}>
+
+    const { container: extendedContainer } = render(() => (
+      <ExtendedButton $disabled $test={false}>
         Extended Button
-      </ExtendedButton>,
-    )
-
-    const button = extendedButtonContainer.firstChild as HTMLElement
-
-    expect(button).toHaveClass('text-blue')
-    expect(button).toHaveStyle('color: gray')
-    expect(button).toHaveStyle('outline-color: red')
+      </ExtendedButton>
+    ))
+    const extendedButton = extendedContainer.firstChild as HTMLElement
+    expect(extendedButton).toHaveClass('text-blue')
+    expect(extendedButton).toHaveStyle('color: gray')
+    expect(extendedButton).toHaveStyle('outline-color: red')
   })
 
-  // // Variants Component Test
-  it('applies styles dynamically in createVariantsComponent', () => {
-    const VariantButton = cm.button.variants<{ $size: 'small' | 'large'; $disabled?: boolean }>({
+  it('applies styles dynamically in variants components', () => {
+    const VariantButton = ma.button.variants<{ $size: 'small' | 'large'; $disabled?: boolean }>({
       base: (p) => `
         test-class
         color-black
@@ -68,11 +64,11 @@ describe('Style Capabilities', () => {
       },
     })
 
-    const { container } = render(
+    const { container } = render(() => (
       <VariantButton $disabled={false} $size="large">
         Variant Button
-      </VariantButton>,
-    )
+      </VariantButton>
+    ))
     const button = container.firstChild as HTMLElement
 
     expect(button).toHaveClass('test-class color-black')
@@ -81,7 +77,7 @@ describe('Style Capabilities', () => {
   })
 
   it('does not leak variant styles between extended component instances', () => {
-    const Alert = cm.div.variants<{ $isActive?: boolean }>({
+    const Alert = ma.div.variants<{ $isActive?: boolean }>({
       variants: {
         $isActive: {
           true: (p) => p.style({ border: '1px solid red' }),
@@ -92,15 +88,15 @@ describe('Style Capabilities', () => {
         $isActive: false,
       },
     })
-    const LocalAlert = cm.extend(Alert)`extended`
+    const LocalAlert = ma.extend(Alert)`extended`
 
-    const { container } = render(
+    const { container } = render(() => (
       <>
         <LocalAlert>Inactive first</LocalAlert>
         <LocalAlert $isActive>Active</LocalAlert>
         <LocalAlert>Inactive after active</LocalAlert>
-      </>,
-    )
+      </>
+    ))
 
     const [inactiveFirst, active, inactiveAfterActive] = Array.from(container.children) as HTMLElement[]
 

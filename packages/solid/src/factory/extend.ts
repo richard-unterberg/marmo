@@ -1,6 +1,6 @@
 import { mergeProps } from 'solid-js'
 
-import type { CmBaseComponent, Interpolation, LogicHandler, StyleDefinition, VariantsConfig } from '../types'
+import type { MaBaseComponent, Interpolation, LogicHandler, StyleDefinition, VariantsConfig } from '../types'
 import createSolidElement from '../util/createSolidElement'
 
 /**
@@ -14,16 +14,16 @@ import createSolidElement from '../util/createSolidElement'
  * @returns A new styled component with merged class names and styles.
  */
 const createExtendedComponent = <T extends object>(
-  baseComponent: CmBaseComponent<any>,
+  baseComponent: MaBaseComponent<any>,
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
   logicHandlers: LogicHandler<T>[] = [],
-): CmBaseComponent<T> => {
+): MaBaseComponent<T> => {
   const displayName = `Extended(${baseComponent.displayName || 'Component'})`
-  const baseComputeClassName = baseComponent.__scComputeClassName || (() => '')
-  const tag = baseComponent.__scTag || baseComponent
-  const baseLogic = (baseComponent.__scLogic as LogicHandler<any>[]) || []
-  const basePropsToFilter = (baseComponent.__scPropsToFilter as (keyof T)[]) || []
+  const baseComputeClassName = baseComponent.__maComputeClassName || (() => '')
+  const tag = baseComponent.__maTag || baseComponent
+  const baseLogic = (baseComponent.__maLogic as LogicHandler<any>[]) || []
+  const basePropsToFilter = (baseComponent.__maPropsToFilter as (keyof T)[]) || []
   const combinedLogic = [...baseLogic, ...logicHandlers]
   const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
 
@@ -105,16 +105,16 @@ const createExtendedVariantsComponent = <
   VariantProps extends object,
   ComponentProps extends object = ExtraProps & Partial<VariantProps>,
 >(
-  baseComponent: CmBaseComponent<any>,
+  baseComponent: MaBaseComponent<any>,
   config: VariantsConfig<VariantProps, ExtraProps>,
   logicHandlers: LogicHandler<ComponentProps>[] = [],
-): CmBaseComponent<ComponentProps> => {
+): MaBaseComponent<ComponentProps> => {
   const displayName = `ExtendedVariants(${baseComponent.displayName || 'Component'})`
-  const baseComputeClassName = baseComponent.__scComputeClassName || (() => '')
-  const tag = baseComponent.__scTag || baseComponent
-  const baseLogic = (baseComponent.__scLogic as LogicHandler<any>[]) || []
+  const baseComputeClassName = baseComponent.__maComputeClassName || (() => '')
+  const tag = baseComponent.__maTag || baseComponent
+  const baseLogic = (baseComponent.__maLogic as LogicHandler<any>[]) || []
   const combinedLogic = [...(baseLogic as LogicHandler<ComponentProps>[]), ...logicHandlers]
-  const basePropsToFilter = (baseComponent.__scPropsToFilter as (keyof ComponentProps)[]) || []
+  const basePropsToFilter = (baseComponent.__maPropsToFilter as (keyof ComponentProps)[]) || []
   const variantPropsToFilter = Object.keys(config.variants || {}) as (keyof ComponentProps)[]
   const propsToFilter = Array.from(new Set([...basePropsToFilter, ...variantPropsToFilter]))
 

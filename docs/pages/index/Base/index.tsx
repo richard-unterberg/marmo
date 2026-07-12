@@ -1,6 +1,6 @@
 import { LayoutComponent } from '@unterberg/nivel'
 import CodePresenter from '../../../components/CodePresenter'
-import ClassmateCode from './classmate.mdx'
+import MarmoCode from './marmo.mdx'
 import CVACode from './cva.mdx'
 import NativeCode from './native.mdx'
 
@@ -14,9 +14,9 @@ const BaseSection = () => {
         rightCode={<CVACode />}
         rightCodeLabel="CVA"
         rightCodeRepoLink="docs/pages/index/Base/cva.mdx"
-        highlightCode={<ClassmateCode />}
-        highlightCodeLabel="Classmate"
-        highlightCodeRepoLink="docs/pages/index/Base/classmate.mdx"
+        highlightCode={<MarmoCode />}
+        highlightCodeLabel="Marmo"
+        highlightCodeRepoLink="docs/pages/index/Base/marmo.mdx"
         hightlightBoxHeight={360}
         smallBoxHeight={300}
       />

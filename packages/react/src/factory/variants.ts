@@ -1,6 +1,6 @@
 import type { JSX } from 'react'
 import type {
-  CmBaseComponent,
+  MaBaseComponent,
   InputComponent,
   LogicHandler,
   MergeProps,
@@ -22,7 +22,7 @@ interface CreateVariantsOptions<T extends object> {
  *
  * @param {E} tag - The HTML tag or React component.
  * @param {VariantsConfig<VariantProps, ExtraProps>} config - Configuration for the variants.
- * @returns {CmBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>>} - The created React component.
+ * @returns {MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>>} - The created React component.
  */
 const createVariantsComponent = <
   E extends keyof JSX.IntrinsicElements | InputComponent,
@@ -32,7 +32,7 @@ const createVariantsComponent = <
   tag: E,
   config: VariantsConfig<VariantProps, ExtraProps>,
   options: CreateVariantsOptions<MergeProps<E, ExtraProps & Partial<VariantProps>>> = {},
-): CmBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>> => {
+): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>> => {
   const { base, variants, defaultVariants = {} } = config
   const propsToFilter = Object.keys(variants)
   const displayName = `Variants(${typeof tag === 'string' ? tag : 'Component'})`
@@ -71,7 +71,7 @@ const createVariantsComponent = <
     displayName,
     propsToFilter,
     logicHandlers,
-  }) as CmBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>>
+  }) as MaBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>>
 }
 
 export default createVariantsComponent

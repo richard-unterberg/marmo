@@ -1,4 +1,4 @@
-import cm from '@classmatejs/react'
+import ma from '@marmo/react'
 import { ExternalLink } from '@unterberg/nivel/icons'
 import type { JSX } from 'react'
 import { hasGitUrl, withGithubUrl } from '../util/withGithubUrl'
@@ -88,7 +88,7 @@ const CodePresenter = ({
 }
 export default CodePresenter
 
-const Outer = cm.div`
+const Outer = ma.div`
   landing-code-samples 
   md:grid grid-cols-12 
   gap-4 mt-16
@@ -96,17 +96,17 @@ const Outer = cm.div`
   [&_pre]:pb-12
 `
 
-const ExternalLinkIcon = cm.extend(ExternalLink)`
+const ExternalLinkIcon = ma.extend(ExternalLink)`
   size-3
 `
 
-const SmallBox = cm.div`
+const SmallBox = ma.div`
   small-text 
   relative z-1
   col-span-2 lg:col-span-3
 `
 
-const SmallBoxGradient = cm.div<{ $dir?: 'left' | 'right'; $height: CodePresenterProps['smallBoxHeight'] }>`
+const SmallBoxGradient = ma.div<{ $dir?: 'left' | 'right'; $height: CodePresenterProps['smallBoxHeight'] }>`
   ${({ $dir }) => ($dir === 'right' ? 'bg-linear-to-r' : 'bg-linear-to-l')}
   from-base-100/90
   hidden md:block 
@@ -118,7 +118,7 @@ const SmallBoxGradient = cm.div<{ $dir?: 'left' | 'right'; $height: CodePresente
     })}
 `
 
-const SmallBoxCodeBlock = cm.div<{ $height: CodePresenterProps['smallBoxHeight'] }>`
+const SmallBoxCodeBlock = ma.div<{ $height: CodePresenterProps['smallBoxHeight'] }>`
   h-full w-full relative z-20
 
   ${({ style, $height }) =>
@@ -127,35 +127,35 @@ const SmallBoxCodeBlock = cm.div<{ $height: CodePresenterProps['smallBoxHeight']
     })}
 `
 
-const SmallBoxHeadline = cm.h2`
+const SmallBoxHeadline = ma.h2`
   text-base-muted-medium 
   italic 
   mb-4
   flex items-center justify-center gap-2
 `
 
-const SmallBoxLink = cm.a`
+const SmallBoxLink = ma.a`
   text-base-muted-medium 
   flex items-center justify-center gap-2
 `
 
-const BigBoxLink = cm.extend(SmallBoxLink)`
+const BigBoxLink = ma.extend(SmallBoxLink)`
   text-base-muted
 `
 
-const BigBox = cm.div`
+const BigBox = ma.div`
   col-span-8 lg:col-span-6 relative z-20
   md:-translate-y-10
   relative
 `
 
-const _BigBoxShadow = cm.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
+const _BigBoxShadow = ma.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
   hidden md:block 
   absolute top-16 left-px right-px 
   ${({ style, $height }) => style({ height: `${$height - 24}px` })}
 `
 
-const BigBoxCodeBlock = cm.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
+const BigBoxCodeBlock = ma.div<{ $height: CodePresenterProps['hightlightBoxHeight'] }>`
   h-full w-full relative z-20
   ${({ style, $height }) =>
     style({

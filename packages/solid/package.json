@@ -1,7 +1,7 @@
 {
-  "name": "@classmatejs/solid",
+  "name": "@marmo/solid",
   "description": "A solidjs tool to separate class name logic, create variants and manage styles.",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs.js",
@@ -12,16 +12,16 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-unterberg/classmatejs.git"
+    "url": "git+https://github.com/richard-unterberg/marmo.git"
   },
   "bugs": {
-    "url": "https://github.com/richard-unterberg/classmatejs/issues"
+    "url": "https://github.com/richard-unterberg/marmo/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/master/packages/solid#readme",
+  "homepage": "https://github.com/richard-unterberg/marmo/tree/master/packages/solid#readme",
   "keywords": [
     "solid",
     "solidjs",
-    "classmate",
+    "marmo",
     "typescript",
     "dynamic-classnames",
     "dynamic-styles",

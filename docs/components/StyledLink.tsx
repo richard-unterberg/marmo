@@ -1,7 +1,7 @@
-import cm from '@classmatejs/react'
+import ma from '@marmo/react'
 import { Link } from '@unterberg/nivel'
 
-const _MyLink = cm.extend(Link).variants({
+const _MyLink = ma.extend(Link).variants({
   base: 'btn btn-primary sm:btn-lg',
   variants: {
     type: {

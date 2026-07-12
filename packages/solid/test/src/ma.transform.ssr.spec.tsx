@@ -1,11 +1,11 @@
 /** @jsxImportSource solid-js */
 import { renderToString } from 'solid-js/web'
 
-import cm from '../../src'
+import ma from '../../src'
 
-describe('cm.transform SSR (solid)', () => {
+describe('ma.transform SSR (solid)', () => {
   it('server-renders a deterministic $_as element without private props', () => {
-    const Alert = cm.div<{ $active?: boolean }>`base-class ${({ $active }) => $active && 'active-class'}`
+    const Alert = ma.div<{ $active?: boolean }>`base-class ${({ $active }) => $active && 'active-class'}`
 
     const markup = renderToString(() => <Alert $_as="span" $active data-kind="alert" />)
 

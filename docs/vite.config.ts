@@ -1,5 +1,6 @@
 import { nivelTailwindVite } from '@unterberg/nivel/tailwind'
 import { viteBeastiesOutputPlugin } from '@unterberg/vite-beasties-output'
+import { fileURLToPath } from 'node:url'
 import vike from 'vike/plugin'
 
 process.env.VIKE_CRAWL ??= JSON.stringify({ git: false })
@@ -11,6 +12,11 @@ const base = (() => {
 
 export default {
   base,
+  resolve: {
+    alias: {
+      '@classmatejs/react': fileURLToPath(new URL('./util/nivelMarmoCompatibility.ts', import.meta.url)),
+    },
+  },
   plugins: [
     nivelTailwindVite(),
     vike(),

@@ -63,7 +63,7 @@ export const docsGraph = {
               title: 'Transform',
               slug: 'transform',
               source: 'transform.mdx',
-              description: 'Render existing classmate component as another intrinsic element.',
+              description: 'Render existing marmo component as another intrinsic element.',
             },
           ],
         },

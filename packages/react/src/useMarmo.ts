@@ -1,20 +1,20 @@
 import { type DependencyList, useMemo } from 'react'
 
-import type { CmBaseComponent } from './types'
+import type { MaBaseComponent } from './types'
 
 /**
- * Memoizes a classmate component factory within a React component.
+ * Memoizes a marmo component factory within a React component.
  *
- * Useful when you need to declare a classmate component inside another component
+ * Useful when you need to declare a marmo component inside another component
  * but want to avoid re-instantiating it on every render. Pass the values your factory
  * depends on via the `deps` array to recompute when needed.
  *
  * @example
  * ```tsx
  * const Component = ({ $status }: { $status: "info" | "warning" }) => {
- *   const StyledAlert = useClassmate(
+ *   const StyledAlert = useMarmo(
  *     () =>
- *       rc.div.variants({
+ *       ma.div.variants({
  *         base: "p-4 rounded",
  *         variants: {
  *           $status: {
@@ -30,11 +30,11 @@ import type { CmBaseComponent } from './types'
  * }
  * ```
  */
-const useClassmate = <Props extends object>(
-  factory: () => CmBaseComponent<Props>,
+const useMarmo = <Props extends object>(
+  factory: () => MaBaseComponent<Props>,
   deps: DependencyList = [],
-): CmBaseComponent<Props> => {
+): MaBaseComponent<Props> => {
   return useMemo(factory, deps)
 }
 
-export default useClassmate
+export default useMarmo

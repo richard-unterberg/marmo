@@ -3,7 +3,7 @@ import type { Component, JSX } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { twMerge } from 'tailwind-merge'
 
-import type { CmBaseComponent, LogicHandler, StyleDefinition } from '../types'
+import type { MaBaseComponent, LogicHandler, StyleDefinition } from '../types'
 import applyLogicHandlers from './applyLogicHandlers'
 
 const toKebabCase = (key: string) => {
@@ -73,7 +73,7 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
   styles = {},
   propsToFilter = [],
   logicHandlers = [],
-}: CreateSolidElementParams<T, E>): CmBaseComponent<T> => {
+}: CreateSolidElementParams<T, E>): MaBaseComponent<T> => {
   const element = ((incomingProps: T) => {
     const normalizedPropsBase =
       logicHandlers.length > 0 ? applyLogicHandlers(incomingProps, logicHandlers) : incomingProps
@@ -85,13 +85,13 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       'class',
       'className',
       'style',
-      '__rcOmit',
+      '__maOmit',
     ] as readonly string[]
     const [local, forwardedSource] = splitProps(normalizedRecord, reservedKeys)
 
     const filteredProps: Record<string, any> = {}
     const forwarded = forwardedSource as Record<string, any>
-    const omitKeysSource = normalizedRecord.__rcOmit
+    const omitKeysSource = normalizedRecord.__maOmit
     const omitKeys =
       Array.isArray(omitKeysSource) && omitKeysSource.length > 0
         ? new Set(
@@ -145,16 +145,16 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
         return local.children
       },
     })
-  }) as CmBaseComponent<T>
+  }) as MaBaseComponent<T>
 
-  element.displayName = displayName || 'Cm Component'
-  element.__scClassmate = true
-  element.__scComputeClassName = (props: T, collectedStyles?: StyleDefinition<T>) =>
+  element.displayName = displayName || 'Ma Component'
+  element.__maMarmo = true
+  element.__maComputeClassName = (props: T, collectedStyles?: StyleDefinition<T>) =>
     computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props, collectedStyles)
-  element.__scStyles = styles
-  element.__scTag = tag
-  element.__scLogic = logicHandlers
-  element.__scPropsToFilter = propsToFilter
+  element.__maStyles = styles
+  element.__maTag = tag
+  element.__maLogic = logicHandlers
+  element.__maPropsToFilter = propsToFilter
 
   return element
 }

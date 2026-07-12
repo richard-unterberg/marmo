@@ -3,16 +3,16 @@ import { render } from '@testing-library/react'
 import React, { useEffect } from 'react'
 import type { ComponentType } from 'react'
 
-import cm, { useClassmate } from '../../dist'
+import ma, { useMarmo } from '../../dist'
 
-describe('useClassmate', () => {
+describe('useMarmo', () => {
   it('returns a stable component reference when dependencies do not change', () => {
     const references: ComponentType[] = []
 
     const RenderComponent = ({ rerenderKey }: { rerenderKey: number }) => {
-      const StyledDay = useClassmate(
+      const StyledDay = useMarmo(
         () =>
-          cm.div.variants({
+          ma.div.variants({
             base: 'p-2',
             variants: {
               $status: {
@@ -49,9 +49,9 @@ describe('useClassmate', () => {
     const references: ComponentType[] = []
 
     const RenderComponent = ({ tone }: { tone: 'primary' | 'secondary' }) => {
-      const StyledCard = useClassmate(
+      const StyledCard = useMarmo(
         () =>
-          cm.div`
+          ma.div`
             p-4 border
             ${tone === 'primary' ? 'bg-blue-100 border-blue-200' : 'bg-slate-100 border-slate-200'}
           `,

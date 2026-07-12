@@ -1,12 +1,12 @@
 ```ts title="StyledAlert.ts"
-import cm from "@classmatejs/react"
+import ma from "@marmo/react"
 
 interface AlertProps {
   $severity: "info" | "warning" | "error"
   $isActive?: boolean
 }
 
-const Alert = cm.div.variants<AlertProps>({
+const Alert = ma.div.variants<AlertProps>({
   base: ({ $isActive }) => `
     ${$isActive ? "custom-class-active" : "custom-class-inactive"}
     p-4
