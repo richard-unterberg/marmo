@@ -3,7 +3,7 @@ name: Deploy Page
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
@@ -21,20 +21,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "24"
-          cache: "pnpm"
-          cache-dependency-path: pnpm-lock.yaml
+          cache: "npm"
+          cache-dependency-path: package-lock.json
 
       - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm install --frozen-lockfile
 
-      - name: Build Page
+      - name: Build Docs
         env:
           PAGES_BASE_PATH: /${{ github.event.repository.name }}
-        run: pnpm run build
+        run: npm run docs:build
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist/client
