@@ -1,13 +1,13 @@
-Transform renders an existing classmate component as another intrinsic element. It keeps the original class logic and $ props, but TypeScript validates props against the new element.
+Transform renders an existing Marmo component as another intrinsic element. It keeps the original class logic and `$` props, while TypeScript validates props against the selected element.
 
 Features
-: works with any marmo component
+: works with any Marmo component
 : automatically infers the new element's props
-: preserve types and class logic of the original component
+: preserves the types and class logic of the original component
 
-## One the spot transformation
+## Inline transformation
 
-Passing a `$_as` prop to a classmate component will transform it into the specified intrinsic element.
+Pass `$_as` to render a Marmo component as a different intrinsic element. Use it primarily for semantic polymorphism: for example, rendering text as a label or a button-styled component as a link.
 
 ```tsx choice=solidjs
 import ma from "@marmo/solid"
@@ -17,18 +17,12 @@ const MyButton = ma.button`
   min-w-300
 `
 
-const MyComponent = () => {
-  const myClickEvent = (e: MouseEvent) => {
-    console.log(e.clientX, e.clientY)
-  }
-
-  return (
-    <>
-      <MyButton $_as="span" />
-      <MyButton onClick={() => null} />
-    </>
-  )
-}
+const MyComponent = () => (
+  <>
+    <MyButton $_as="a" href="/settings">Settings</MyButton>
+    <MyButton>Save</MyButton>
+  </>
+)
 ```
 
 ```tsx choice=react
@@ -39,26 +33,94 @@ const MyButton = ma.button`
   min-w-300
 `
 
-const MyComponent = () => {
-  const myClickEvent = (e: MouseEvent) => {
-    console.log(e.clientX, e.clientY)
-  }
-
-  return (
-    <>
-      <MyButton $_as="span" />
-      <MyButton onClick={() => null} />
-    </>
-  )
-}
+const MyComponent = () => (
+  <>
+    <MyButton $_as="a" href="/settings">Settings</MyButton>
+    <MyButton>Save</MyButton>
+  </>
+)
 ```
 
 **Result**
 
 ```html title=output.html
-<span class="absolute min-w-300"></span>
-<button class="absolute min-w-300"></button>
+<a href="/settings" class="absolute min-w-300">Settings</a>
+<button class="absolute min-w-300">Save</button>
 ```
+
+The selected element's props are inferred automatically. Other semantic transformations work the same way:
+
+```tsx
+<>
+  <Text $_as="label" htmlFor="email">Email</Text>
+  <Text $_as="span">Inline information</Text>
+</>
+```
+
+## Dynamic transformations
+
+The value of `$_as` can be derived from props or reactive state.
+
+```tsx choice=react
+import { useState } from "react"
+import ma from "@marmo/react"
+
+const Alert = ma.div`rounded-box p-4`
+
+const Example = () => {
+  const [inline, setInline] = useState(false)
+
+  return (
+    <>
+      <button onClick={() => setInline((value) => !value)}>Toggle</button>
+      <Alert $_as={inline ? "span" : "div"}>Status</Alert>
+    </>
+  )
+}
+```
+
+```tsx choice=solidjs
+import { createSignal } from "solid-js"
+import ma from "@marmo/solid"
+
+const Alert = ma.div`rounded-box p-4`
+
+const Example = () => {
+  const [inline, setInline] = createSignal(false)
+
+  return (
+    <>
+      <button onClick={() => setInline((value) => !value)}>Toggle</button>
+      <Alert $_as={inline() ? "span" : "div"}>Status</Alert>
+    </>
+  )
+}
+```
+
+Changing `$_as` replaces the underlying DOM element. This can reset refs, focus, text selection, DOM-local state, and nested component state. Prefer keeping the semantic element stable when only its appearance or layout changes:
+
+```tsx
+<Alert className={inline ? "inline" : "block"} />
+```
+
+For reusable display choices, use a variant instead:
+
+```tsx
+const Alert = ma.div.variants<{ $display: "block" | "inline" }>({
+  variants: {
+    $display: {
+      block: "block",
+      inline: "inline",
+    },
+  },
+})
+```
+
+### Server rendering and hydration
+
+Dynamic transformations are SSR-safe when the server render and the first client render resolve to the same intrinsic element. A value derived from stable props is safe, but a value read directly from `window.matchMedia`, `localStorage`, or `Math.random()` can cause a hydration mismatch.
+
+Use a deterministic initial value shared by the server and client, then update it after hydration when necessary. Marmo does not suppress or repair hydration mismatches caused by application state.
 
 ## Builder API
 
@@ -120,23 +182,23 @@ const MyComponent = () => {
 ```
 
 ---
-### Support for non-marmo components `upcoming`
+### Support for non-Marmo components `upcoming`
 
-<Alert type="warning" heading="No support for non-marmo components yet">
-marmo's `transform` only accepts marmo components in v1. This is a planned feature for v2, where you can transform any component into another element.
+<Alert type="warning" heading="No support for non-Marmo components yet">
+Marmo's `transform` only accepts Marmo components in v1. This is a planned feature for v2, where you can transform any component into another element.
 
 ```tsx
 const SomeComponent = () => <div className="pt-10" />
 
 // ❌ does not work:
-const MarmoComponent = ma.transform(SomeComponent).span``
+const InvalidMarmoComponent = ma.transform(SomeComponent).span``
 
 // ✅ works:
 const MarmoComponent = ma.extend(SomeComponent)``
 const TransformedComponent = ma.transform(MarmoComponent).span``
 ```
 
-For now you can use `.extend` before tranforming a component to add marmo's class logic and $ props to it.
+For now, use `.extend` before transforming a component to add Marmo's class logic and `$` props to it.
 
 </Alert>
 
@@ -144,9 +206,9 @@ For now you can use `.extend` before tranforming a component to add marmo's clas
 ## Transform variants
 
 ```tsx choice=react
-import cm from "@marmo/react"
+import ma from "@marmo/react"
 
-const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
+const VariantDiv = ma.div.variants<{ $size: "sm" | "md" }>({
   base: "absolute min-w-300",
   variants: {
     $size: {
@@ -159,7 +221,7 @@ const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
   },
 });
 
-const Main = cm.transform(VariantDiv).main`
+const Main = ma.transform(VariantDiv).main`
   text-neutral
   tracking-wide
 `;
@@ -175,8 +237,8 @@ const MyComponent = () => {
 ```
 
 ```tsx choice=solidjs
-import cm from "@marmo/solid"
-const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
+import ma from "@marmo/solid"
+const VariantDiv = ma.div.variants<{ $size: "sm" | "md" }>({
   base: "absolute min-w-300",
   variants: {
     $size: {
@@ -189,7 +251,7 @@ const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
   },
 });
 
-const Main = cm.transform(VariantDiv).main`
+const Main = ma.transform(VariantDiv).main`
   text-neutral
   tracking-wide
 `;

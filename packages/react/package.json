@@ -54,7 +54,7 @@
     "test-clear": "jest --clearCache",
     "test:all": "npm run test-clear && npm run test:src",
     "test:src": "jest --config jest.config.cjs --testPathPattern=test/src",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.types.json",
     "========= Build": "",
     "build:base": "tsup",
     "build": "npm run build:base",

@@ -49,9 +49,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsup",
-    "test": "vitest run --config vitest.config.ts",
+    "test": "vitest run --config vitest.config.ts && vitest run --config vitest.ssr.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.types.json",
     "========= Build": "",
     "package": "npm run build && npm publish --access public"
   },

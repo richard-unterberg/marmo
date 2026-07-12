@@ -78,9 +78,6 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
     const normalizedPropsBase =
       logicHandlers.length > 0 ? applyLogicHandlers(incomingProps, logicHandlers) : incomingProps
     const normalizedProps = normalizedPropsBase as T & Record<string, any>
-    const renderTag =
-      typeof normalizedProps.$_as === 'string' ? (normalizedProps.$_as as keyof JSX.IntrinsicElements) : tag
-
     const normalizedRecord = normalizedProps as Record<string, any>
     const reservedKeys = [
       ...propsToFilter.filter((key): key is keyof T & string => typeof key === 'string'),
@@ -120,7 +117,9 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
     }
 
     return createComponent(Dynamic, {
-      component: renderTag as any,
+      get component() {
+        return (typeof normalizedProps.$_as === 'string' ? normalizedProps.$_as : tag) as any
+      },
       ...filteredProps,
       get class() {
         const computedClassName = computeClassName(normalizedProps, {})

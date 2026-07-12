@@ -1,5 +1,6 @@
 /** @jsxImportSource solid-js */
-import { render } from '@solidjs/testing-library'
+import { fireEvent, render } from '@solidjs/testing-library'
+import { createSignal } from 'solid-js'
 
 import cm from '../../src'
 
@@ -17,6 +18,40 @@ describe('cm.transform (solid)', () => {
     expect(container.firstChild).toHaveClass('absolute min-w-300 bg-red-500')
     expect(container.firstChild).not.toHaveAttribute('$_as')
     expect(container.firstChild).not.toHaveAttribute('$toggleCta')
+  })
+
+  it('reacts to $_as changes and replaces the underlying element', async () => {
+    const Alert = cm.div<{ $active?: boolean }>`
+      base-class
+      ${({ $active }) => $active && 'active-class'}
+    `
+    const Example = () => {
+      const [inline, setInline] = createSignal(false)
+
+      return (
+        <>
+          <button type="button" onClick={() => setInline((value) => !value)}>
+            Toggle
+          </button>
+          <Alert data-testid="alert" $_as={inline() ? 'span' : 'div'} $active />
+        </>
+      )
+    }
+
+    const { getByRole, getByTestId } = render(() => <Example />)
+    const initialElement = getByTestId('alert')
+
+    expect(initialElement).toBeInstanceOf(HTMLDivElement)
+    expect(initialElement).toHaveClass('base-class active-class')
+
+    await fireEvent.click(getByRole('button', { name: 'Toggle' }))
+
+    const updatedElement = getByTestId('alert')
+    expect(updatedElement).toBeInstanceOf(HTMLSpanElement)
+    expect(updatedElement).not.toBe(initialElement)
+    expect(updatedElement).toHaveClass('base-class active-class')
+    expect(updatedElement).not.toHaveAttribute('$_as')
+    expect(updatedElement).not.toHaveAttribute('$active')
   })
 
   it('transforms a classmate component with the builder API', () => {
