@@ -17,7 +17,7 @@ const Swatch = ma.div<SwatchProps>`
     style({
       backgroundColor: $color,
     })}
-`
+`;
 
 <Swatch $color="oklch(70% 0.16 250)" />
 ```
@@ -35,7 +35,7 @@ const Swatch = ma.div<SwatchProps>`
     style({
       backgroundColor: $color,
     })}
-`
+`;
 
 <Swatch $color="oklch(70% 0.16 250)" />
 ```
@@ -65,7 +65,7 @@ const ProgressFill = ma.div<ProgressFillProps>`
       width: `${percentage}%`,
     })
   }}
-`
+`;
 
 <ProgressFill $value={35} $max={100} />
 ```
@@ -87,14 +87,14 @@ const ProgressFill = ma.div<ProgressFillProps>`
       width: `${percentage}%`,
     })
   }}
-`
+`;
 
 <ProgressFill $value={35} $max={100} />
 ```
 
 TypeScript checks standard CSS property names and accepted values. Template literals remain useful for values that need units:
 
-```tsx
+```jsx
 ${({ style, $x, $y }) => style({ transform: `translate(${$x}px, ${$y}px)` })}
 ```
 
@@ -124,7 +124,7 @@ const Avatar = ma.img.variants<AvatarProps>({
   defaultVariants: {
     $size: "sm",
   },
-})
+});
 
 <Avatar src="/avatar.png" alt="Ada" $size="lg" $ringColor="currentColor" />
 ```
@@ -151,7 +151,7 @@ const Avatar = ma.img.variants<AvatarProps>({
   defaultVariants: {
     $size: "sm",
   },
-})
+});
 
 <Avatar src="/avatar.png" alt="Ada" $size="lg" $ringColor="currentColor" />
 ```
@@ -180,7 +180,7 @@ const FadingPanel = ma.extend(FloatingPanel)<{ $visible: boolean }>`
       opacity: $visible ? 1 : 0,
       pointerEvents: $visible ? "auto" : "none",
     })}
-`
+`;
 
 <FadingPanel $x={24} $y={48} $visible />
 ```
@@ -203,7 +203,7 @@ const FadingPanel = ma.extend(FloatingPanel)<{ $visible: boolean }>`
       opacity: $visible ? 1 : 0,
       pointerEvents: $visible ? "auto" : "none",
     })}
-`
+`;
 
 <FadingPanel $x={24} $y={48} $visible />
 ```
@@ -225,7 +225,7 @@ import ma from "@marmo/react"
 
 const Box = ma.div`
   ${({ style }) => style({ opacity: 0.5, transform: "scale(0.95)" })}
-`
+`;
 
 <Box style={{ opacity: 1 }} />
 // opacity: 1; transform: scale(0.95)
@@ -236,7 +236,7 @@ import ma from "@marmo/solid"
 
 const Box = ma.div`
   ${({ style }) => style({ opacity: 0.5, transform: "scale(0.95)" })}
-`
+`;
 
 <Box style={{ opacity: 1 }} />
 // opacity: 1; transform: scale(0.95)

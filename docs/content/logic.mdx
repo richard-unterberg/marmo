@@ -27,7 +27,7 @@ const Progress = ma.div
         false: "bg-base-300",
       },
     },
-  })
+  });
 
 <Progress value={72} />
 ```
@@ -53,7 +53,7 @@ const Progress = ma.div
         false: "bg-base-300",
       },
     },
-  })
+  });
 
 <Progress value={72} />
 ```
@@ -91,7 +91,7 @@ const Ticket = ma.button
         "sold-out": "cursor-not-allowed bg-base-300 text-base-content",
       },
     },
-  })
+  });
 
 <Ticket disabled>Reserve ticket</Ticket>
 ```
@@ -123,7 +123,7 @@ const Ticket = ma.button
         "sold-out": "cursor-not-allowed bg-base-300 text-base-content",
       },
     },
-  })
+  });
 
 <Ticket disabled>Reserve ticket</Ticket>
 ```
@@ -208,7 +208,7 @@ interface NoticeProps {
 For variants, keep the derived variant contract explicit with the second generic:
 
 ```ts
-.variants<NoticeProps, { $hasErrors: boolean }>({ /* ... */ })
+ma.div.variants<NoticeProps, { $hasErrors: boolean }>({ /* ... */ })
 ```
 
 ## When to use `.logic()`
