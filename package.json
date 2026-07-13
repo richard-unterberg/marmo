@@ -21,10 +21,11 @@
     "publish:react": "npm run test:react && npm run package -w @marmo/react",
     "publish:solid": "npm run test:solid && npm run package -w @marmo/solid",
     "publish:all": "npm run publish:react && npm run publish:solid",
-    "verify": "npm run lint && npm run format && npm run typecheck:all && npm run test:all",
+    "verify": "npm run lint && npm run format && npm run typecheck:all && npm run test:all && npm run docs:check",
     "docs:dev": "npm run dev -w @marmo/docs",
     "docs:build": "npm run build -w @marmo/docs",
     "docs:preview": "npm run build -w @marmo/docs && npm run preview -w @marmo/docs",
+    "docs:check": "npm run docs:check -w @marmo/docs",
     "prepare": "lefthook install"
   },
   "devDependencies": {
@@ -35,13 +36,13 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-unterberg/marmo.git"
+    "url": "git+https://github.com/richard-unterberg/classmatejs.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/richard-unterberg/marmo/issues"
+    "url": "https://github.com/richard-unterberg/classmatejs/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/marmo#readme"
+  "homepage": "https://github.com/richard-unterberg/classmatejs#readme"
 }

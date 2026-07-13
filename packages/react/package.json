@@ -43,12 +43,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-unterberg/marmo.git"
+    "url": "git+https://github.com/richard-unterberg/classmatejs.git"
   },
   "bugs": {
-    "url": "https://github.com/richard-unterberg/marmo/issues"
+    "url": "https://github.com/richard-unterberg/classmatejs/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/marmo/tree/master/packages/react#readme",
+  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/main/packages/react#readme",
   "scripts": {
     "========= Test": "",
     "test-clear": "jest --clearCache",

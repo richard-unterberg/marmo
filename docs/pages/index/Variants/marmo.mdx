@@ -1,31 +1,34 @@
 ```ts title="StyledAlert.ts"
 import ma from "@marmo/react"
 
-interface AlertProps {
-  $severity: "info" | "warning" | "error"
+interface AlertExtraProps {
   $isActive?: boolean
+  $ringColor?: string
 }
 
-const Alert = ma.div.variants<AlertProps>({
-  base: ({ $isActive }) => `
-    ${$isActive ? "custom-class-active" : "custom-class-inactive"}
-    p-4
-    rounded-md
-  `,
+interface AlertVariantProps {
+  $severity?: "info" | "warning" | "error"
+  $outlined?: boolean
+}
+
+const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
+  base: ({ $isActive }) =>
+    `p-4 rounded-md ${$isActive ? "shadow-lg" : ""}`,
   variants: {
     $severity: {
-      warning: "bg-warning/20 text-warning",
-      info: "bg-info/20 text-info",
-      error: "bg-error/20 text-error",
+      info: "bg-info text-info-content",
+      warning: "bg-warning text-warning-content",
+      error: ({ style, $ringColor }) =>
+        `bg-error text-error-content ${style({ outlineColor: $ringColor })}`,
     },
-    $isActive: {
-      true: "border border-current/50 shadow-xl shadow-current/20",
-      false: "border border-current/20 border-dashed",
+    $outlined: {
+      true: "outline outline-2",
+      false: "outline-none",
     },
   },
   defaultVariants: {
     $severity: "info",
-    $isActive: false,
+    $outlined: false,
   },
 })
 ```

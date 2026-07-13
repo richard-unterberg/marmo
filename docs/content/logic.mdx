@@ -10,14 +10,12 @@ Props prefixed with `$` are available to Marmo's styling APIs but are not forwar
 import ma from "@marmo/react"
 
 interface ProgressProps {
-  value: number
-  max?: number
   $isComplete?: boolean
 }
 
-const Progress = ma.div
-  .logic<ProgressProps>(({ value, max = 100 }) => ({
-    $isComplete: value >= max,
+const Progress = ma.progress
+  .logic<ProgressProps>(({ value = 0, max = 100 }) => ({
+    $isComplete: Number(value) >= Number(max),
   }))
   .variants<ProgressProps, { $isComplete: boolean }>({
     base: "h-2 rounded-full",
@@ -29,21 +27,19 @@ const Progress = ma.div
     },
   });
 
-<Progress value={72} />
+<Progress value={72} max={100} />
 ```
 
 ```tsx choice=solidjs
 import ma from "@marmo/solid"
 
 interface ProgressProps {
-  value: number
-  max?: number
   $isComplete?: boolean
 }
 
-const Progress = ma.div
-  .logic<ProgressProps>(({ value, max = 100 }) => ({
-    $isComplete: value >= max,
+const Progress = ma.progress
+  .logic<ProgressProps>(({ value = 0, max = 100 }) => ({
+    $isComplete: Number(value) >= Number(max),
   }))
   .variants<ProgressProps, { $isComplete: boolean }>({
     base: "h-2 rounded-full",
@@ -55,10 +51,12 @@ const Progress = ma.div
     },
   });
 
-<Progress value={72} />
+<Progress value={72} max={100} />
 ```
 
-The consumer supplies `value`; the component owns the definition of “complete.” Keeping that rule next to the styles prevents callers from having to calculate and synchronize both values.
+The consumer supplies native `progress` attributes, so forwarding `value` and `max` is intentional. The component owns the definition of “complete.” Keeping that rule next to the styles prevents callers from having to calculate and synchronize both values.
+
+Marmo has no public API for omitting an arbitrary ordinary prop after `.logic()` runs. `$`-prefixed props and registered variant props are the supported non-forwarded contracts. If a component needs domain props that must never reach an intrinsic element, consume them in a typed framework wrapper and pass only valid element props plus `$` styling props to the Marmo component.
 
 ## Derive attributes and variants together
 

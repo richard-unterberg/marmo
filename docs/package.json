@@ -11,6 +11,8 @@
     "build": "vike build",
     "preview": "vike preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck:app": "tsc --noEmit -p tsconfig.json",
+    "docs:check": "npm run generate:docs && npm run typecheck:app && vike build",
     "generate:docs": "nivel prepare",
     "predev": "npm run generate:docs",
     "prebuild": "npm run generate:docs",

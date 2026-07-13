@@ -1,5 +1,6 @@
 import { LayoutComponent } from '@unterberg/nivel'
 import { usePageContext } from 'vike-react/usePageContext'
+import { withDocsBasePath } from '../../util/withBasePath'
 
 const Page = () => {
   const pageContext = usePageContext()
@@ -33,7 +34,7 @@ const Page = () => {
       <h1>
         {usedStatusCode} - {msg}
       </h1>
-      <a href="/" className="btn btn-primary btn-soft">
+      <a href={withDocsBasePath('/', import.meta.env.BASE_URL)} className="btn btn-primary btn-soft">
         Go to homepage
       </a>
     </LayoutComponent>

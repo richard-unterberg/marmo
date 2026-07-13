@@ -1,3 +1,5 @@
+import { Alert } from "@unterberg/nivel"
+
 Transform renders an existing Marmo component as another intrinsic element. It keeps the original class logic and `$` props, while TypeScript validates props against the selected element.
 
 Features
@@ -48,13 +50,24 @@ const MyComponent = () => (
 <button class="absolute min-w-300">Save</button>
 ```
 
-The selected element's props are inferred automatically. Other semantic transformations work the same way:
+The selected element's props are inferred automatically. `$` props from the source Marmo component are preserved, while ordinary props are validated against the transformed intrinsic element.
 
-```tsx
-<>
-  <Text $_as="label" htmlFor="email">Email</Text>
-  <Text $_as="span">Inline information</Text>
-</>
+```tsx choice="react"
+const Example = () => (
+  <>
+    <Text $_as="label" htmlFor="email">Email</Text>
+    <Text $_as="span" className="text-sm">Inline information</Text>
+  </>
+)
+```
+
+```tsx choice="solidjs"
+const Example = () => (
+  <>
+    <Text $_as="label" for="email">Email</Text>
+    <Text $_as="span" class="text-sm">Inline information</Text>
+  </>
+)
 ```
 
 ## Builder API
@@ -68,7 +81,7 @@ const MyButton = ma.button`
   absolute min-w-300
 `
 
-const TransformButton = ma.transform(MyButton).span``
+const TransformButton = ma.transform(MyButton).span
 
 const TransformButtonWithClasses = ma.transform(MyButton).span`
   bg-primary
@@ -92,7 +105,7 @@ const MyButton = ma.button`
   absolute min-w-300
 `
 
-const TransformButton = ma.transform(MyButton).span``
+const TransformButton = ma.transform(MyButton).span
 
 const TransformButtonWithClasses = ma.transform(MyButton).span`
   bg-primary
@@ -117,10 +130,10 @@ const MyComponent = () => {
 ```
 
 ---
-### Support for non-Marmo components `upcoming`
+### v1 limitation: Marmo components only
 
 <Alert type="warning" heading="No support for non-Marmo components yet">
-Marmo's `transform` only accepts Marmo components in v1. This is a planned feature for v2, where you can transform any component into another element.
+Marmo's `transform` only accepts Marmo components in v1.
 
 ```tsx
 const SomeComponent = () => <div className="pt-10" />
@@ -128,12 +141,12 @@ const SomeComponent = () => <div className="pt-10" />
 // ❌ does not work:
 const InvalidMarmoComponent = ma.transform(SomeComponent).span``
 
-// ✅ works:
+// Extending first creates a Marmo component, so this is accepted:
 const MarmoComponent = ma.extend(SomeComponent)``
-const TransformedComponent = ma.transform(MarmoComponent).span``
+const TransformedComponent = ma.transform(MarmoComponent).span
 ```
 
-For now, use `.extend` before transforming a component to add Marmo's class logic and `$` props to it.
+This workaround does not preserve arbitrary rendering when transformed. `ma.extend(SomeComponent)` preserves `SomeComponent` while it remains extended, but transforming that Marmo component renders the selected intrinsic element directly. Component internals, hard-coded classes that were not passed through Marmo, and other rendering behavior from `SomeComponent` are not retained. Prefer transforming a component originally created with Marmo.
 
 </Alert>
 
@@ -180,8 +193,12 @@ const Example = () => {
 
 Changing `$_as` replaces the underlying DOM element. This can reset refs, focus, text selection, DOM-local state, and nested component state. Prefer keeping the semantic element stable when only its appearance or layout changes:
 
-```jsx
+```jsx choice="react"
 <Alert className={inline ? "inline" : "block"} />
+```
+
+```jsx choice="solidjs"
+<Alert class={inline() ? "inline" : "block"} />
 ```
 
 For reusable display choices, use a variant instead:
@@ -272,4 +289,3 @@ const MyComponent = () => {
 <main class="absolute min-w-300 w-10 h-10 text-neutral tracking-wide"></main>
 <main class="absolute min-w-300 w-20 h-20 text-neutral tracking-wide"></main>
 ```
-

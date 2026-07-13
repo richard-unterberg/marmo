@@ -3,7 +3,7 @@ import { Overview } from "@unterberg/nivel"
 
 ## Base Install
 
-- `React` >=16.8 or `SolidJS` >=1.7.
+- `React` >=16.8 or `SolidJS` >=1.8.
 - package manager: npm, yarn, or pnpm.
 
 <StyledDualGrid>
@@ -25,6 +25,36 @@ npm i @marmo/solid
 
   </StyledGridCol>
 </StyledDualGrid>
+
+## Quick start
+
+Create a Marmo component, declare a typed styling prop, and render it like any other framework component.
+
+```tsx choice="react"
+import ma from "@marmo/react"
+
+const Greeting = ma.p<{ $excited?: boolean }>`
+  text-lg
+  ${({ $excited }) => ($excited ? "font-bold" : "font-normal")}
+`
+
+const App = () => <Greeting $excited>Hello Marmo</Greeting>
+
+export default App
+```
+
+```tsx choice="solidjs"
+import ma from "@marmo/solid"
+
+const Greeting = ma.p<{ $excited?: boolean }>`
+  text-lg
+  ${({ $excited }) => ($excited ? "font-bold" : "font-normal")}
+`
+
+const App = () => <Greeting $excited>Hello Marmo</Greeting>
+
+export default App
+```
 
 ## Pair Marmo with your styling system
 
@@ -53,7 +83,7 @@ You can also use Marmo with CSS Modules, global CSS, or any existing class-based
   {
     title: 'Extend',
     href: '/extend',
-    excerpt: 'Extend a any component with marmo',
+    excerpt: 'Extend any component with Marmo',
   },
   {
     title: 'Transform',

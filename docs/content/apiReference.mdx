@@ -1,0 +1,96 @@
+# API reference
+
+React imports come from `@marmo/react`; Solid imports come from `@marmo/solid`. Both packages intentionally expose the same core factory and utilities, with one framework-specific component-local helper.
+
+## `ma` (default export)
+
+The main Marmo factory. Use intrinsic builders such as `ma.div`, `ma.button`, and `ma.progress`, plus `ma.extend()` and `ma.transform()`.
+
+```tsx choice="react"
+import ma from "@marmo/react"
+
+const Button = ma.button`rounded px-4 py-2`
+```
+
+```tsx choice="solidjs"
+import ma from "@marmo/solid"
+
+const Button = ma.button`rounded px-4 py-2`
+```
+
+## `maMerge`
+
+A public re-export of `tailwind-merge`'s `twMerge`. Use it when application code needs the same later-conflict-wins class merging as Marmo.
+
+```ts
+import { maMerge } from "@marmo/react"
+
+maMerge("p-2 text-sm", "p-6") // "text-sm p-6"
+```
+
+## `convertMaProps`
+
+Maps ordinary component props to `$` styling props without mutating the input object. Unmapped props are copied unchanged. This is an advanced adapter utility for wrappers that expose domain-friendly prop names.
+
+```ts
+import { convertMaProps } from "@marmo/react"
+
+const input = { size: "lg", disabled: true, title: "Save" }
+const output = convertMaProps(input, {
+  size: "$size",
+  disabled: "$disabled",
+})
+// { $size: "lg", $disabled: true, title: "Save" }
+```
+
+## `createVariantMap`
+
+Creates the same variants configuration for several intrinsic elements. This is an advanced design-system utility. Element names must be unique; duplicates throw an error.
+
+```ts
+import { createVariantMap } from "@marmo/react"
+
+const headings = createVariantMap({
+  elements: ["h1", "h2", "h3"] as const,
+  variantsConfig: {
+    variants: {
+      $size: {
+        sm: "text-lg",
+        lg: "text-3xl",
+      },
+    },
+  },
+})
+```
+
+## Component-local helpers
+
+React exports `useMarmo`; Solid exports `createMarmo`. They create a Marmo definition within a framework component when the factory genuinely needs a component-local value. Prefer module-scope definitions for normal prop-driven styling.
+
+```tsx choice="react"
+import ma, { useMarmo } from "@marmo/react"
+
+const Card = ({ compact }: { compact: boolean }) => {
+  const LocalCard = useMarmo(() => ma.div`${compact ? "p-2" : "p-6"}`, [compact])
+  return <LocalCard>Content</LocalCard>
+}
+```
+
+```tsx choice="solidjs"
+import ma, { createMarmo } from "@marmo/solid"
+
+const Card = (props: { initialCompact: boolean }) => {
+  const LocalCard = createMarmo(() => ma.div`${props.initialCompact ? "p-2" : "p-6"}`)
+  return <LocalCard>Content</LocalCard>
+}
+```
+
+## Public types
+
+`VariantsConfig<VariantProps, ExtraProps>`
+: The configuration type accepted by `.variants()`. It is useful when sharing a configuration across components or passing it through a design-system helper.
+
+`MaBaseComponent<Props>`
+: The advanced component type returned by Marmo builders. Most applications should rely on inference; use it when a helper must explicitly accept or return a Marmo component.
+
+These symbols are stable public API for v1. Fields beginning with `__ma`, including metadata visible on `MaBaseComponent`, remain implementation details and should not be read or written by application code.

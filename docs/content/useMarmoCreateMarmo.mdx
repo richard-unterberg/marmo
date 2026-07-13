@@ -58,7 +58,7 @@ const WorkoutDay = (props: {
 
 `useMarmo` recreates the React component when a dependency changes. `createMarmo` runs its Solid factory once and does not track values read inside it, so values captured by that factory should be fixed for the component's lifetime. Continue passing changing values as Marmo component props.
 
-## Basic usage > module composition ⚠️
+## Prefer module-scope composition
 
 Marmo components respond to changing props in both React and Solid. In most cases, define the Marmo component once at module scope and pass dynamic values as props. This keeps the component smaller and does not require `useMarmo` or `createMarmo`.
 

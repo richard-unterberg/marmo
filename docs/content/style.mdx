@@ -2,7 +2,7 @@ Use the `style()` interpolation helper to add inline CSS to a Marmo component. T
 
 ## Basic usage
 
-The `style` helper is available on the props object passed to every template interpolation. CSS property names use their JavaScript form, such as `backgroundColor`, `boxShadow`, and `pointerEvents`.
+The `style` helper is available on the props object passed to every template interpolation. React uses JavaScript CSS property names such as `backgroundColor`; Solid's types use CSS names such as `background-color`.
 
 ```tsx choice=react
 import ma from "@marmo/react"
@@ -33,7 +33,7 @@ const Swatch = ma.div<SwatchProps>`
   size-10 rounded
   ${({ style, $color }) =>
     style({
-      backgroundColor: $color,
+      "background-color": $color,
     })}
 `;
 
@@ -126,7 +126,7 @@ const Avatar = ma.img.variants<AvatarProps>({
   },
 });
 
-<Avatar src="/avatar.png" alt="Ada" $size="lg" $ringColor="currentColor" />
+<Avatar src="https://picsum.photos/128" alt="Ada" $size="lg" $ringColor="currentColor" />
 ```
 
 ```tsx choice=solidjs
@@ -140,7 +140,7 @@ interface AvatarProps {
 const Avatar = ma.img.variants<AvatarProps>({
   base: ({ style, $ringColor }) => `
     rounded-full object-cover
-    ${style({ boxShadow: `0 0 0 3px ${$ringColor}` })}
+    ${style({ "box-shadow": `0 0 0 3px ${$ringColor}` })}
   `,
   variants: {
     $size: {
@@ -153,7 +153,7 @@ const Avatar = ma.img.variants<AvatarProps>({
   },
 });
 
-<Avatar src="/avatar.png" alt="Ada" $size="lg" $ringColor="currentColor" />
+<Avatar src="https://picsum.photos/128" alt="Ada" $size="lg" $ringColor="currentColor" />
 ```
 
 Numeric values follow the framework's normal inline-style behavior. Properties such as `width` and `height` interpret numbers as pixels, while unitless CSS properties such as `opacity` remain unitless.
@@ -201,7 +201,7 @@ const FadingPanel = ma.extend(FloatingPanel)<{ $visible: boolean }>`
   ${({ style, $visible }) =>
     style({
       opacity: $visible ? 1 : 0,
-      pointerEvents: $visible ? "auto" : "none",
+      "pointer-events": $visible ? "auto" : "none",
     })}
 `;
 

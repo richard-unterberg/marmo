@@ -16,6 +16,27 @@ interface CreateReactElementParams<
   logicHandlers?: LogicHandler<T>[]
 }
 
+const resolveStyleDefinition = <P extends object>(
+  styles: StyleDefinition<P> | undefined,
+  props: P,
+): Record<string, string | number> => {
+  if (!styles) {
+    return {}
+  }
+
+  const normalized: Record<string, string | number> = {}
+  const record = styles as Record<string, unknown>
+  for (const key in record) {
+    const rawValue = record[key]
+    const resolvedValue = typeof rawValue === 'function' ? rawValue(props) : rawValue
+    if (typeof resolvedValue === 'string' || typeof resolvedValue === 'number') {
+      normalized[key] = resolvedValue
+    }
+  }
+
+  return normalized
+}
+
 // @todo: we wanna check if the output had a classname, if not remove it from the final output
 /**
  * Creates a forwardRef render component with computed class names.
@@ -52,13 +73,15 @@ const createReactElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       }
     }
 
-    const dynamicStyles = typeof styles === 'function' ? styles(normalizedProps) : styles
+    const dynamicStylesSource = typeof styles === 'function' ? styles(normalizedProps) : styles
+    const dynamicStyles = resolveStyleDefinition(dynamicStylesSource, normalizedProps)
+    const generatedStyles = resolveStyleDefinition(collectedStyles, normalizedProps)
 
     // component level styles
     const localStyle = typeof domProps.style === 'object' && domProps.style !== null ? domProps.style : {}
     const mergedStyles = {
       ...dynamicStyles,
-      ...collectedStyles,
+      ...generatedStyles,
       ...localStyle,
     }
 

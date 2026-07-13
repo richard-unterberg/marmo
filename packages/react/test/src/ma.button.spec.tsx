@@ -105,6 +105,15 @@ const CustomButton = ma.extend(Button)`
 `
 
 describe('ma advanced button', () => {
+  it('converts mapped props without mutating the input object', () => {
+    const input = { size: 'lg' as const, disabled: true, title: 'Save' }
+    const converted = convertMaProps(input, { size: '$size', disabled: '$disabled' })
+
+    expect(input).toEqual({ size: 'lg', disabled: true, title: 'Save' })
+    expect(converted).toEqual({ $size: 'lg', $disabled: true, title: 'Save' })
+    expect(converted).not.toBe(input)
+  })
+
   it('extends the base component with new props', () => {
     const { container } = render(
       <CustomButton type="button" aria-label="test" color="card" noGutter noShadow size="lg" />,

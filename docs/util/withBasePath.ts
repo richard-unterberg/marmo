@@ -27,16 +27,22 @@ export const withDocsBasePath = (href: string, basePath: string) => {
     return href
   }
 
-  const normalizedHref = normalizePathname(href)
+  const suffixIndex = href.search(/[?#]/)
+  const pathname = suffixIndex === -1 ? href : href.slice(0, suffixIndex)
+  const suffix = suffixIndex === -1 ? '' : href.slice(suffixIndex)
+  const hasTrailingSlash = pathname.endsWith('/')
+  const collapsedPathname = `/${pathname}`.replace(/\/+/g, '/').replace(/\/+$/g, '')
+  const normalizedHref = collapsedPathname === '' ? '/' : `${collapsedPathname}${hasTrailingSlash ? '/' : ''}`
   const normalizedBasePath = normalizePathname(basePath)
 
   if (normalizedBasePath === '/') {
-    return normalizedHref
+    return `${normalizedHref}${suffix}`
   }
 
-  if (normalizedHref === normalizedBasePath || normalizedHref.startsWith(normalizedBasePath)) {
-    return normalizedHref
+  const baseWithoutTrailingSlash = normalizedBasePath.replace(/\/$/g, '')
+  if (normalizedHref === baseWithoutTrailingSlash || normalizedHref.startsWith(normalizedBasePath)) {
+    return `${normalizedHref}${suffix}`
   }
 
-  return `${normalizedBasePath.replace(/\/$/g, '')}${normalizedHref}`
+  return `${baseWithoutTrailingSlash}${normalizedHref}${suffix}`
 }

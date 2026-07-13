@@ -3,11 +3,9 @@ import { docsGraph } from '../content/docs.graph'
 
 const docsConfig = {
   graph: docsGraph,
-  siteTitle: 'Polished class composition for React and SolidJS | marmo',
+  siteTitle: 'Polished class composition for React and SolidJS | Marmo',
   siteDescription: 'Shape class names into typed components.',
-  // Add siteUrl to enable automatic sitemap.xml and robots.txt generation.
-  // siteUrl: 'https://docs.example.com',
-  // Set robots to false to emit noindex/nofollow and a disallow-all robots.txt.
+  siteUrl: 'https://richard-unterberg.github.io/marmo',
   robots: false,
   // Set customFonts to false if you want to fully own font loading in consumer CSS.
   customFonts: false,
@@ -19,15 +17,15 @@ const docsConfig = {
   },
   social: {
     github: 'https://github.com/richard-unterberg/marmo',
-    editLinkBranch: 'master',
+    editLinkBranch: 'main',
   },
   topBarNav: {
     components: ['../components/TopNav'],
   },
   brand: {
-    text: 'marmo',
-    logoLight: '/marmo-dark.svg',
-    logoDark: '/marmo-light.svg',
+    text: 'Marmo',
+    logoLight: 'marmo-dark.svg',
+    logoDark: 'marmo-light.svg',
     href: '/',
   },
 
@@ -35,9 +33,9 @@ const docsConfig = {
     pagination: true,
   },
   head: {
-    faviconSvg: '/favicon.svg',
-    faviconIco: '/favicon.ico',
-    appleTouchIcon: '/apple-touch-icon.png',
+    faviconSvg: 'favicon.svg',
+    faviconIco: 'favicon.ico',
+    appleTouchIcon: 'apple-touch-icon.png',
   },
 } satisfies DocsConfig
 

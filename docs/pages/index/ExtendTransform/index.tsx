@@ -1,4 +1,5 @@
 import { LayoutComponent } from '@unterberg/nivel'
+import { withDocsBasePath } from '../../../util/withBasePath'
 
 const ExtendTransformSection = () => {
   return (
@@ -6,13 +7,13 @@ const ExtendTransformSection = () => {
       <div className="absolute top-0 left-0 right-0 h-[50svh] z-0">
         {/* lazy load */}
         <img
-          src="/bg-dark-alt1.png"
+          src={withDocsBasePath('/bg-dark-alt1.png', import.meta.env.BASE_URL)}
           alt=""
           className="hidden dark:block absolute w-full h-full object-fill"
           loading="lazy"
         />
         <img
-          src="/bg-light-alt1.png"
+          src={withDocsBasePath('/bg-light-alt1.png', import.meta.env.BASE_URL)}
           alt=""
           className="dark:hidden absolute w-full h-full object-fill"
           loading="lazy"

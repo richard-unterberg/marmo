@@ -3,6 +3,7 @@ import { LayoutComponent } from '@unterberg/nivel'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useRef } from 'react'
+import { withDocsBasePath } from '../../util/withBasePath'
 import CTAButtons from './CTA'
 import './startpage.css'
 
@@ -70,8 +71,16 @@ const Page = () => {
             className="absolute top-0 left-0 w-full overflow-hidden h-[calc(55svh-14*var(--spacing))] z-1"
           >
             <div data-scroller className="absolute -top-60 left-0 right-0 h-[calc(85svh+16*var(--spacing))] z-0 ">
-              <img src="/bg-dark-strong.png" alt="" className="hidden dark:block absolute w-full h-full object-fill" />
-              <img src="/bg-light-strong.png" alt="" className="dark:hidden absolute w-full h-full object-fill" />
+              <img
+                src={withDocsBasePath('/bg-dark-strong.png', import.meta.env.BASE_URL)}
+                alt=""
+                className="hidden dark:block absolute w-full h-full object-fill"
+              />
+              <img
+                src={withDocsBasePath('/bg-light-strong.png', import.meta.env.BASE_URL)}
+                alt=""
+                className="dark:hidden absolute w-full h-full object-fill"
+              />
             </div>
             <div className="absolute top-0 left-0 h-[calc(55svh+16*var(--spacing))] w-full bg-radial-[at_50%_15%] from-base-100 to-65% dark:from-base-100 z-0" />
           </div>
@@ -82,15 +91,15 @@ const Page = () => {
               <div className="text-center mx-auto z-2 relative">
                 <div className="px-8">
                   <img
-                    src="/marmo-dark.svg"
-                    alt="marmo logo"
+                    src={withDocsBasePath('/marmo-dark.svg', import.meta.env.BASE_URL)}
+                    alt="Marmo logo"
                     className="mx-auto mb-8 w-12 h-12 dark:hidden"
                     width={20}
                     height={20}
                   />
                   <img
-                    src="/marmo-light.svg"
-                    alt="marmo logo"
+                    src={withDocsBasePath('/marmo-light.svg', import.meta.env.BASE_URL)}
+                    alt="Marmo logo"
                     className="mx-auto mb-8 w-12 h-12 hidden dark:block"
                     width={20}
                     height={20}

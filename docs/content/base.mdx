@@ -76,11 +76,13 @@ export default MyPage
 ## Pass and Receive properties
 
 <Alert heading="Prefix incoming props with `$`" type="info" icon={<Hand className="size-4" />}>
-You should prefix the props incoming to `marmo` with a `$` sign. This is a classic convention to distinguish dynamic props from the ones we pass to the component.
+Prefix styling props with a `$` sign. This distinguishes props used by Marmo from props intended for the rendered element.
 This pattern should also avoid conflicts with reserved prop names.
 
-That said, **marmo will remove** any props that are not valid HTML attributes and will not pass them to the rendered DOM element. It should not produce invalid html.
+Marmo filters `$`-prefixed props and props registered as variant keys. All other props are forwarded. Marmo does not perform runtime validation of HTML attributes.
 </Alert>
+
+TypeScript validates ordinary props against the selected intrinsic element when the types are known. That compile-time check does not imply runtime HTML-attribute validation: JavaScript callers, casts, and custom props can still reach the rendered element. Use `$` props for styling-only values and `data-*` or `aria-*` attributes for intentional DOM metadata.
 
 Pass props to the component and use them in the template literal string and in the component prop validation.
 
@@ -138,4 +140,22 @@ const MyComponent = () => {
 <button class="text-lg mt-5 bg-blue-400 text-white opacity-90 pointer-events-none">
   Click Me
 </button>
+```
+
+## Class merging
+
+Marmo combines generated classes with classes supplied by the consumer using `tailwind-merge`. Consumer classes are later, so conflicting Tailwind utilities from the consumer win while non-conflicting generated classes remain.
+
+```tsx choice="react"
+const Panel = ma.div`rounded p-2 text-sm`
+
+const Example = () => <Panel className="p-6">Content</Panel>
+// rounded p-6 text-sm
+```
+
+```tsx choice="solidjs"
+const Panel = ma.div`rounded p-2 text-sm`
+
+const Example = () => <Panel class="p-6">Content</Panel>
+// rounded p-6 text-sm
 ```

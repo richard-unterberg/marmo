@@ -76,4 +76,12 @@ describe('ma base (solid)', () => {
     expect(container.firstChild).toHaveStyle('background-color: blue')
     expect(container.firstChild).toHaveStyle('font-size: 14px')
   })
+
+  it('forwards ordinary custom props while filtering styling props', () => {
+    const StyledDiv = ma.div<{ $tone: string; 'custom-prop': string }>`text-blue`
+    const { container } = render(() => <StyledDiv $tone="quiet" custom-prop="forwarded" />)
+
+    expect(container.firstChild).not.toHaveAttribute('$tone')
+    expect(container.firstChild).toHaveAttribute('custom-prop', 'forwarded')
+  })
 })

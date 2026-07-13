@@ -5,6 +5,16 @@ import React from 'react'
 import ma from '../../dist'
 
 describe('Style Capabilities', () => {
+  it('supports numeric and function-valued style entries', () => {
+    const Box = ma.div<{ $size: number }>`
+      ${(p) => p.style({ width: (props) => props.$size, opacity: 0.5 })}
+    `
+    const { container } = render(<Box $size={24} />)
+
+    expect(container.firstChild).toHaveStyle('width: 24px')
+    expect(container.firstChild).toHaveStyle('opacity: 0.5')
+  })
+
   it('applies styles correctly in createBaseComponent', () => {
     const BaseButton = ma.button<{ $disabled?: boolean }>`
       ${(p) => (p.$disabled ? 'text-gray' : 'text-blue')}

@@ -72,4 +72,12 @@ describe('ma base', () => {
     expect(container.firstChild).toHaveClass('mt-10')
     expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
   })
+
+  it('forwards ordinary custom props while filtering styling props', () => {
+    const StyledDiv = ma.div<{ $tone: string; 'custom-prop': string }>`text-blue`
+    const { container } = render(<StyledDiv $tone="quiet" custom-prop="forwarded" />)
+
+    expect(container.firstChild).not.toHaveAttribute('$tone')
+    expect(container.firstChild).toHaveAttribute('custom-prop', 'forwarded')
+  })
 })

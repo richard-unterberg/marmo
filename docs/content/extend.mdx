@@ -16,7 +16,7 @@ When creating a new Marmo component, start with a base element such as `ma.butto
 
 ## Extend a component
 
-Pass a component to `ma.extend`, then add classes with a tagged template. Marmo passes the merged `className` to the base component, so the component must forward `className` to the element it renders.
+Pass a component to `ma.extend`, then add classes with a tagged template. In React, the base component must forward `className`; in Solid, it must forward `class`.
 
 ```tsx choice=react
 import ma from "@marmo/react"
@@ -55,7 +55,7 @@ const MyComponent = () => <NavigationLink href="/settings">Settings</NavigationL
 <a href="/settings" class="rounded-md px-3 py-2 font-medium">Settings</a>
 ```
 
-The original component remains unchanged. Rendering `Link` elsewhere does not add the classes from `NavigationLink`.
+The original component remains unchanged. Rendering `Link` elsewhere does not add the classes from `NavigationLink`. Extending a regular framework component preserves that component's rendering. By contrast, transforming a Marmo component changes its rendered intrinsic element and does not preserve arbitrary framework-component internals.
 
 ## Add typed props
 
@@ -97,7 +97,7 @@ The extended component retains the base button props, such as `type`, `disabled`
 
 ### Style a third-party component
 
-Props are inferred from a well-typed component. This makes `extend` useful for styling icons, router links, headless UI primitives, and other components that accept `className`.
+Props are inferred from a well-typed component. This makes `extend` useful for styling icons, router links, and headless UI primitives that forward the framework's class prop: `className` in React or `class` in Solid.
 
 ```tsx choice=react
 import { ArrowBigDown } from "lucide-react"
@@ -269,17 +269,24 @@ const StyledField = ma.extend(TypedField)<{ $error?: boolean }>`
 `
 ```
 
-This wrapper is also the right place to adapt a library-specific class prop to `className` when a component does not forward it directly.
+This wrapper is also the right place to adapt a library-specific class prop to `className` in React or `class` in Solid when a component does not forward it directly.
 
 ## Class merging
 
-Classes from the base component, the extension, and the consumer's `className` are composed by Marmo. When utility classes conflict, the later class wins according to `tailwind-merge` rules.
+Classes from the base component, the extension, and the consumer's class prop are composed by Marmo. When utility classes conflict, the later class wins according to `tailwind-merge` rules.
 
-```tsx
+```tsx choice="react"
 const Base = ma.button`px-2 bg-neutral`
 const Extended = ma.extend(Base)`px-4 bg-primary`;
 
 <Extended className="px-6" />
+```
+
+```tsx choice="solidjs"
+const Base = ma.button`px-2 bg-neutral`
+const Extended = ma.extend(Base)`px-4 bg-primary`;
+
+<Extended class="px-6" />
 ```
 
 The final class list uses `px-6` and `bg-primary` while retaining non-conflicting classes.

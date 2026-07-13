@@ -2,7 +2,7 @@ import ma from '@marmo/react'
 import { useDocsContext } from '@unterberg/nivel/client'
 import { useMemo } from 'react'
 import { usePageContext } from 'vike-react/usePageContext'
-import { stripBasePath } from '../util/withBasePath'
+import { stripBasePath, withDocsBasePath } from '../util/withBasePath'
 
 type TopNavItem = {
   label: string
@@ -36,20 +36,22 @@ const topBarNav = [
 
 const TopNav = () => {
   const docs = useDocsContext()
-  const { urlPathname, urlParsed } = usePageContext()
-  const _pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.id, page])), [docs.pages])
-  const _currentPathname = stripBasePath(urlPathname, docs.basePath)
+  const { urlPathname } = usePageContext()
+  const pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.href, page])), [docs.pages])
+  const currentPathname = stripBasePath(urlPathname, import.meta.env.BASE_URL)
 
-  const isStartPage = urlParsed.pathname === '/'
+  const isStartPage = currentPathname === '/'
 
   if (isStartPage) return null
 
   return (
     <StyledTopNav>
       {topBarNav.map(({ pageId, ...item }) => {
-        const isActive = urlParsed.pathname.includes(pageId)
+        const isActive = currentPathname.includes(pageId)
+        const pageHref = pagesById.get(pageId)?.href ?? pageId
+        const href = withDocsBasePath(pageHref, import.meta.env.BASE_URL)
 
-        return <TopNavItem key={pageId} {...item} href={pageId} isActive={isActive} />
+        return <TopNavItem key={pageId} {...item} href={href} isActive={isActive} />
       })}
     </StyledTopNav>
   )

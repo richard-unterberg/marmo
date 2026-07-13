@@ -4,19 +4,20 @@ import CodePresenter from '../../../components/CodePresenter'
 import MarmoCode from './marmo.mdx'
 import CVACode from './cva.mdx'
 import NativeCode from './native.mdx'
+import { withDocsBasePath } from '../../../util/withBasePath'
 
 const VariantsSection = () => {
   return (
     <div className="relative">
       <div className="absolute top-0 left-0 right-0 h-[70svh] z-0">
         <img
-          src="/bg-dark-alt.png"
+          src={withDocsBasePath('/bg-dark-alt.png', import.meta.env.BASE_URL)}
           alt=""
           className="hidden dark:block absolute w-full h-full object-fill"
           loading="lazy"
         />
         <img
-          src="/bg-light-alt.png"
+          src={withDocsBasePath('/bg-light-alt.png', import.meta.env.BASE_URL)}
           alt=""
           className="dark:hidden absolute w-full h-full object-fill opacity-50"
           loading="lazy"

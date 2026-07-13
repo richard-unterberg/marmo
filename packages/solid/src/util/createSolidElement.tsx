@@ -16,6 +16,53 @@ const toKebabCase = (key: string) => {
     .toLowerCase()
 }
 
+const unitlessProperties = new Set([
+  'animation-iteration-count',
+  'aspect-ratio',
+  'border-image-outset',
+  'border-image-slice',
+  'border-image-width',
+  'column-count',
+  'columns',
+  'fill-opacity',
+  'flex',
+  'flex-grow',
+  'flex-shrink',
+  'font-weight',
+  'grid-area',
+  'grid-column',
+  'grid-column-end',
+  'grid-column-span',
+  'grid-column-start',
+  'grid-row',
+  'grid-row-end',
+  'grid-row-span',
+  'grid-row-start',
+  'line-clamp',
+  'line-height',
+  'opacity',
+  'order',
+  'orphans',
+  'scale',
+  'stroke-dasharray',
+  'stroke-dashoffset',
+  'stroke-miterlimit',
+  'stroke-opacity',
+  'stroke-width',
+  'tab-size',
+  'widows',
+  'z-index',
+  'zoom',
+])
+
+const normalizeStyleValue = (key: string, value: string | number) => {
+  if (typeof value !== 'number' || value === 0 || key.startsWith('--') || unitlessProperties.has(key)) {
+    return value
+  }
+
+  return `${value}px`
+}
+
 const resolveStyleDefinition = <P extends object>(
   styles: StyleDefinition<P> | undefined,
   props: P,
@@ -35,7 +82,8 @@ const resolveStyleDefinition = <P extends object>(
     if (resolvedValue === undefined || resolvedValue === null) {
       continue
     }
-    normalized[toKebabCase(rawKey)] = resolvedValue
+    const key = toKebabCase(rawKey)
+    normalized[key] = normalizeStyleValue(key, resolvedValue)
   }
 
   return normalized
@@ -52,7 +100,8 @@ const normalizeInlineStyle = (style: Record<string, any> | undefined | null) => 
     if (value === undefined || value === null) {
       continue
     }
-    normalized[toKebabCase(key)] = value
+    const normalizedKey = toKebabCase(key)
+    normalized[normalizedKey] = normalizeStyleValue(normalizedKey, value)
   }
   return normalized
 }
