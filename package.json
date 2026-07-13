@@ -44,5 +44,8 @@
   "bugs": {
     "url": "https://github.com/richard-unterberg/classmatejs/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs#readme"
+  "homepage": "https://github.com/richard-unterberg/classmatejs#readme",
+  "dependencies": {
+    "@unterberg/nivel": "^0.3.0-alpha-12"
+  }
 }
