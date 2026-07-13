@@ -16,8 +16,8 @@ const ExtendTransformSection = () => {
           className="opacity-60 absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
           style={
             {
-              '--background-image-light': `url("${withDocsBasePath('/bg-light-alt1.png', import.meta.env.BASE_URL)}")`,
-              '--background-image-dark': `url("${withDocsBasePath('/bg-dark-alt1.png', import.meta.env.BASE_URL)}")`,
+              '--background-image-light': `url("${withDocsBasePath('/bg/bg-light-alt1.avif', import.meta.env.BASE_URL)}")`,
+              '--background-image-dark': `url("${withDocsBasePath('/bg/bg-dark-alt1.avif', import.meta.env.BASE_URL)}")`,
             } as CSSProperties
           }
         />

@@ -85,8 +85,8 @@ const Page = () => {
                 className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
                 style={
                   {
-                    '--background-image-light': `url("${withDocsBasePath('/bg-light-strong.png', import.meta.env.BASE_URL)}")`,
-                    '--background-image-dark': `url("${withDocsBasePath('/bg-dark-strong.png', import.meta.env.BASE_URL)}")`,
+                    '--background-image-light': `url("${withDocsBasePath('/bg/bg-light-strong.avif', import.meta.env.BASE_URL)}")`,
+                    '--background-image-dark': `url("${withDocsBasePath('/bg/bg-dark-strong.avif', import.meta.env.BASE_URL)}")`,
                   } as CSSProperties
                 }
               />

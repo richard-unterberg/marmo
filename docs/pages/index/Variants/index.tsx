@@ -18,8 +18,8 @@ const VariantsSection = () => {
           className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat opacity-50 dark:bg-(image:--background-image-dark) dark:opacity-100"
           style={
             {
-              '--background-image-light': `url("${withDocsBasePath('/bg-light-alt.png', import.meta.env.BASE_URL)}")`,
-              '--background-image-dark': `url("${withDocsBasePath('/bg-dark-alt.png', import.meta.env.BASE_URL)}")`,
+              '--background-image-light': `url("${withDocsBasePath('/bg/bg-light-alt.avif', import.meta.env.BASE_URL)}")`,
+              '--background-image-dark': `url("${withDocsBasePath('/bg/bg-dark-alt.avif', import.meta.env.BASE_URL)}")`,
             } as CSSProperties
           }
         />
