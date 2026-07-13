@@ -1,6 +1,6 @@
+import { fileURLToPath } from 'node:url'
 import { nivelTailwindVite } from '@unterberg/nivel/tailwind'
 import { viteBeastiesOutputPlugin } from '@unterberg/vite-beasties-output'
-import { fileURLToPath } from 'node:url'
 import vike from 'vike/plugin'
 
 process.env.VIKE_CRAWL ??= JSON.stringify({ git: false })
@@ -28,9 +28,7 @@ export default {
           /data-theme=.*light/,
           /^:root:has\(input\.theme-controller/,
           /^:where\(:root\)$/,
-          // all starting with .h-
           /^\.h-/,
-          // include all with .basis-
           /^\.basis-/,
         ],
       },
