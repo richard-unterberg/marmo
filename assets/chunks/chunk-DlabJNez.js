@@ -1,0 +1,1 @@
+import{B as e,h as t,n}from"./chunk-DMd7Im9_.js";var r=e({default:()=>a}),i=t(),a=({children:e})=>(0,i.jsx)(n,{children:e});export{r as t};
