@@ -1,6 +1,10 @@
 # marmo
 
-Typed component factory for class names. For React and SolidJS.
+Typed component factory for class names. For React.
+
+Check the new [docs](richard-unterberg.github.io/marmo/) for more information:
+
+https://richard-unterberg.github.io/marmo/
 
 ## 🚩 Transform this
 

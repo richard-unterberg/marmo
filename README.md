@@ -2,6 +2,10 @@
 
 Typed component factory for class names. For React and SolidJS.
 
+Check the new [docs](richard-unterberg.github.io/marmo/) for more information:
+
+https://richard-unterberg.github.io/marmo/
+
 ## 🚩 Transform this
 
 ```jsx
