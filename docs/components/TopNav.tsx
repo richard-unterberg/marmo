@@ -18,7 +18,7 @@ const topBarNav = [
   },
   {
     pageId: '/base-composition',
-    label: 'Base',
+    label: 'Basic',
   },
   {
     pageId: '/variants',
@@ -34,7 +34,11 @@ const topBarNav = [
   },
 ] satisfies TopNavItem[]
 
-const TopNav = () => {
+interface TopNavItemProps {
+  ignoreLandingPage?: boolean
+}
+
+const TopNav = ({ ignoreLandingPage = false }: TopNavItemProps) => {
   const docs = useDocsContext()
   const { urlPathname } = usePageContext()
   const pagesById = useMemo(() => new Map(docs.pages.map((page) => [page.href, page])), [docs.pages])
@@ -42,7 +46,7 @@ const TopNav = () => {
 
   const isStartPage = currentPathname === '/'
 
-  if (isStartPage) return null
+  if (!ignoreLandingPage && isStartPage) return null
 
   return (
     <StyledTopNav>
@@ -78,6 +82,6 @@ const StyledTopNav = ma.nav`
 const StyleTopNavItem = ma.a<{ $isActive: boolean; $isCta?: boolean }>`
   btn btn-sm tracking-tight
   text-xs xl:text-sm 
-  ${({ $isActive }) => $isActive && 'btn-primary btn-soft'}
+  ${({ $isActive }) => $isActive && 'btn-primary'}
   ${({ $isCta, $isActive }) => !$isActive && $isCta && 'btn-primary btn-outline'}
 `

@@ -3,6 +3,7 @@ import { LayoutComponent } from '@unterberg/nivel'
 import type { CSSProperties } from 'react'
 import CodePresenter from '../../../components/CodePresenter'
 import MarmoLogo from '../../../components/MarmoLogo'
+import StyledLink from '../../../components/StyledLink'
 import { withDocsBasePath } from '../../../util/withBasePath'
 import CVACode from './cva.mdx'
 import MarmoCode from './marmo.mdx'
@@ -27,7 +28,7 @@ const VariantsSection = () => {
       <LayoutComponent $size="xs" className="mt-32 mb-16 flex flex-col gap-8">
         <MarmoLogo $size="md" />
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-center">
-          Variants - Advanced Components
+          Advanced Styling with Variants
         </h1>
         <p className="text-lg text-base-muted">
           With variants, you can easily create reusable components with different styles and behaviors based on props.
@@ -58,7 +59,7 @@ const VariantsSection = () => {
         </div>
       </LayoutComponent>
 
-      <LayoutComponent $size="full" className="mt-32">
+      <LayoutComponent $size="full" className="mt-32  mb-16">
         <CodePresenter
           leftCode={<NativeCode />}
           leftCodeLabel="Native"
@@ -69,6 +70,9 @@ const VariantsSection = () => {
           hightlightBoxHeight={660}
           smallBoxHeight={560}
         />
+        <div className="relative mx-auto w-fit">
+          <StyledLink href="variants">Learn more about variants</StyledLink>
+        </div>
       </LayoutComponent>
     </div>
   )

@@ -6,9 +6,12 @@ import { type CSSProperties, useRef } from 'react'
 import Headline from '../../components/Headline'
 import MarmoLogo from '../../components/MarmoLogo'
 import { withDocsBasePath } from '../../util/withBasePath'
+import docs from '../+docs'
 import CTAButtons from './CTA'
+
 import './startpage.css'
 
+import TopNav from '../../components/TopNav'
 import BaseSection from './Base'
 import ExtendTransformSection from './ExtendTransform'
 import VariantsSection from './Variants'
@@ -120,6 +123,18 @@ const Page = () => {
       </div>
       <ExtendTransformSection />
       <VariantsSection />
+
+      <LayoutComponent className="relative z-10 mb-12">
+        <a
+          href={docs.social.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-16 mb-8 block mx-auto w-fit"
+        >
+          <MarmoLogo $size="md" />
+        </a>
+        <TopNav ignoreLandingPage />
+      </LayoutComponent>
     </>
   )
 }

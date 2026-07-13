@@ -1,7 +1,9 @@
 import ma from '@marmo/react'
 import { ExternalLink } from '@unterberg/nivel/icons'
-import type { JSX } from 'react'
+import { type JSX, type KeyboardEvent, useId, useState } from 'react'
 import { hasGitUrl, withGithubUrl } from '../util/withGithubUrl'
+
+type CodeExample = 'left' | 'highlight' | 'right'
 
 interface CodePresenterProps {
   leftCode: JSX.Element
@@ -30,9 +32,67 @@ const CodePresenter = ({
   smallBoxHeight = 150,
   hightlightBoxHeight = 170,
 }: CodePresenterProps) => {
+  const presenterId = useId()
+  const [activeExample, setActiveExample] = useState<CodeExample>('highlight')
+  const examples: { id: CodeExample; label: string }[] = [
+    { id: 'left', label: leftCodeLabel },
+    { id: 'highlight', label: highlightCodeLabel },
+    { id: 'right', label: rightCodeLabel },
+  ]
+
+  const handleTabKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    const tabs = Array.from(
+      event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]') ?? [],
+    )
+    const currentIndex = tabs.indexOf(event.currentTarget)
+    let nextIndex: number | undefined
+
+    if (event.key === 'ArrowRight') {
+      nextIndex = (currentIndex + 1) % tabs.length
+    } else if (event.key === 'ArrowLeft') {
+      nextIndex = (currentIndex - 1 + tabs.length) % tabs.length
+    } else if (event.key === 'Home') {
+      nextIndex = 0
+    } else if (event.key === 'End') {
+      nextIndex = tabs.length - 1
+    }
+
+    if (nextIndex === undefined) {
+      return
+    }
+
+    event.preventDefault()
+    tabs[nextIndex]?.focus()
+    tabs[nextIndex]?.click()
+  }
+
   return (
     <Outer>
-      <SmallBox data-code-presenter-small-left>
+      <div className="tabs tabs-box tabs-sm col-span-full grid grid-cols-3 md:hidden" role="tablist">
+        {examples.map(({ id, label }) => (
+          <button
+            aria-controls={`${presenterId}-${id}-panel`}
+            aria-selected={activeExample === id}
+            className={`tab ${activeExample === id ? 'tab-active' : ''}`}
+            id={`${presenterId}-${id}-tab`}
+            key={id}
+            onClick={() => setActiveExample(id)}
+            onKeyDown={handleTabKeyDown}
+            role="tab"
+            tabIndex={activeExample === id ? 0 : -1}
+            type="button"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <SmallBox
+        aria-labelledby={`${presenterId}-left-tab`}
+        className={activeExample === 'left' ? undefined : 'hidden md:block'}
+        data-code-presenter-small-left
+        id={`${presenterId}-left-panel`}
+        role="tabpanel"
+      >
         <SmallBoxHeadline>
           {hasGitUrl && leftCodeRepoLink ? (
             <SmallBoxLink href={withGithubUrl(leftCodeRepoLink)}>
@@ -47,9 +107,15 @@ const CodePresenter = ({
           {leftCode}
         </SmallBoxCodeBlock>
       </SmallBox>
-      <BigBox data-code-presenter-highlight>
+      <BigBox
+        aria-labelledby={`${presenterId}-highlight-tab`}
+        className={activeExample === 'highlight' ? undefined : 'hidden md:block'}
+        data-code-presenter-highlight
+        id={`${presenterId}-highlight-panel`}
+        role="tabpanel"
+      >
         {/* <BigBoxShadow $height={hightlightBoxHeight} /> */}
-        <h2 className="text-lg mb-4 text-center flex items-center justify-center gap-2">
+        <h2 className="text-lg mb-4 text-center hidden md:flex items-center justify-center gap-2">
           {hasGitUrl && highlightCodeRepoLink ? (
             <BigBoxLink href={withGithubUrl(highlightCodeRepoLink)}>
               {highlightCodeLabel} <ExternalLinkIcon />
@@ -68,7 +134,13 @@ const CodePresenter = ({
         />
         <BigBoxCodeBlock $height={hightlightBoxHeight}>{highlightCode}</BigBoxCodeBlock>
       </BigBox>
-      <SmallBox data-code-presenter-small-right>
+      <SmallBox
+        aria-labelledby={`${presenterId}-right-tab`}
+        className={activeExample === 'right' ? undefined : 'hidden md:block'}
+        data-code-presenter-small-right
+        id={`${presenterId}-right-panel`}
+        role="tabpanel"
+      >
         <SmallBoxHeadline>
           {hasGitUrl && rightCodeRepoLink ? (
             <SmallBoxLink href={withGithubUrl(rightCodeRepoLink)}>
@@ -91,7 +163,7 @@ export default CodePresenter
 const Outer = ma.div`
   landing-code-samples 
   md:grid grid-cols-12 
-  gap-4 mt-16
+  gap-4 mt-8 md:mt-16
   [&_[data-nivel-component="code-choice-group"]]:my-0
   [&_pre]:pb-12
 `
@@ -131,7 +203,7 @@ const SmallBoxHeadline = ma.h2`
   text-base-muted-medium 
   italic 
   mb-4
-  flex items-center justify-center gap-2
+  hidden md:flex items-center justify-center gap-2
 `
 
 const SmallBoxLink = ma.a`

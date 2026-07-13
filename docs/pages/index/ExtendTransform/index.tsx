@@ -1,15 +1,11 @@
-import ma from '@marmo/react'
-import { LayoutComponent, Link } from '@unterberg/nivel'
+import { LayoutComponent } from '@unterberg/nivel'
 import type { CSSProperties } from 'react'
 import Headline from '../../../components/Headline'
 import MarmoLogo from '../../../components/MarmoLogo'
+import StyledLink from '../../../components/StyledLink'
 import { withDocsBasePath } from '../../../util/withBasePath'
 import ExtendCode from './extend.mdx'
 import TransformCode from './transform.mdx'
-
-const StyledLink = ma.extend(Link)`
-  btn btn-primary btn-soft w-fit mx-auto
-`
 
 const ExtendTransformSection = () => {
   return (
@@ -17,7 +13,7 @@ const ExtendTransformSection = () => {
       <div className="absolute -top-26 left-0 right-0 h-[70svh]">
         <div
           aria-hidden="true"
-          className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
+          className="opacity-60 absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
           style={
             {
               '--background-image-light': `url("${withDocsBasePath('/bg-light-alt1.png', import.meta.env.BASE_URL)}")`,
