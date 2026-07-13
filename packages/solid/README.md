@@ -2,7 +2,7 @@
 
 Typed component factory for class names. For SolidJS.
 
-Check the new [docs](richard-unterberg.github.io/marmo/) for more information:
+Check the new [docs](https://richard-unterberg.github.io/marmo/) for more information:
 
 https://richard-unterberg.github.io/marmo/
 

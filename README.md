@@ -2,7 +2,7 @@
 
 Typed component factory for class names. For React and SolidJS.
 
-Check the new [docs](richard-unterberg.github.io/marmo/) for more information:
+Check the new [docs](https://richard-unterberg.github.io/marmo/) for more information:
 
 https://richard-unterberg.github.io/marmo/
 
@@ -43,6 +43,8 @@ const SomeButton = ma.button`
 
 *Very simplified examples—see the package docs for many more features!*
 
+https://richard-unterberg.github.io/marmo/
+
 ## Features
 
 - Class name-focused components
@@ -59,7 +61,7 @@ const SomeButton = ma.button`
 
 ### React
 
-- [docs](packages/react)
+- [docs](https://richard-unterberg.github.io/marmo/)
 - [npmjs](https://www.npmjs.com/package/@marmo/react)
 
 ```bash
@@ -78,7 +80,7 @@ Use a regular dependency for packages/libraries or deployments that resolve
 
 ### SolidJs
 
-- [docs](packages/solid)
+- [docs](https://richard-unterberg.github.io/marmo/)
 - [npmjs](https://www.npmjs.com/package/@marmo/solid)
 
 ```bash
