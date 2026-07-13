@@ -1,30 +1,31 @@
 import ma from '@marmo/react'
 import { LayoutComponent } from '@unterberg/nivel'
+import type { CSSProperties } from 'react'
 import CodePresenter from '../../../components/CodePresenter'
-import MarmoCode from './marmo.mdx'
-import CVACode from './cva.mdx'
-import NativeCode from './native.mdx'
+import MarmoLogo from '../../../components/MarmoLogo'
 import { withDocsBasePath } from '../../../util/withBasePath'
+import CVACode from './cva.mdx'
+import MarmoCode from './marmo.mdx'
+import NativeCode from './native.mdx'
 
 const VariantsSection = () => {
   return (
     <div className="relative">
-      <div className="absolute top-0 left-0 right-0 h-[70svh] z-0">
-        <img
-          src={withDocsBasePath('/bg-dark-alt.png', import.meta.env.BASE_URL)}
-          alt=""
-          className="hidden dark:block absolute w-full h-full object-fill"
-          loading="lazy"
-        />
-        <img
-          src={withDocsBasePath('/bg-light-alt.png', import.meta.env.BASE_URL)}
-          alt=""
-          className="dark:hidden absolute w-full h-full object-fill opacity-50"
-          loading="lazy"
+      <div className="absolute -top-60 left-0 right-0 h-[70svh] z-0">
+        <div
+          aria-hidden="true"
+          className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat opacity-50 dark:bg-(image:--background-image-dark) dark:opacity-100"
+          style={
+            {
+              '--background-image-light': `url("${withDocsBasePath('/bg-light-alt.png', import.meta.env.BASE_URL)}")`,
+              '--background-image-dark': `url("${withDocsBasePath('/bg-dark-alt.png', import.meta.env.BASE_URL)}")`,
+            } as CSSProperties
+          }
         />
         <div className="absolute top-0 left-0 right-0 h-full bg-linear-to-b from-base-100 from-10% via-transparent to-base-100" />
       </div>
       <LayoutComponent $size="xs" className="mt-32 mb-16 flex flex-col gap-8">
+        <MarmoLogo $size="md" />
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-center">
           Variants - Advanced Components
         </h1>

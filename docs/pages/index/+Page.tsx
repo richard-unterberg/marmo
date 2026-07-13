@@ -2,7 +2,9 @@ import { useGSAP } from '@gsap/react'
 import { LayoutComponent } from '@unterberg/nivel'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useRef } from 'react'
+import { type CSSProperties, useRef } from 'react'
+import Headline from '../../components/Headline'
+import MarmoLogo from '../../components/MarmoLogo'
 import { withDocsBasePath } from '../../util/withBasePath'
 import CTAButtons from './CTA'
 import './startpage.css'
@@ -71,15 +73,15 @@ const Page = () => {
             className="absolute top-0 left-0 w-full overflow-hidden h-[calc(55svh-14*var(--spacing))] z-1"
           >
             <div data-scroller className="absolute -top-60 left-0 right-0 h-[calc(85svh+16*var(--spacing))] z-0 ">
-              <img
-                src={withDocsBasePath('/bg-dark-strong.png', import.meta.env.BASE_URL)}
-                alt=""
-                className="hidden dark:block absolute w-full h-full object-fill"
-              />
-              <img
-                src={withDocsBasePath('/bg-light-strong.png', import.meta.env.BASE_URL)}
-                alt=""
-                className="dark:hidden absolute w-full h-full object-fill"
+              <div
+                aria-hidden="true"
+                className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
+                style={
+                  {
+                    '--background-image-light': `url("${withDocsBasePath('/bg-light-strong.png', import.meta.env.BASE_URL)}")`,
+                    '--background-image-dark': `url("${withDocsBasePath('/bg-dark-strong.png', import.meta.env.BASE_URL)}")`,
+                  } as CSSProperties
+                }
               />
             </div>
             <div className="absolute top-0 left-0 h-[calc(55svh+16*var(--spacing))] w-full bg-radial-[at_50%_15%] from-base-100 to-65% dark:from-base-100 z-0" />
@@ -89,28 +91,15 @@ const Page = () => {
           <div className="mt-24 mb-12 z-5" data-hero-headline>
             <LayoutComponent className="relative">
               <div className="text-center mx-auto z-2 relative">
-                <div className="px-8">
-                  <img
-                    src={withDocsBasePath('/marmo-dark.svg', import.meta.env.BASE_URL)}
-                    alt="Marmo logo"
-                    className="mx-auto mb-8 w-12 h-12 dark:hidden"
-                    width={20}
-                    height={20}
-                  />
-                  <img
-                    src={withDocsBasePath('/marmo-light.svg', import.meta.env.BASE_URL)}
-                    alt="Marmo logo"
-                    className="mx-auto mb-8 w-12 h-12 hidden dark:block"
-                    width={20}
-                    height={20}
-                  />
-                  <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-base-content">
+                <div className="px-8 flex flex-col">
+                  <MarmoLogo $size="lg" />
+                  <Headline className="mt-8 mb-4">
                     Component factory for{' '}
                     <span className="text-nowrap underline text-shadow-lg text-shadow-primary-muted-superlight text-primary">
                       utility-first UI
                     </span>
-                  </h1>
-                  <p className="font-normal text-base-muted text-lg md:text-2xl lg:text-3xl mt-4">
+                  </Headline>
+                  <p className="font-normal text-base-muted text-lg md:text-2xl lg:text-3xl">
                     Typed layer for class names. For React and SolidJS.
                   </p>
                 </div>

@@ -273,4 +273,6 @@ type DynamicStyleValue<P> = (props: P) => StaticStyleValue
 // todo: document this
 export type StyleDefinition<P> = {
   [Key in keyof JSX.CSSProperties]?: StaticStyleValue | DynamicStyleValue<P>
+} & {
+  [Key in `--${string}`]?: StaticStyleValue | DynamicStyleValue<P>
 }

@@ -14,6 +14,15 @@ describe('Style capabilities (solid)', () => {
     expect(container.firstChild).toHaveStyle('opacity: 0.5')
   })
 
+  it('supports CSS custom properties', () => {
+    const Box = ma.div<{ $color: string }>`
+      ${(p) => p.style({ '--accent-color': (props) => props.$color })}
+    `
+    const { container } = render(() => <Box $color="rebeccapurple" />)
+
+    expect(container.firstChild).toHaveStyle('--accent-color: rebeccapurple')
+  })
+
   it('applies styles correctly in base components', () => {
     const BaseButton = ma.button<{ $disabled?: boolean }>`
       ${(p) => (p.$disabled ? 'text-gray' : 'text-blue')}
