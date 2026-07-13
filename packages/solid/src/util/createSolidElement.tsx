@@ -1,9 +1,9 @@
-import { createComponent, splitProps } from 'solid-js'
 import type { Component, JSX } from 'solid-js'
+import { createComponent, splitProps } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { twMerge } from 'tailwind-merge'
 
-import type { MaBaseComponent, LogicHandler, StyleDefinition } from '../types'
+import type { LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
 import applyLogicHandlers from './applyLogicHandlers'
 
 const toKebabCase = (key: string) => {
@@ -148,7 +148,7 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
   }) as MaBaseComponent<T>
 
   element.displayName = displayName || 'Ma Component'
-  element.__maMarmo = true
+  element.__ma = true
   element.__maComputeClassName = (props: T, collectedStyles?: StyleDefinition<T>) =>
     computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props, collectedStyles)
   element.__maStyles = styles

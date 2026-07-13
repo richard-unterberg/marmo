@@ -37,7 +37,7 @@ export type InputComponent = Component<any> | MaBaseComponent<any>
 export interface MaBaseComponent<P extends object = object> extends Component<P> {
   <K extends keyof JSX.IntrinsicElements>(props: TransformAsProps<P, K>): JSX.Element
   displayName?: string
-  __maMarmo: true
+  __ma: true
   __maComputeClassName?: (props: P, collectedStyles?: StyleDefinition<P>) => string
   __maTag?: keyof JSX.IntrinsicElements | Component<any>
   __maStyles?: StyleDefinition<P> | ((props: P) => StyleDefinition<P>)

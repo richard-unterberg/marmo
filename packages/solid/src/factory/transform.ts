@@ -1,6 +1,6 @@
-import { mergeProps } from 'solid-js'
 import type { JSX } from 'solid-js'
-import type { MaBaseComponent, Interpolation, LogicHandler, StyleDefinition } from '../types'
+import { mergeProps } from 'solid-js'
+import type { Interpolation, LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
 import createSolidElement from '../util/createSolidElement'
 
 const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
@@ -11,7 +11,7 @@ const createTransformedComponent = <T extends object, E extends keyof JSX.Intrin
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
 ): MaBaseComponent<T> => {
-  if (baseComponent.__maMarmo !== true) {
+  if (baseComponent.__ma !== true) {
     throw new Error('ma.transform can only transform marmo components')
   }
 

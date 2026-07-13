@@ -1,7 +1,7 @@
-import { type JSX, type JSXElementConstructor, type RefAttributes, createElement, forwardRef } from 'react'
+import { createElement, forwardRef, type JSX, type JSXElementConstructor, type RefAttributes } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import type { MaBaseComponent, LogicHandler, StyleDefinition } from '../types'
+import type { LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
 import applyLogicHandlers from './applyLogicHandlers'
 
 interface CreateReactElementParams<
@@ -76,7 +76,7 @@ const createReactElement = <T extends object, E extends keyof JSX.IntrinsicEleme
   }) as MaBaseComponent<T>
 
   element.displayName = displayName || 'Ma Component'
-  element.__maMarmo = true
+  element.__ma = true
   element.__maComputeClassName = (props: T, collectedStyles?: StyleDefinition<T>) =>
     computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props, collectedStyles)
   element.__maStyles = styles

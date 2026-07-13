@@ -47,7 +47,7 @@ export interface MaBaseComponent<P extends object = object>
   <K extends keyof JSX.IntrinsicElements>(
     props: PropsWithoutRef<TransformAsProps<P, K>> & RefAttributes<any>,
   ): ReactNode
-  __maMarmo: true
+  __ma: true
   __maComputeClassName?: (props: P, collectedStyles?: StyleDefinition<P>) => string
   __maTag?: keyof React.JSX.IntrinsicElements | JSXElementConstructor<any>
   __maStyles?: StyleDefinition<P> | ((props: P) => StyleDefinition<P>)

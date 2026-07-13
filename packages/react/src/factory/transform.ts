@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import type { MaBaseComponent, Interpolation, LogicHandler, StyleDefinition } from '../types'
+import type { Interpolation, LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
 import createReactElement from '../util/createReactElement'
 
 const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
@@ -10,7 +10,7 @@ const createTransformedComponent = <T extends object, E extends keyof JSX.Intrin
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
 ): MaBaseComponent<T> => {
-  if (baseComponent.__maMarmo !== true) {
+  if (baseComponent.__ma !== true) {
     throw new Error('ma.transform can only transform marmo components')
   }
 

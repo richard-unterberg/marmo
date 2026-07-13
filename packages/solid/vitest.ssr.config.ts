@@ -22,8 +22,4 @@ export default defineConfig({
       },
     ],
   },
-  esbuild: {
-    jsx: 'automatic',
-    jsxImportSource: 'solid-js',
-  },
 })

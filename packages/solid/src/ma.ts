@@ -3,12 +3,12 @@ import createExtendedComponent, { createExtendedVariantsComponent } from './fact
 import createTransformedComponent from './factory/transform'
 import createVariantsComponent from './factory/variants'
 import type {
-  MaBaseComponent,
-  MaComponentFactory,
-  MaFactoryFunction,
   InputComponent,
   Interpolation,
   LogicHandler,
+  MaBaseComponent,
+  MaComponentFactory,
+  MaFactoryFunction,
   MergeProps,
   VariantsConfig,
 } from './types'
@@ -50,7 +50,7 @@ const createExtendBuilder = (baseComponent: MaBaseComponent<any>, logicHandlers:
 
 const copyMarmoMetadata = (target: Record<string, any>, source: MaBaseComponent<any>) => {
   target.displayName = source.displayName
-  target.__maMarmo = true
+  target.__ma = true
   target.__maComputeClassName = source.__maComputeClassName
   target.__maTag = source.__maTag
   target.__maStyles = source.__maStyles
@@ -73,7 +73,7 @@ const createTransformTarget = (baseComponent: MaBaseComponent<any>, tag: Allowed
 }
 
 const createTransformBuilder = (baseComponent: MaBaseComponent<any>) => {
-  if (baseComponent.__maMarmo !== true) {
+  if (baseComponent.__ma !== true) {
     throw new Error('ma.transform can only transform marmo components')
   }
 
