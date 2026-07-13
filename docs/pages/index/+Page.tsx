@@ -41,7 +41,7 @@ const Page = () => {
 
       const media = gsap.matchMedia(root)
 
-      media.add('(prefers-reduced-motion: no-preference)', () => {
+      media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
         gsap
           .timeline({
             scrollTrigger: {
@@ -52,7 +52,8 @@ const Page = () => {
               end: '+=50%',
             },
           })
-          // .to(scroller, { yPercent: 20 }, 0)
+          .to(codeLeft, { pointerEvents: 'none' }, 0)
+          .to(codeRight, { pointerEvents: 'none' }, 0)
           .to(heroHeadline, { yPercent: 5, autoAlpha: 0, delay: 0.1, duration: 0.6 }, 0)
           .to(codeHighlight, { yPercent: 8 }, 0)
           .to(codeLeft, { yPercent: 4, autoAlpha: 0 }, 0)
@@ -72,7 +73,10 @@ const Page = () => {
             data-outer
             className="absolute top-0 left-0 w-full overflow-hidden h-[calc(55svh-14*var(--spacing))] z-1"
           >
-            <div data-scroller className="absolute -top-60 left-0 right-0 h-[calc(85svh+16*var(--spacing))] z-0 ">
+            <div
+              data-scroller
+              className="absolute top-0 left-0 right-0 h-[calc(50svh+16*var(--spacing))] lg:h-[calc(85svh+16*var(--spacing))] z-0 "
+            >
               <div
                 aria-hidden="true"
                 className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
@@ -99,9 +103,9 @@ const Page = () => {
                       utility-first UI
                     </span>
                   </Headline>
-                  <p className="font-normal text-base-muted text-lg md:text-2xl lg:text-3xl">
+                  <Headline as="p" variant="h3" className="tracking-normal font-normal text-base-muted">
                     Typed layer for class names. For React and SolidJS.
-                  </p>
+                  </Headline>
                 </div>
               </div>
             </LayoutComponent>

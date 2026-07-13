@@ -1,4 +1,20 @@
 ```tsx title="SomeButton.tsx"
-// hello
-const hello = "hello"
+import clsx from "clsx";
+
+interface SomeButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  isLoading?: boolean;
+}
+
+const SomeButton = ({ isLoading, className, ...props }: SomeButtonProps) => (
+  <button
+    {...props}
+    className={clsx(
+      "transition-all mt-5 border md:text-lg text-normal",
+      someConfig.transitionDurationEaseClass,
+      isLoading && "bg-blue-400 text-white",
+      !isLoading && "bg-blue-800 text-blue-200",
+      className,
+    )}
+  />
+);
 ```

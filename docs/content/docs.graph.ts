@@ -14,7 +14,7 @@ export const docsGraph = {
           items: [
             {
               kind: 'page',
-              id: 'get-started',
+              id: 'quick-start',
               title: 'Install & Quick Start',
               slug: 'get-started',
               source: 'gettingStarted.mdx',

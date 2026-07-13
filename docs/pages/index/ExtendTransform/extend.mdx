@@ -1,25 +1,20 @@
-```tsx choice=react title="components/TodoList.jsx" 
-import { onNewTodo } from './TodoList.telefunc'
+```tsx title="SubmitButton.tsx"
+import ma from "@marmo/react"
 
-function TodoList() {
-  /** @param {string} text */
-  const onSubmit = async (text) => {
-    const todos = await onNewTodo(text)
-    // ...
-  }
-}
-```
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
 
-```tsx choice=solid title="components/TodoList.tsx" 
-<script>
-import { onNewTodo } from './TodoList.telefunc.js'
+const SubmitButton = ma.extend(Button)<{ $loading?: boolean }>`
+  w-full
+  ${({ $loading }) => $loading && "pointer-events-none opacity-60"}
+`
 
-export default {
-    methods: {
-        async onSubmit(_event) {
-            this.todoItems = await onNewTodo(this.text)
-        }
-    }
-}
-</script>
+const FormActions = () => (
+  <SubmitButton type="submit" $loading>
+    Saving…
+  </SubmitButton>
+)
+
 ```
