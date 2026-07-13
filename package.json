@@ -36,16 +36,13 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-unterberg/classmatejs.git"
+    "url": "git+https://github.com/richard-unterberg/marmo.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/richard-unterberg/classmatejs/issues"
+    "url": "https://github.com/richard-unterberg/marmo/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs#readme",
-  "dependencies": {
-    "@unterberg/nivel": "^0.3.0-alpha-12"
-  }
+  "homepage": "https://github.com/richard-unterberg/marmo#readme"
 }

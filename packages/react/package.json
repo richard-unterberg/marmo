@@ -1,7 +1,7 @@
 {
   "name": "@marmo/react",
   "description": "A react tool to separate class name logic, create variants and manage styles.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [
     "react",
     "marmo",
@@ -43,12 +43,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/richard-unterberg/classmatejs.git"
+    "url": "git+https://github.com/richard-unterberg/marmo.git"
   },
   "bugs": {
-    "url": "https://github.com/richard-unterberg/classmatejs/issues"
+    "url": "https://github.com/richard-unterberg/marmo/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/main/packages/react#readme",
+  "homepage": "https://richard-unterberg.github.io/marmo/",
   "scripts": {
     "========= Test": "",
     "test-clear": "jest --clearCache",
