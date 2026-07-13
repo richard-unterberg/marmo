@@ -1,6 +1,6 @@
-# @classmatejs
+# marmo
 
-Styled components for class names. For React and SolidJS.
+Typed component factory for class names. For React and SolidJS.
 
 ## 🚩 Transform this
 
@@ -8,25 +8,25 @@ Styled components for class names. For React and SolidJS.
 const SomeButton = ({ isLoading, ...props }) => {
   const activeClass = isLoading
     ? "bg-blue-400 text-white"
-    : "bg-blue-800 text-blue-200";
+    : "bg-blue-800 text-blue-200"
 
   return (
     <button
       {...props}
-      className={`transition-all mt-5 border-1 md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
+      className={`transition-all mt-5 border md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
         props.className || ""
       }`}
     >
       {props.children}
     </button>
-  );
-};
+  )
+}
 ```
 
 ## 🌤️ Into
 
 ```js
-const SomeButton = cm.button`
+const SomeButton = ma.button`
   text-normal
   md:text-lg
   mt-5
@@ -34,7 +34,7 @@ const SomeButton = cm.button`
   transition-all
   ${someConfig.transitionDurationEaseClass}
   ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
-`;
+`
 ```
 
 *Very simplified examples—see the package docs for many more features!*
@@ -43,8 +43,8 @@ const SomeButton = cm.button`
 
 - Class name-focused components
 - CVA like **Variants**
-- Extend components (template strings **or** `cm.extend(Component).variants`)
-- Transform classmate components into another intrinsic element
+- Extend components (template strings **or** `ma.extend(Component).variants`)
+- Transform marmo components into another intrinsic element
 - Dynamic styles
 - TypeScript support
 - Tested with SSR Frameworks
@@ -56,17 +56,17 @@ const SomeButton = cm.button`
 ### React
 
 - [docs](packages/react)
-- [npmjs](https://www.npmjs.com/package/@classmatejs/react)
+- [npmjs](https://www.npmjs.com/package/@marmo/react)
 
 ```bash
-npm i @classmatejs/react
+npm i @marmo/react
 # or yarn add or pnpm add ...
 ```
 
-For bundled apps, you can install ClassmateJS as a dev dependency:
+For bundled apps, you can install Marmo as a dev dependency:
 
 ```bash
-npm i -D @classmatejs/react
+npm i -D @marmo/react
 ```
 
 Use a regular dependency for packages/libraries or deployments that resolve
@@ -75,17 +75,17 @@ Use a regular dependency for packages/libraries or deployments that resolve
 ### SolidJs
 
 - [docs](packages/solid)
-- [npmjs](https://www.npmjs.com/package/@classmatejs/solid)
+- [npmjs](https://www.npmjs.com/package/@marmo/solid)
 
 ```bash
-npm i @classmatejs/solid
+npm i @marmo/solid
 # or yarn add or pnpm add ...
 ```
 
-For bundled apps, you can install ClassmateJS as a dev dependency:
+For bundled apps, you can install Marmo as a dev dependency:
 
 ```bash
-npm i -D @classmatejs/solid
+npm i -D @marmo/solid
 ```
 
 Use a regular dependency for packages/libraries or deployments that resolve
@@ -93,20 +93,9 @@ Use a regular dependency for packages/libraries or deployments that resolve
 
 ## Tailwind Merge
 
-`classmatejs` core using [tailwind-merge](https://github.com/dcastil/tailwind-merge)
+`marmo` core using [tailwind-merge](https://github.com/dcastil/tailwind-merge)
 under the hood to merge class names. The last class name will always win, so you
 can use it to override classes.
-
-## Upcoming
-
-- core package rework and publish
-- SolidJS package rework and publish
-- More adapters (Vue, Svelte, etc)
-- More examples and recipes in the docs
-- Advanced IDE integration
-  - show generated default class on hover
-  - enforce autocompletion and tooltips from the used libs
-- Integrate more tests, benchmarks focused on SSR, SSG, react and solid
 
 ## Inspiration
 

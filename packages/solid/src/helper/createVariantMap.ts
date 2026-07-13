@@ -1,6 +1,6 @@
-import cm from "../cm"
-import type { CmBaseComponent, VariantsConfig } from "../types"
-import type { AllowedTags } from "../util/domElements"
+import ma from '../ma'
+import type { MaBaseComponent, VariantsConfig } from '../types'
+import type { AllowedTags } from '../util/domElements'
 
 interface CreateVariantMapOptions<T extends AllowedTags> {
   elements: readonly T[]
@@ -36,14 +36,14 @@ const hVariantMap = createVariantMap({
  * will result in:
  * ```tsx
  * const button = {
- *  button: CmBaseComponent<any>, // sc.button.variants(buttonVariants)
- *  a: CmBaseComponent<any>, // sc.a.variants(buttonVariants)
+ *  button: MaBaseComponent<any>, // ma.button.variants(buttonVariants)
+ *  a: MaBaseComponent<any>, // ma.a.variants(buttonVariants)
  * }
  */
 const createVariantMap = <T extends AllowedTags>({
   elements,
   variantsConfig,
-}: CreateVariantMapOptions<T>): Record<T, CmBaseComponent<any>> => {
+}: CreateVariantMapOptions<T>): Record<T, MaBaseComponent<any>> => {
   // Check for duplicates
   const uniqueElements = new Set(elements)
   if (uniqueElements.size !== elements.length) {
@@ -52,25 +52,23 @@ const createVariantMap = <T extends AllowedTags>({
     // Remove duplicate entries for clarity
     const uniqueDuplicates = Array.from(new Set(duplicates))
     throw new Error(
-      `solid-classmate: Duplicate elements detected in createVariantMap: ${uniqueDuplicates.join(
-        ", ",
+      `@marmo/solid: Duplicate elements detected in createVariantMap: ${uniqueDuplicates.join(
+        ', ',
       )}. Each element must be unique.`,
     )
   }
 
   return elements.reduce(
     (acc, tag) => {
-      if (cm[tag]) {
-        acc[tag] = cm[tag].variants(variantsConfig)
+      if (ma[tag]) {
+        acc[tag] = ma[tag].variants(variantsConfig)
       } else {
-        console.warn(
-          `solid-classmate: Element "${tag}" is not supported by solid-classmate. Falling back to 'div'.`,
-        )
-        acc[tag] = cm.div.variants(variantsConfig) // Fallback to div if element not found
+        console.warn(`@marmo/solid: Element "${tag}" is not supported by @marmo/solid. Falling back to 'div'.`)
+        acc[tag] = ma.div.variants(variantsConfig) // Fallback to div if element not found
       }
       return acc
     },
-    {} as Record<T, CmBaseComponent<any>>,
+    {} as Record<T, MaBaseComponent<any>>,
   )
 }
 

@@ -1,10 +1,10 @@
 {
-  "name": "@classmatejs/react",
+  "name": "@marmo/react",
   "description": "A react tool to separate class name logic, create variants and manage styles.",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "keywords": [
     "react",
-    "classmate",
+    "marmo",
     "typescript",
     "dynamic-classnames",
     "dynamic-styles",
@@ -27,7 +27,9 @@
   "main": "./dist/index.cjs.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "publishConfig": {"access": "public"},
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],
@@ -46,13 +48,13 @@
   "bugs": {
     "url": "https://github.com/richard-unterberg/classmatejs/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/master/packages/react#readme",
+  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/main/packages/react#readme",
   "scripts": {
     "========= Test": "",
     "test-clear": "jest --clearCache",
     "test:all": "npm run test-clear && npm run test:src",
     "test:src": "jest --config jest.config.cjs --testPathPattern=test/src",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.types.json",
     "========= Build": "",
     "build:base": "tsup",
     "build": "npm run build:base",
@@ -62,21 +64,19 @@
     "react": ">=16.8.0"
   },
   "dependencies": {
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.1.0",
-    "@types/jest": "^29.5.14",
-    "@types/react": "^19.0.2",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.2.17",
     "cross-env": "^7.0.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "lefthook": "^1.10.1",
-    "ts-jest": "^29.2.5",
+    "ts-jest": "^29.4.11",
     "tslib": "^2.8.1",
-    "tsx": "^4.19.2",
-    "tsup": "^8.3.0",
-    "typescript": "^5.7.2"
+    "tsx": "^4.23.0",
+    "tsup": "^8.5.1"
   }
 }

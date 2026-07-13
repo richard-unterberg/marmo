@@ -1,0 +1,83 @@
+import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
+import React, { type JSX } from 'react'
+
+import ma from '../../dist'
+
+describe('ma base', () => {
+  it('renders a ma.div with assigned classes', () => {
+    const RenderDiv = ma.div`bg-red p-4`
+
+    const { container } = render(<RenderDiv />)
+    expect(container.firstChild).toHaveClass('bg-red p-4')
+    expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('filters $-prefixed props & renders the class attribute on a ma.button', () => {
+    const HiddenButton = ma.button<{
+      $disabled: boolean
+    }>`text-blue custom ${(p) => (p.$disabled ? 'opacity-60' : '')}`
+    const { container } = render(<HiddenButton aria-label="testlabel" $disabled />)
+
+    expect(container.firstChild).not.toHaveAttribute('$disabled')
+    expect(container.firstChild).toHaveClass('text-blue custom opacity-60')
+    expect(container.firstChild).toHaveAttribute('aria-label')
+    expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
+  })
+
+  it('allows boolean short-circuit in interpolations', () => {
+    const LoadingDiv = ma.div<{ $isLoading?: boolean }>`
+      base
+      ${(p) => p.$isLoading && 'opacity-90 pointer-events-none'}
+    `
+
+    const { container, rerender } = render(<LoadingDiv $isLoading />)
+    expect(container.firstChild).toHaveClass('base opacity-90 pointer-events-none')
+
+    rerender(<LoadingDiv $isLoading={false} />)
+    expect(container.firstChild).toHaveClass('base')
+  })
+
+  it('can use intrinsic properties of element', () => {
+    const HiddenButton = ma.button<JSX.IntrinsicElements['button']>`
+      text-blue 
+      custom 
+      ${(p) => (p.type === 'button' ? 'opacity-60' : '')}
+    `
+    const { container } = render(<HiddenButton aria-label="testlabel" type="button" />)
+
+    expect(container.firstChild).not.toHaveAttribute('$disabled')
+    expect(container.firstChild).toHaveClass('text-blue custom opacity-60')
+    expect(container.firstChild).toHaveAttribute('aria-label')
+    expect(container.firstChild).toBeInstanceOf(HTMLButtonElement)
+  })
+
+  // define a test were we inject multiple classes "mt-2 mt-8 mt-1" - they should be merged by tailwind-merge
+  it('merges multiple classes using tailwind-merge', () => {
+    const MergedDiv = ma.div`mt-2 mt-8 mt-1`
+
+    const { container } = render(<MergedDiv />)
+
+    // we expect the last class to be applied
+    expect(container.firstChild).toHaveClass('mt-1')
+
+    expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('merges multiple classes using tailwind-merge - overwrite on className', () => {
+    const MergedDiv = ma.div`mt-2 mt-8 mt-1`
+
+    const { container } = render(<MergedDiv className="mt-10" />)
+
+    expect(container.firstChild).toHaveClass('mt-10')
+    expect(container.firstChild).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('forwards ordinary custom props while filtering styling props', () => {
+    const StyledDiv = ma.div<{ $tone: string; 'custom-prop': string }>`text-blue`
+    const { container } = render(<StyledDiv $tone="quiet" custom-prop="forwarded" />)
+
+    expect(container.firstChild).not.toHaveAttribute('$tone')
+    expect(container.firstChild).toHaveAttribute('custom-prop', 'forwarded')
+  })
+})

@@ -1,0 +1,116 @@
+import type { DocsGraph } from '@unterberg/nivel'
+
+export const docsGraph = {
+  items: [
+    {
+      kind: 'section',
+      id: 'marmo-docs',
+      items: [
+        {
+          kind: 'group',
+          id: 'get-started',
+          title: 'Get Started',
+          icon: 'Rocket',
+          items: [
+            {
+              kind: 'page',
+              id: 'quick-start',
+              title: 'Install & Quick Start',
+              slug: 'get-started',
+              source: 'gettingStarted.mdx',
+              description: 'Install Marmo and create a typed component in React or Solid.',
+            },
+          ],
+        },
+        {
+          kind: 'group',
+          id: 'api',
+          title: 'API',
+          icon: 'Calculator',
+          items: [
+            {
+              kind: 'page',
+              id: 'baseComposition',
+              title: 'Base Composition',
+              navTitle: 'Base Composition',
+              slug: 'base-composition',
+              source: 'base.mdx',
+              description: 'Create Marmo components with classes, styling props, and class merging.',
+            },
+            {
+              kind: 'page',
+              id: 'variants',
+              navTitle: 'Variants',
+              title: 'Advanced components with variants',
+              slug: 'variants',
+              source: 'variants.mdx',
+              description: 'Build typed static, functional, boolean, and default variants.',
+            },
+            {
+              kind: 'page',
+              id: 'extend',
+              navTitle: 'Extend',
+              title: 'Extend',
+              slug: 'extend',
+              source: 'extend.mdx',
+              description: 'Build a Marmo component on top of an existing component.',
+            },
+            {
+              kind: 'page',
+              id: 'transform',
+              navTitle: 'Transform',
+              title: 'Transform',
+              slug: 'transform',
+              source: 'transform.mdx',
+              description: 'Render an existing Marmo component as another intrinsic element.',
+            },
+          ],
+        },
+        {
+          kind: 'group',
+          id: 'utils',
+          title: 'Utils',
+          icon: 'Wrench',
+          items: [
+            {
+              kind: 'page',
+              id: 'style',
+              navTitle: 'Compose Inline Styles',
+              title: 'Style composition with `.style()`',
+              slug: 'style',
+              source: 'style.mdx',
+              description: 'Add style to your Marmo component.',
+            },
+            {
+              kind: 'page',
+              id: 'logic',
+              navTitle: 'Compose Logic',
+              title: 'Logic composition with `.logic()`',
+              slug: 'logic',
+              source: 'logic.mdx',
+              description: 'Derive styling props and element attributes during rendering.',
+            },
+            {
+              kind: 'page',
+              id: 'useMarmoCreateMarmo',
+              navTitle: 'Usage in Components',
+              title: 'Usage in Components',
+              slug: 'use-marmo-create-marmo',
+              source: 'useMarmoCreateMarmo.mdx',
+              description: 'Create Marmo definitions from component-local values in React and Solid.',
+            },
+            {
+              kind: 'page',
+              id: 'apiReference',
+              navTitle: 'API Reference',
+              title: 'API Reference',
+              slug: 'api-reference',
+              source: 'apiReference.mdx',
+              description: 'Public exports and advanced utilities for React and Solid.',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+} satisfies DocsGraph

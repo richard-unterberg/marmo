@@ -1,0 +1,20 @@
+```tsx title="SubmitButton.tsx"
+import ma from "@marmo/react"
+
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
+
+const SubmitButton = ma.extend(Button)<{ $loading?: boolean }>`
+  w-full
+  ${({ $loading }) => $loading && "pointer-events-none opacity-60"}
+`
+
+const FormActions = () => (
+  <SubmitButton type="submit" $loading>
+    Saving…
+  </SubmitButton>
+)
+
+```

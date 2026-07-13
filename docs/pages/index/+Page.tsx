@@ -1,0 +1,142 @@
+import { useGSAP } from '@gsap/react'
+import { LayoutComponent } from '@unterberg/nivel'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { type CSSProperties, useRef } from 'react'
+import Headline from '../../components/Headline'
+import MarmoLogo from '../../components/MarmoLogo'
+import { withDocsBasePath } from '../../util/withBasePath'
+import docs from '../+docs'
+import CTAButtons from './CTA'
+
+import './startpage.css'
+
+import TopNav from '../../components/TopNav'
+import BaseSection from './Base'
+import ExtendTransformSection from './ExtendTransform'
+import VariantsSection from './Variants'
+
+gsap.registerPlugin(useGSAP, ScrollTrigger)
+
+const Page = () => {
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      const root = rootRef.current
+
+      if (!root) {
+        return
+      }
+
+      const outer = root.querySelector<HTMLElement>('[data-outer]')
+      const scroller = root.querySelector<HTMLElement>('[data-scroller]')
+      const heroHeadline = root.querySelector<HTMLElement>('[data-hero-headline]')
+      const codeLeft = root.querySelector<HTMLElement>('[data-code-presenter-small-left]')
+      const codeRight = root.querySelector<HTMLElement>('[data-code-presenter-small-right]')
+      const codeHighlight = root.querySelector<HTMLElement>(
+        '[data-hero-code-presenter] [data-code-presenter-highlight]',
+      )
+
+      if (!outer || !scroller || !codeHighlight) {
+        return
+      }
+
+      const media = gsap.matchMedia(root)
+
+      media.add('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)', () => {
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: outer,
+              scrub: 2,
+              markers: import.meta.env.DEV,
+              start: 'top top',
+              end: '+=50%',
+            },
+          })
+          .to(codeLeft, { pointerEvents: 'none' }, 0)
+          .to(codeRight, { pointerEvents: 'none' }, 0)
+          .to(heroHeadline, { yPercent: 5, autoAlpha: 0, delay: 0.1, duration: 0.6 }, 0)
+          .to(codeHighlight, { yPercent: 8 }, 0)
+          .to(codeLeft, { yPercent: 4, autoAlpha: 0 }, 0)
+          .to(codeRight, { yPercent: -6, autoAlpha: 0 }, 0)
+      })
+
+      return () => media.revert()
+    },
+    { scope: rootRef },
+  )
+
+  return (
+    <>
+      <div ref={rootRef} className="landing-code-samples" data-beasties-container>
+        <div className="flex flex-col justify-center w-full">
+          <div
+            data-outer
+            className="absolute top-0 left-0 w-full overflow-hidden h-[calc(55svh-14*var(--spacing))] z-1"
+          >
+            <div
+              data-scroller
+              className="absolute top-0 left-0 right-0 h-[calc(50svh+16*var(--spacing))] lg:h-[calc(85svh+16*var(--spacing))] z-0 "
+            >
+              <div
+                aria-hidden="true"
+                className="absolute h-full w-full bg-(image:--background-image-light) bg-size-[100%_100%] bg-no-repeat dark:bg-(image:--background-image-dark)"
+                style={
+                  {
+                    '--background-image-light': `url("${withDocsBasePath('/bg-light-strong.png', import.meta.env.BASE_URL)}")`,
+                    '--background-image-dark': `url("${withDocsBasePath('/bg-dark-strong.png', import.meta.env.BASE_URL)}")`,
+                  } as CSSProperties
+                }
+              />
+            </div>
+            <div className="absolute top-0 left-0 h-[calc(55svh+16*var(--spacing))] w-full bg-radial-[at_50%_15%] from-base-100 to-65% dark:from-base-100 z-0" />
+          </div>
+          <div className="absolute -top-16 left-0 right-0 bg-linear-to-b from-base-100 from-10% via-transparent via-20% to-base-100 z-4 h-[calc(55svh+2*var(--spacing))]" />
+
+          <div className="mt-24 mb-12 z-5" data-hero-headline>
+            <LayoutComponent className="relative">
+              <div className="text-center mx-auto z-2 relative">
+                <div className="px-8 flex flex-col">
+                  <MarmoLogo $size="lg" />
+                  <Headline className="mt-8 mb-4">
+                    Component factory for{' '}
+                    <span className="text-nowrap underline text-shadow-lg text-shadow-primary-muted-superlight text-primary">
+                      utility-first UI
+                    </span>
+                  </Headline>
+                  <Headline as="p" variant="h3" className="tracking-normal font-normal text-base-muted">
+                    Typed layer for class names. For React and SolidJS.
+                  </Headline>
+                </div>
+              </div>
+            </LayoutComponent>
+            <LayoutComponent $size="sm" className="flex gap-2 justify-center">
+              <CTAButtons />
+            </LayoutComponent>
+          </div>
+          <div className="relative z-2" data-hero-code-presenter>
+            <BaseSection />
+          </div>
+        </div>
+      </div>
+      <ExtendTransformSection />
+      <VariantsSection />
+
+      <LayoutComponent className="relative z-10 mb-12">
+        <a
+          href={docs.social.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-16 mb-8 block mx-auto w-fit"
+        >
+          <MarmoLogo $size="md" />
+        </a>
+        <TopNav ignoreLandingPage />
+      </LayoutComponent>
+    </>
+  )
+}
+
+export default Page

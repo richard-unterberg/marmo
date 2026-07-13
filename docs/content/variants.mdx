@@ -1,0 +1,115 @@
+import { Alert } from "@unterberg/nivel"
+import { Hand } from "@unterberg/nivel/icons"
+
+Variants turn a finite set of styling choices into typed variant props. Each key in `variants` names a variant prop. Each entry may be a static class string or a function that receives all relevant props plus the `style()` helper.
+
+## Multiple and boolean variants
+
+```tsx choice="react"
+import ma from "@marmo/react"
+
+interface AlertExtraProps {
+  $isActive?: boolean
+  $ringColor?: string
+}
+
+interface AlertVariantProps {
+  $severity?: "info" | "warning" | "error"
+  $outlined?: boolean
+}
+
+export const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
+  base: ({ $isActive }) => `p-4 rounded-md ${$isActive ? "shadow-lg" : ""}`,
+  variants: {
+    $severity: {
+      info: "bg-info text-info-content",
+      warning: "bg-warning text-warning-content",
+      error: ({ style, $ringColor }) => `bg-error text-error-content ${style({ outlineColor: $ringColor })}`,
+    },
+    $outlined: {
+      true: "outline outline-2",
+      false: "outline-none",
+    },
+  },
+  defaultVariants: {
+    $severity: "info",
+    $outlined: false,
+  },
+})
+
+const Example = () => <Alert $isActive $ringColor="currentColor">Status</Alert>
+```
+
+```tsx choice="solidjs"
+import ma from "@marmo/solid"
+
+interface AlertExtraProps {
+  $isActive?: boolean
+  $ringColor?: string
+}
+
+interface AlertVariantProps {
+  $severity?: "info" | "warning" | "error"
+  $outlined?: boolean
+}
+
+export const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
+  base: ({ $isActive }) => `p-4 rounded-md ${$isActive ? "shadow-lg" : ""}`,
+  variants: {
+    $severity: {
+      info: "bg-info text-info-content",
+      warning: "bg-warning text-warning-content",
+      error: ({ style, $ringColor }) => `bg-error text-error-content ${style({ "outline-color": $ringColor })}`,
+    },
+    $outlined: {
+      true: "outline outline-2",
+      false: "outline-none",
+    },
+  },
+  defaultVariants: {
+    $severity: "info",
+    $outlined: false,
+  },
+})
+
+const Example = () => <Alert $isActive $ringColor="currentColor">Status</Alert>
+```
+
+The first generic describes extra props available to `base` and functional entries. The second describes only registered variant props. This separation is useful when a component has runtime values that affect styling without selecting a variant.
+
+`$severity` and `$outlined` are optional because defaults exist and the example intentionally omits both. Default variants apply when the corresponding variant prop is absent, `undefined`, or `null`. An explicit `false` still selects the `false` boolean entry.
+
+## Static and functional entries
+
+Static entries are best when a selection always produces the same classes. Functional entries can read any relevant prop and can call `style()` for a runtime inline value.
+
+```tsx
+const Badge = ma.span.variants<
+  { $emphasized?: boolean },
+  { $tone?: "neutral" | "accent" }
+>({
+  variants: {
+    $tone: {
+      neutral: "bg-neutral text-neutral-content",
+      accent: ({ $emphasized }) =>
+        `bg-accent text-accent-content ${$emphasized ? "font-bold" : ""}`,
+    },
+  },
+  defaultVariants: { $tone: "neutral" },
+})
+```
+
+## Configuration fields
+
+`variants` — required
+: Defines one or more variant props and their value-to-class mappings. Registered variant props are used by Marmo and are not forwarded.
+
+`base` — optional
+: Adds classes shared by every selection. It can be a string or a function receiving all relevant props and `style()`.
+
+`defaultVariants` — optional
+: Supplies selections for absent or nullish variant props. Keys must match registered variant props.
+
+<Alert heading="Separate variants" icon={<Hand className="size-4" />}>
+As components grow, consider moving their Marmo definitions into a dedicated `Styled*.ts` file. Separating variants and class composition from rendering and application logic keeps the component focused and makes its styling API easier to maintain.
+</Alert>

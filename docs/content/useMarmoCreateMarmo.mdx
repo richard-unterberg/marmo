@@ -1,0 +1,101 @@
+## Creating a Marmo component inside another component
+
+Only reach for the in-component helpers when the Marmo factory itself needs a component-local value and moving it to module scope is not practical:
+
+- `useMarmo` for React
+- `createMarmo` for Solid
+
+```tsx choice=react
+import ma, { useMarmo } from "@marmo/react"
+
+const WorkoutDay = ({
+  status,
+  compact,
+}: {
+  status: "completed" | "pending"
+  compact: boolean
+}) => {
+  const StyledDay = useMarmo(
+    () =>
+      ma.div.variants({
+        base: `rounded border text-sm ${compact ? "p-2" : "p-4"}`,
+        variants: {
+          $status: {
+            completed: "border-green-400 bg-green-50",
+            pending: "border-yellow-400 bg-yellow-50",
+          },
+        },
+      }),
+    [compact],
+  )
+
+  return <StyledDay $status={status}>Workout details</StyledDay>
+}
+```
+
+```tsx choice=solidjs
+import ma, { createMarmo } from "@marmo/solid"
+
+const WorkoutDay = (props: {
+  status: "completed" | "pending"
+  initialCompact: boolean
+}) => {
+  const StyledDay = createMarmo(() =>
+    ma.div.variants({
+      base: `rounded border text-sm ${props.initialCompact ? "p-2" : "p-4"}`,
+      variants: {
+        $status: {
+          completed: "border-green-400 bg-green-50",
+          pending: "border-yellow-400 bg-yellow-50",
+        },
+      },
+    }),
+  )
+
+  return <StyledDay $status={props.status}>Workout details</StyledDay>
+}
+```
+
+`useMarmo` recreates the React component when a dependency changes. `createMarmo` runs its Solid factory once and does not track values read inside it, so values captured by that factory should be fixed for the component's lifetime. Continue passing changing values as Marmo component props.
+
+## Prefer module-scope composition
+
+Marmo components respond to changing props in both React and Solid. In most cases, define the Marmo component once at module scope and pass dynamic values as props. This keeps the component smaller and does not require `useMarmo` or `createMarmo`.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+const StyledDay = ma.div.variants({
+  base: "rounded border p-4 text-sm",
+  variants: {
+    $status: {
+      completed: "border-green-400 bg-green-50",
+      pending: "border-yellow-400 bg-yellow-50",
+    },
+  },
+})
+
+const WorkoutDay = ({ status }: { status: "completed" | "pending" }) => (
+  <StyledDay $status={status}>Workout details</StyledDay>
+)
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+const StyledDay = ma.div.variants({
+  base: "rounded border p-4 text-sm",
+  variants: {
+    $status: {
+      completed: "border-green-400 bg-green-50",
+      pending: "border-yellow-400 bg-yellow-50",
+    },
+  },
+})
+
+const WorkoutDay = (props: { status: "completed" | "pending" }) => (
+  <StyledDay $status={props.status}>Workout details</StyledDay>
+)
+```
+
+When `status` changes, Marmo recalculates the `$status` variant. In Solid, keep props intact and read `props.status` so the value remains reactive.

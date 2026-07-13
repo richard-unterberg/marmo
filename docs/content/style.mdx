@@ -1,0 +1,259 @@
+Use the `style()` interpolation helper to add inline CSS to a Marmo component. The helper accepts a typed style object, collects it during class-name evaluation, and applies the result to the rendered element's `style` attribute.
+
+## Basic usage
+
+The `style` helper is available on the props object passed to every template interpolation. React uses JavaScript CSS property names such as `backgroundColor`; Solid's types use CSS names such as `background-color`.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+interface SwatchProps {
+  $color: string
+}
+
+const Swatch = ma.div<SwatchProps>`
+  size-10 rounded
+  ${({ style, $color }) =>
+    style({
+      backgroundColor: $color,
+    })}
+`;
+
+<Swatch $color="oklch(70% 0.16 250)" />
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+interface SwatchProps {
+  $color: string
+}
+
+const Swatch = ma.div<SwatchProps>`
+  size-10 rounded
+  ${({ style, $color }) =>
+    style({
+      "background-color": $color,
+    })}
+`;
+
+<Swatch $color="oklch(70% 0.16 250)" />
+```
+
+`style()` returns an empty string, so it adds no class name to the template. Its purpose is the side effect of collecting the style object for Marmo.
+
+The `$color` prop is available while styles are computed but is not forwarded to the DOM because its name starts with `$`.
+
+## Calculate styles from props
+
+Build the style object inside the interpolation when its values depend on props. Marmo recalculates it from the current props whenever the component renders.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+interface ProgressFillProps {
+  $value: number
+  $max: number
+}
+
+const ProgressFill = ma.div<ProgressFillProps>`
+  h-2 rounded bg-primary
+  ${({ style, $value, $max }) => {
+    const percentage = $max > 0 ? Math.min(100, Math.max(0, ($value / $max) * 100)) : 0
+
+    return style({
+      width: `${percentage}%`,
+    })
+  }}
+`;
+
+<ProgressFill $value={35} $max={100} />
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+interface ProgressFillProps {
+  $value: number
+  $max: number
+}
+
+const ProgressFill = ma.div<ProgressFillProps>`
+  h-2 rounded bg-primary
+  ${({ style, $value, $max }) => {
+    const percentage = $max > 0 ? Math.min(100, Math.max(0, ($value / $max) * 100)) : 0
+
+    return style({
+      width: `${percentage}%`,
+    })
+  }}
+`;
+
+<ProgressFill $value={35} $max={100} />
+```
+
+TypeScript checks standard CSS property names and accepted values. Template literals remain useful for values that need units:
+
+```jsx
+${({ style, $x, $y }) => style({ transform: `translate(${$x}px, ${$y}px)` })}
+```
+
+## Use styles inside variants
+
+The same helper is available to functional `base` and variant entries. This lets variants continue to select a finite state while inline styles carry runtime values.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+interface AvatarProps {
+  $size: "sm" | "lg"
+  $ringColor: string
+}
+
+const Avatar = ma.img.variants<AvatarProps>({
+  base: ({ style, $ringColor }) => `
+    rounded-full object-cover
+    ${style({ boxShadow: `0 0 0 3px ${$ringColor}` })}
+  `,
+  variants: {
+    $size: {
+      sm: ({ style }) => style({ width: 32, height: 32 }),
+      lg: ({ style }) => style({ width: 64, height: 64 }),
+    },
+  },
+  defaultVariants: {
+    $size: "sm",
+  },
+});
+
+<Avatar src="https://picsum.photos/128" alt="Ada" $size="lg" $ringColor="currentColor" />
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+interface AvatarProps {
+  $size: "sm" | "lg"
+  $ringColor: string
+}
+
+const Avatar = ma.img.variants<AvatarProps>({
+  base: ({ style, $ringColor }) => `
+    rounded-full object-cover
+    ${style({ "box-shadow": `0 0 0 3px ${$ringColor}` })}
+  `,
+  variants: {
+    $size: {
+      sm: ({ style }) => style({ width: 32, height: 32 }),
+      lg: ({ style }) => style({ width: 64, height: 64 }),
+    },
+  },
+  defaultVariants: {
+    $size: "sm",
+  },
+});
+
+<Avatar src="https://picsum.photos/128" alt="Ada" $size="lg" $ringColor="currentColor" />
+```
+
+Numeric values follow the framework's normal inline-style behavior. Properties such as `width` and `height` interpret numbers as pixels, while unitless CSS properties such as `opacity` remain unitless.
+
+## Compose styles by extending a component
+
+Styles collected by a base Marmo component are preserved when it is extended. The extension can add new properties or override an existing property.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+const FloatingPanel = ma.div<{ $x: number; $y: number }>`
+  fixed rounded bg-base-100 p-4 shadow-lg
+  ${({ style, $x, $y }) =>
+    style({
+      left: $x,
+      top: $y,
+    })}
+`
+
+const FadingPanel = ma.extend(FloatingPanel)<{ $visible: boolean }>`
+  ${({ style, $visible }) =>
+    style({
+      opacity: $visible ? 1 : 0,
+      pointerEvents: $visible ? "auto" : "none",
+    })}
+`;
+
+<FadingPanel $x={24} $y={48} $visible />
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+const FloatingPanel = ma.div<{ $x: number; $y: number }>`
+  fixed rounded bg-base-100 p-4 shadow-lg
+  ${({ style, $x, $y }) =>
+    style({
+      left: $x,
+      top: $y,
+    })}
+`
+
+const FadingPanel = ma.extend(FloatingPanel)<{ $visible: boolean }>`
+  ${({ style, $visible }) =>
+    style({
+      opacity: $visible ? 1 : 0,
+      "pointer-events": $visible ? "auto" : "none",
+    })}
+`;
+
+<FadingPanel $x={24} $y={48} $visible />
+```
+
+The rendered element receives `left`, `top`, `opacity`, and `pointer-events` in one style attribute.
+
+## Style precedence
+
+When the same property is defined more than once, Marmo resolves it in this order:
+
+1. Styles from the base component
+2. Styles from later template interpolations, variants, or extensions
+3. A `style` prop passed directly to the rendered component
+
+Later entries override earlier entries at the individual property level. Unrelated properties are preserved.
+
+```tsx choice=react
+import ma from "@marmo/react"
+
+const Box = ma.div`
+  ${({ style }) => style({ opacity: 0.5, transform: "scale(0.95)" })}
+`;
+
+<Box style={{ opacity: 1 }} />
+// opacity: 1; transform: scale(0.95)
+```
+
+```tsx choice=solidjs
+import ma from "@marmo/solid"
+
+const Box = ma.div`
+  ${({ style }) => style({ opacity: 0.5, transform: "scale(0.95)" })}
+`;
+
+<Box style={{ opacity: 1 }} />
+// opacity: 1; transform: scale(0.95)
+```
+
+This makes the consumer's explicit `style` prop the final override. If a component should own a value completely, expose a purposeful `$` prop instead of relying on consumers not to replace it.
+
+## Inline styles or utility classes?
+
+Prefer classes for values known while authoring the component. Classes support responsive modifiers, hover and focus states, media queries, theme tokens, and Tailwind's normal reuse and merging behavior.
+
+Use `style()` when the value is genuinely runtime-driven or cannot be represented by a practical finite set of classes. Good examples include coordinates, measured sizes, progress values, transforms, and user-provided colors.
+
+Inline styles cannot directly express selectors or at-rules such as `:hover`, `::before`, `@media`, or `@supports`. Use classes or a stylesheet for those cases.
+
+## Keep style calculations render-safe
+
+Style interpolations run while Marmo renders and may run more than once. Keep them synchronous and deterministic: calculate a style object from props and return it through `style()`.
+
+Avoid side effects, DOM measurements, state updates, or subscriptions inside the interpolation. Perform that work with React or Solid primitives, then pass the resulting value to the Marmo component as a prop.

@@ -1,30 +1,29 @@
-import { mergeProps } from "solid-js"
-import type { JSX } from "solid-js"
-import type { CmBaseComponent, Interpolation, LogicHandler, StyleDefinition } from "../types"
-import createSolidElement from "../util/createSolidElement"
+import type { JSX } from 'solid-js'
+import { mergeProps } from 'solid-js'
+import type { Interpolation, LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
+import createSolidElement from '../util/createSolidElement'
 
-const resolveInterpolationValue = (value: unknown) => (typeof value === "string" ? value : "")
+const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
 
 const createTransformedComponent = <T extends object, E extends keyof JSX.IntrinsicElements>(
-  baseComponent: CmBaseComponent<any>,
+  baseComponent: MaBaseComponent<any>,
   tag: E,
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
-): CmBaseComponent<T> => {
-  if (baseComponent.__scClassmate !== true) {
-    throw new Error("cm.transform can only transform classmate components")
+): MaBaseComponent<T> => {
+  if (baseComponent.__ma !== true) {
+    throw new Error('ma.transform can only transform marmo components')
   }
 
-  const displayName = `Transformed(${baseComponent.displayName || "Component"})`
-  const baseComputeClassName = baseComponent.__scComputeClassName || (() => "")
-  const baseStyles = baseComponent.__scStyles || {}
-  const baseLogic = (baseComponent.__scLogic as LogicHandler<any>[]) || []
-  const basePropsToFilter = (baseComponent.__scPropsToFilter as (keyof T)[]) || []
+  const displayName = `Transformed(${baseComponent.displayName || 'Component'})`
+  const baseComputeClassName = baseComponent.__maComputeClassName || (() => '')
+  const baseLogic = (baseComponent.__maLogic as LogicHandler<any>[]) || []
+  const basePropsToFilter = (baseComponent.__maPropsToFilter as (keyof T)[]) || []
 
-  const computeClassName = (props: T, collectedStyles: Record<string, string | number>) => {
+  const computeClassName = (props: T, collectedStyles: StyleDefinition<T> = {}) => {
     const styleUtility = (styleDef: StyleDefinition<T>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     type InterpolationProps = T & { style: typeof styleUtility }
@@ -36,36 +35,27 @@ const createTransformedComponent = <T extends object, E extends keyof JSX.Intrin
       return interpolationProps
     }
 
-    const baseClassName = baseComputeClassName(getInterpolationProps())
+    const baseClassName = baseComputeClassName(getInterpolationProps(), collectedStyles)
 
     const transformClassName = strings
       .map((str, i) => {
         const interp = interpolations[i]
-        if (typeof interp === "function") {
+        if (typeof interp === 'function') {
           return str + resolveInterpolationValue(interp(getInterpolationProps()))
         }
         return str + resolveInterpolationValue(interp)
       })
-      .join("")
-      .replace(/\s+/g, " ")
+      .join('')
+      .replace(/\s+/g, ' ')
       .trim()
 
-    return [baseClassName, transformClassName].filter(Boolean).join(" ")
-  }
-
-  const computeMergedStyles = (props: T) => {
-    const collectedStyles: Record<string, string | number> = {}
-    computeClassName(props, collectedStyles)
-    const resolvedBaseStyles =
-      typeof baseStyles === "function" ? (baseStyles as (props: T) => StyleDefinition<T>)(props) : baseStyles
-    return { ...resolvedBaseStyles, ...collectedStyles }
+    return [baseClassName, transformClassName].filter(Boolean).join(' ')
   }
 
   return createSolidElement({
     tag,
-    computeClassName: (props) => computeClassName(props, {}),
+    computeClassName,
     displayName,
-    styles: (props) => computeMergedStyles(props),
     propsToFilter: basePropsToFilter,
     logicHandlers: baseLogic as LogicHandler<any>[],
   })

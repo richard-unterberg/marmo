@@ -1,0 +1,102 @@
+import { StyledDualGrid, StyledGridCol } from './components/Grid'
+import { Overview } from "@unterberg/nivel"
+
+## Base Install
+
+- `React` >=16.8 or `SolidJS` >=1.8.
+- package manager: npm, yarn, or pnpm.
+
+<StyledDualGrid>
+  <StyledGridCol>
+
+  ### React
+
+```sh
+npm i @marmo/react
+```
+</StyledGridCol>
+<StyledGridCol>
+
+  ### SolidJS
+
+```sh
+npm i @marmo/solid
+```
+
+  </StyledGridCol>
+</StyledDualGrid>
+
+## Quick start
+
+Create a Marmo component, declare a typed styling prop, and render it like any other framework component.
+
+```tsx choice="react"
+import ma from "@marmo/react"
+
+const Greeting = ma.p<{ $excited?: boolean }>`
+  text-lg
+  ${({ $excited }) => ($excited ? "font-bold" : "font-normal")}
+`
+
+const App = () => <Greeting $excited>Hello Marmo</Greeting>
+
+export default App
+```
+
+```tsx choice="solidjs"
+import ma from "@marmo/solid"
+
+const Greeting = ma.p<{ $excited?: boolean }>`
+  text-lg
+  ${({ $excited }) => ($excited ? "font-bold" : "font-normal")}
+`
+
+const App = () => <Greeting $excited>Hello Marmo</Greeting>
+
+export default App
+```
+
+## Pair Marmo with your styling system
+
+Marmo is style-agnostic. It does not include CSS or prescribe how your application should look.
+
+Its benefits become especially visible when paired with utility-first CSS frameworks such as Tailwind CSS: classes, variants, responsive states, and component logic can be expressed through one typed component API.
+
+You can also use Marmo with CSS Modules, global CSS, or any existing class-based design system.
+
+## Learn the API
+
+<Overview items={[
+  {
+    dividerText: 'API',
+  },
+  {
+    title: 'Base Composition',
+    href: '/base-composition',
+    excerpt: 'Base composition functions',
+  },
+  {
+    title: 'Variants',
+    href: '/variants',
+    excerpt: 'Add variants like CVA',
+  },
+  {
+    title: 'Extend',
+    href: '/extend',
+    excerpt: 'Extend any component with Marmo',
+  },
+  {
+    title: 'Transform',
+    href: '/transform',
+    excerpt: 'Transform into other element types',
+  }
+]} />
+
+
+## Start small or make it foundational
+
+Marmo can be introduced one component at a time. You can use it for a single button, alongside existing components, or as the foundation of an entire design system.
+
+While its API is intentionally small, adopting Marmo broadly can shape how components, variants, styling props, and class composition are structured throughout your codebase.
+
+There is no need to migrate everything at once. Start with a few reusable components and expand where the abstraction improves consistency and readability.

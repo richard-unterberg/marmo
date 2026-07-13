@@ -1,43 +1,72 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-  "vcs": {
-    "enabled": false,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
   "files": {
-    "ignoreUnknown": false,
-    "ignore": ["dist", ".localPack", "node_modules", "package.json"]
+    "includes": [
+      "**",
+      "!**/dist",
+      "!**/test",
+      "!(nivel-generated)",
+      "!node_modules",
+      "!docs/pages/(nivel-generated)"
+    ]
   },
   "formatter": {
-    "enabled": true,
     "indentWidth": 2,
-    "indentStyle": "space",
-    "lineWidth": 110,
-    "lineEnding": "lf",
-    "ignore": ["dist", ".localPack", "node_modules", "package.json"]
+    "indentStyle": "space"
   },
-  "organizeImports": {
-    "enabled": true
+  "javascript": {
+    "formatter": {
+      "semicolons": "asNeeded",
+      "lineWidth": 120,
+      "quoteStyle": "single",
+      "trailingCommas": "all"
+    }
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
+      },
       "suspicious": {
+        "noArrayIndexKey": "warn",
         "noExplicitAny": "off"
+      },
+      "complexity": {
+        "noImportantStyles": "warn"
+      },
+      "nursery": {
+        "noInlineStyles": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "warn"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
-    },
-    "ignore": ["dist", ".localPack", "node_modules", "package.json"]
-  },
-  "javascript": {
-    "formatter": {
-      "quoteStyle": "double",
-      "enabled": true,
-      "attributePosition": "auto",
-      "semicolons": "asNeeded",
-      "indentWidth": 2,
-      "indentStyle": "space"
     }
-  }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git"
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+  "overrides": [
+    {
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
+    }
+  ]
 }

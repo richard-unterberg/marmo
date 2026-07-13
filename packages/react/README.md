@@ -1,6 +1,6 @@
-# @classmatejs/react
+# marmo
 
-A tool for managing React component class names, variants and styles.
+Typed component factory for class names. For React and SolidJS.
 
 ## 🚩 Transform this
 
@@ -26,7 +26,7 @@ const SomeButton = ({ isLoading, ...props }) => {
 ## 🌤️ Into
 
 ```js
-const SomeButton = cm.button`
+const SomeButton = ma.button`
   text-normal
   md:text-lg
   mt-5
@@ -60,8 +60,8 @@ const SomeButton = cm.button`
 - [Add CSS Styles](#add-css-styles)
 - [Use inside React components](#use-inside-react-components)
 - [Add logic headers](#add-logic-headers)
-- [Recipes for `cm.extend`](#receipes-for-cmextend)
-  - [Use cm for creating base component](#use-cm-for-creating-base-component)
+- [Recipes for `ma.extend`](#receipes-for-maextend)
+  - [Use ma for creating base component](#use-ma-for-creating-base-component)
   - [Auto infer types for props](#auto-infer-types-for-props)
   - [Extending other lib components / `any` as Input](#extending-other-lib-components--any-as-input)
 
@@ -71,17 +71,17 @@ Make sure you have installed [React](https://react.dev/) (> 16.8.0) in your
 project.
 
 ```bash
-npm i @classmatejs/react
+npm i @marmo/react
 # or
-yarn add @classmatejs/react
+yarn add @marmo/react
 ```
 
-For bundled apps, you can also install ClassmateJS as a dev dependency:
+For bundled apps, you can also install Marmo as a dev dependency:
 
 ```bash
-npm i -D @classmatejs/react
+npm i -D @marmo/react
 # or
-yarn add -D @classmatejs/react
+yarn add -D @marmo/react
 ```
 
 Use a regular dependency for packages/libraries or deployments that resolve
@@ -89,13 +89,13 @@ Use a regular dependency for packages/libraries or deployments that resolve
 
 ## Basic
 
-Create a component by calling `cm` with a tag name and a template literal
+Create a component by calling `ma` with a tag name and a template literal
 string.
 
 ```tsx
-import cm from "@classmatejs/react";
+import ma from "@marmo/react";
 
-const Container = cm.div`
+const Container = ma.div`
   py-2
   px-5
   min-h-24
@@ -114,7 +114,7 @@ interface ButtonProps {
   $isActive?: boolean;
   $isLoading?: boolean;
 }
-const SomeButton = cm.button<ButtonProps>`
+const SomeButton = ma.button<ButtonProps>`
   text-lg
   mt-5
   ${({ $isActive }) => ($isActive ? "bg-blue-400 text-white" : "bg-blue-400 text-blue-200")}
@@ -142,10 +142,11 @@ interface AlertProps {
   $severity: "info" | "warning" | "error";
   $isActive?: boolean;
 }
-const Alert = cm.div.variants<AlertProps>({
+
+const Alert = ma.div.variants<AlertProps>({
   // optional
-  base: (p) => `
-    ${p.isActive ? "custom-active" : "custom-inactive"}
+  base: ({ $isActive }) => `
+    ${$isActive ? "custom-active" : "custom-inactive"}
     p-4
     rounded-md
   `,
@@ -153,14 +154,14 @@ const Alert = cm.div.variants<AlertProps>({
   variants: {
     $severity: {
       warning: "bg-yellow-100 text-yellow-800",
-      info: (p) =>
-        `bg-blue-100 text-blue-800 ${p.$isActive ? "shadow-lg" : ""}`,
-      error: (p) =>
-        `bg-red-100 text-red-800 ${p.$isActive ? "ring ring-red-500" : ""}`,
+      info: ({ $isActive }) =>
+        `bg-blue-100 text-blue-800 ${$isActive ? "shadow-lg" : ""}`,
+      error: ({ $isActive }) =>
+        `bg-red-100 text-red-800 ${$isActive ? "ring ring-red-500" : ""}`,
     },
   },
   // optional - used if no variant was found
-  defaultVariant: {
+  defaultVariants: {
     $severity: "info",
   },
 });
@@ -183,7 +184,7 @@ interface AlertProps {
 interface AlertVariants {
   $severity: "info" | "warning" | "error";
 }
-const Alert = cm.div.variants<AlertProps, AlertVariants>({
+const Alert = ma.div.variants<AlertProps, AlertVariants>({
   base: `p-4 rounded-md`,
   variants: {
     // in here there are only the keys from AlertVariants available
@@ -209,9 +210,9 @@ Extend a component directly by passing the component and the tag name.
 
 ```tsx
 import MyOtherComponent from "./MyOtherComponent"; // () => <button className="text-lg mt-5" />
-import cm from "@classmatejs/react";
+import ma from "@marmo/react";
 
-const Container = cm.extend(MyOtherComponent)`
+const Container = ma.extend(MyOtherComponent)`
   py-2
   px-5
   min-h-24
@@ -221,14 +222,14 @@ const Container = cm.extend(MyOtherComponent)`
 
 ## Transform
 
-Transform renders an existing classmate component as another intrinsic element.
+Transform renders an existing marmo component as another intrinsic element.
 It keeps the original class logic and `$` props, but TypeScript validates props
 against the new element.
 
 ```tsx
-import cm from "@classmatejs/react";
+import ma from "@marmo/react";
 
-const MyButton = cm.button<{ $toggleCta?: boolean }>`
+const MyButton = ma.button<{ $toggleCta?: boolean }>`
   absolute
   min-w-300
   ${({ $toggleCta }) => ($toggleCta ? "bg-red-500" : "bg-blue-500")}
@@ -242,8 +243,8 @@ Use the builder API when you want a reusable transformed component, or add more
 classes with a tagged template.
 
 ```tsx
-const SpanButton = cm.transform(MyButton).span;
-const TextSpanButton = cm.transform(MyButton).span`
+const SpanButton = ma.transform(MyButton).span;
+const TextSpanButton = ma.transform(MyButton).span`
   text-neutral
   tracking-wide
 `;
@@ -252,10 +253,10 @@ export default () => <TextSpanButton $toggleCta />;
 // outputs: <span className="absolute min-w-300 bg-red-500 text-neutral tracking-wide" />
 ```
 
-Transform also works with variants and extended classmate components.
+Transform also works with variants and extended marmo components.
 
 ```tsx
-const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
+const VariantDiv = ma.div.variants<{ $size: "sm" | "md" }>({
   base: "absolute min-w-300",
   variants: {
     $size: {
@@ -268,7 +269,7 @@ const VariantDiv = cm.div.variants<{ $size: "sm" | "md" }>({
   },
 });
 
-const Main = cm.transform(VariantDiv).main`
+const Main = ma.transform(VariantDiv).main`
   text-neutral
   tracking-wide
 `;
@@ -277,8 +278,8 @@ export default () => <Main $size="sm" role="main" />;
 // outputs: <main className="absolute min-w-300 w-10 h-10 text-neutral tracking-wide" role="main" />
 ```
 
-`cm.transform` only accepts classmate components in v1. Regular React
-components are not transformable because classmate cannot know where their
+`ma.transform` only accepts marmo components in v1. Regular React
+components are not transformable because marmo cannot know where their
 classes are attached.
 
 ## Add CSS Styles
@@ -289,7 +290,7 @@ use the props from before.
 
 ```tsx
 // Base:
-const StyledButton = cm.button<{ $isDisabled: boolean }>`
+const StyledButton = ma.button<{ $isDisabled: boolean }>`
   text-blue
   ${(p) =>
   p.style({
@@ -303,13 +304,13 @@ export default () => <StyledButton $isDisabled />;
 
 ```tsx
 // Extended:
-const BaseButton = cm.button<{ $isActive?: boolean }>`
+const BaseButton = ma.button<{ $isActive?: boolean }>`
   ${(p) =>
   p.style({
     backgroundColor: p.$isActive ? "green" : "red",
   })}
 `;
-const ExtendedButton = cm.extend(BaseButton)<{ $isLoading?: boolean }>`
+const ExtendedButton = ma.extend(BaseButton)<{ $isLoading?: boolean }>`
   ${(p) =>
   p.style({
     opacity: p.$isLoading ? 0.5 : 1,
@@ -320,20 +321,20 @@ export default () => <ExtendedButton $isActive $isLoading />;
 // outputs: <button className="bg-red" style="opacity: 0.5; pointer-events: none;" />
 ```
 
-### Use inside React components - `useClassmate`
+### Use inside React components - `useMarmo`
 
-When you need to create a classmate component inside another React component
+When you need to create a marmo component inside another React component
 (for example, when the configuration depends on runtime-only values), wrap the
-factory with `useClassmate`. This memoizes the result and avoids creating a
+factory with `useMarmo`. This memoizes the result and avoids creating a
 brand-new component on every render.
 
 ```tsx
-import cm, { useClassmate } from "@classmatejs/react";
+import ma, { useMarmo } from "@marmo/react";
 
 const WorkoutDay = ({ status }: { status: "completed" | "pending" }) => {
-  const StyledDay = useClassmate(
+  const StyledDay = useMarmo(
     () =>
-      cm.div.variants({
+      ma.div.variants({
         base: "rounded border p-4 text-sm",
         variants: {
           $status: {
@@ -370,7 +371,7 @@ interface WorkoutProps {
   $status?: DayStatus
 }
 
-const WorkoutDay = cm.div
+const WorkoutDay = ma.div
   .logic<WorkoutProps>((props) => {
     const status = deriveDayStatus(props)
     return {
@@ -395,17 +396,17 @@ const WorkoutDay = cm.div
 > Return values from `.logic()` are merged in order, so later logic calls can
 > reference earlier results or override them.
 
-## Recipes for `cm.extend`
+## Recipes for `ma.extend`
 
-With `cm.extend`, you can build upon any base React component, adding new styles
+With `ma.extend`, you can build upon any base React component, adding new styles
 and even supporting additional props. This makes it easy to create reusable
 component variations without duplicating logic.
 
 ```tsx
 import { ArrowBigDown } from "lucide-react";
-import cm from "@classmatejs/react";
+import ma from "@marmo/react";
 
-const StyledLucideArrow = cm.extend(ArrowBigDown)`
+const StyledLucideArrow = ma.extend(ArrowBigDown)`
   md:-right-4.5
   right-1
   slide-in-r-20
@@ -423,12 +424,12 @@ classes, and pass properties. You can pass the types to the `extend` function to
 get autocompletion and type checking.
 
 ```tsx
-import cm from "@classmatejs/react";
+import ma from "@marmo/react";
 
 interface StyledSliderItemBaseProps {
   $active: boolean;
 }
-const StyledSliderItemBase = cm.button<StyledSliderItemBaseProps>`
+const StyledSliderItemBase = ma.button<StyledSliderItemBaseProps>`
   absolute
   h-full
   w-full
@@ -440,7 +441,7 @@ const StyledSliderItemBase = cm.button<StyledSliderItemBaseProps>`
 interface NewStyledSliderItemProps extends StyledSliderItemBaseProps {
   $secondBool: boolean;
 }
-const NewStyledSliderItemWithNewProps = cm.extend(
+const NewStyledSliderItemWithNewProps = ma.extend(
   StyledSliderItemBase,
 )<NewStyledSliderItemProps>`
   rounded-lg
@@ -463,7 +464,7 @@ interface ButtonProps extends InputHTMLAttributes<HTMLInputElement> {
   $isActive?: boolean;
 }
 
-const Alert = cm.input.variants<ButtonProps>({
+const Alert = ma.input.variants<ButtonProps>({
   base: "p-4",
   variants: {
     $severity: {
@@ -473,7 +474,7 @@ const Alert = cm.input.variants<ButtonProps>({
   },
 });
 
-const ExtendedButton = cm.extend(Alert)<{ $test: boolean }>`
+const ExtendedButton = ma.extend(Alert)<{ $test: boolean }>`
   ${(p) => (p.$test ? "bg-green-100 text-green-800" : "")}
 `;
 
@@ -488,8 +489,8 @@ props. This is useful if you wanna rely on the props for a specific element
 without the `$` prefix.
 
 ```tsx
-// if you pass rc component it's types are validated
-const ExtendedButton = cm.extend(cm.button``)`
+// if you pass ma component it's types are validated
+const ExtendedButton = ma.extend(ma.button``)`
   some-class
   ${(p) => (p.type === "submit" ? "font-normal" : "font-bold")}
 `;
@@ -498,7 +499,7 @@ const ExtendedButton = cm.extend(cm.button``)`
 const MyInput = ({ ...props }: HTMLAttributes<HTMLInputElement>) => (
   <input {...props} />
 );
-const StyledDiv = cm.extend(MyInput)<{ $trigger?: boolean }>`
+const StyledDiv = ma.extend(MyInput)<{ $trigger?: boolean }>`
   bg-white
   ${(p) => (p.$trigger ? "!border-error" : "")}
   ${(p) => (p.type === "submit" ? "font-normal" : "font-bold")}
@@ -515,11 +516,11 @@ or loosely typed. But we can use a intermediate step to pass the type to the
 import { ComponentProps } from 'react'
 import { MapContainer } from 'react-leaflet'
 import { Field, FieldConfig } from 'formik'
-import cm, { CmBaseComponent } from 'react-classmate'
+import ma, { MaBaseComponent } from '@marmo/react'
 
 // we need to cast the type to ComponentProps
 type StyledMapContainerType = ComponentProps<typeof MapContainer>
-const StyledMapContainer: CmBaseComponent<StyledMapContainerType> = cm.extend(MapContainer)`
+const StyledMapContainer: MaBaseComponent<StyledMapContainerType> = ma.extend(MapContainer)`
   absolute
   h-full
   w-full
@@ -536,7 +537,7 @@ import { Field, FieldConfig } from 'formik'
 type FieldComponentProps = ComponentProps<'input'> & FieldConfig
 const FieldComponent = ({ ...props }: FieldComponentProps) => <Field {...props} />
 
-const StyledField = cm.extend(FieldComponent)<{ $error: boolean }>`
+const StyledField = ma.extend(FieldComponent)<{ $error: boolean }>`
   theme-form-field
   w-full
   ....
@@ -551,16 +552,16 @@ export const Component = () => <StyledField placeholder="placeholder" as="select
 If you are using CommonJS, you can import the library like this:
 
 ```js
-const cm = require("@classmatejs/react").default;
+const ma = require("@marmo/react").default;
 
 // or
 
-const { default: cm } = require("@classmatejs/react");
+const { default: ma } = require("@marmo/react");
 ```
 
 ## Tailwind Merge
 
-React-classmate uses [tailwind-merge](https://github.com/dcastil/tailwind-merge)
+React-marmo uses [tailwind-merge](https://github.com/dcastil/tailwind-merge)
 under the hood to merge class names. The last class name will always win, so you
 can use it to override classes.
 
@@ -569,9 +570,9 @@ can use it to override classes.
 - bug / troubleshoot: classnames set by ref.current (useRef) will be overwritten
   as soon component rerenders
   - needs at least a small article in the docs
-- `cm.raw()` and `cm.raw.variants()` for only using `rc` syntax for classnames
+- `ma.raw()` and `ma.raw.variants()` for only using `ma` syntax for classnames
   (output as string)
-- Variants for `cm.extend`
+- Variants for `ma.extend`
 - named lib import for CommonJS (currently only `.default`) -- Means we need to
   remove the named export in the ts file to not duplicate IDE import
   suggestions: --- Change postbuild script to remove named esm export

@@ -1,19 +1,40 @@
-import { type JSX, type JSXElementConstructor, type RefAttributes, createElement, forwardRef } from "react"
-import { twMerge } from "tailwind-merge"
+import { createElement, forwardRef, type JSX, type JSXElementConstructor, type RefAttributes } from 'react'
+import { twMerge } from 'tailwind-merge'
 
-import type { CmBaseComponent, LogicHandler, StyleDefinition } from "../types"
-import applyLogicHandlers from "./applyLogicHandlers"
+import type { LogicHandler, MaBaseComponent, StyleDefinition } from '../types'
+import applyLogicHandlers from './applyLogicHandlers'
 
 interface CreateReactElementParams<
   T extends object,
   E extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
 > {
   tag: E
-  computeClassName: (props: T) => string
+  computeClassName: (props: T, collectedStyles?: StyleDefinition<T>) => string
   displayName: string
   styles?: StyleDefinition<T> | ((props: T) => StyleDefinition<T>)
   propsToFilter?: (keyof T)[]
   logicHandlers?: LogicHandler<T>[]
+}
+
+const resolveStyleDefinition = <P extends object>(
+  styles: StyleDefinition<P> | undefined,
+  props: P,
+): Record<string, string | number> => {
+  if (!styles) {
+    return {}
+  }
+
+  const normalized: Record<string, string | number> = {}
+  const record = styles as Record<string, unknown>
+  for (const key in record) {
+    const rawValue = record[key]
+    const resolvedValue = typeof rawValue === 'function' ? rawValue(props) : rawValue
+    if (typeof resolvedValue === 'string' || typeof resolvedValue === 'number') {
+      normalized[key] = resolvedValue
+    }
+  }
+
+  return normalized
 }
 
 // @todo: we wanna check if the output had a classname, if not remove it from the final output
@@ -27,46 +48,47 @@ interface CreateReactElementParams<
  * @param propsToFilter - List of props to exclude from the final DOM element.
  * @returns A forwardRef component with computed class names and filtered props.
  */
-const createReactElement = <
-  T extends object,
-  E extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>,
->({
+const createReactElement = <T extends object, E extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>>({
   tag,
   computeClassName,
   displayName,
   styles = {},
   propsToFilter = [],
   logicHandlers = [],
-}: CreateReactElementParams<T, E>): CmBaseComponent<T> => {
+}: CreateReactElementParams<T, E>): MaBaseComponent<T> => {
   const element = forwardRef<HTMLElement, T & RefAttributes<any>>((props, ref) => {
     const baseProps = props as T
     const enhancedProps = logicHandlers.length > 0 ? applyLogicHandlers(baseProps, logicHandlers) : baseProps
     const normalizedProps = enhancedProps as T & Record<string, any>
-    const computedClassName = computeClassName(normalizedProps)
+    const collectedStyles: StyleDefinition<T> = {}
+    const computedClassName = computeClassName(normalizedProps, collectedStyles)
     const renderTag =
-      typeof normalizedProps.$_as === "string" ? (normalizedProps.$_as as keyof JSX.IntrinsicElements) : tag
+      typeof normalizedProps.$_as === 'string' ? (normalizedProps.$_as as keyof JSX.IntrinsicElements) : tag
 
     // Filter out $-prefixed props and any props in propsToFilter
     const domProps: Record<string, unknown> = {}
     for (const key in normalizedProps) {
-      if (!key.startsWith("$") && !propsToFilter.includes(key as unknown as keyof T)) {
+      if (!key.startsWith('$') && !propsToFilter.includes(key as unknown as keyof T)) {
         domProps[key] = normalizedProps[key]
       }
     }
 
-    const dynamicStyles = typeof styles === "function" ? styles(normalizedProps) : styles
+    const dynamicStylesSource = typeof styles === 'function' ? styles(normalizedProps) : styles
+    const dynamicStyles = resolveStyleDefinition(dynamicStylesSource, normalizedProps)
+    const generatedStyles = resolveStyleDefinition(collectedStyles, normalizedProps)
 
     // component level styles
-    const localStyle = typeof domProps.style === "object" && domProps.style !== null ? domProps.style : {}
+    const localStyle = typeof domProps.style === 'object' && domProps.style !== null ? domProps.style : {}
     const mergedStyles = {
       ...dynamicStyles,
+      ...generatedStyles,
       ...localStyle,
     }
 
-    const incomingClassName = typeof domProps.className === "string" ? domProps.className : ""
+    const incomingClassName = typeof domProps.className === 'string' ? domProps.className : ''
 
     // merge computed class names with incoming className - local classname always first prio
-    const mergedClassName = twMerge(computedClassName, [incomingClassName].filter(Boolean).join(" ").trim())
+    const mergedClassName = twMerge(computedClassName, [incomingClassName].filter(Boolean).join(' ').trim())
 
     return createElement(renderTag, {
       ...domProps,
@@ -74,16 +96,16 @@ const createReactElement = <
       style: mergedStyles,
       ref,
     })
-  }) as CmBaseComponent<T>
+  }) as MaBaseComponent<T>
 
-  element.displayName = displayName || "Cm Component"
-  element.__rcClassmate = true
-  element.__rcComputeClassName = (props: T) =>
-    computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props)
-  element.__rcStyles = styles
-  element.__rcTag = tag
-  element.__rcLogic = logicHandlers
-  element.__rcPropsToFilter = propsToFilter
+  element.displayName = displayName || 'Ma Component'
+  element.__ma = true
+  element.__maComputeClassName = (props: T, collectedStyles?: StyleDefinition<T>) =>
+    computeClassName(logicHandlers.length > 0 ? applyLogicHandlers(props, logicHandlers) : props, collectedStyles)
+  element.__maStyles = styles
+  element.__maTag = tag
+  element.__maLogic = logicHandlers
+  element.__maPropsToFilter = propsToFilter
 
   return element
 }

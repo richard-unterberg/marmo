@@ -1,14 +1,14 @@
-import { mergeProps } from "solid-js"
-import type { JSX } from "solid-js"
+import { mergeProps } from 'solid-js'
+import type { JSX } from 'solid-js'
 import type {
-  CmBaseComponent,
+  MaBaseComponent,
   InputComponent,
   LogicHandler,
   MergeProps,
   StyleDefinition,
   VariantsConfig,
-} from "../types"
-import createSolidElement from "../util/createSolidElement"
+} from '../types'
+import createSolidElement from '../util/createSolidElement'
 
 interface CreateVariantsOptions<T extends object> {
   logic?: LogicHandler<T>[]
@@ -25,20 +25,19 @@ const createVariantsComponent = <
   tag: E,
   config: VariantsConfig<VariantProps, ExtraProps>,
   options: CreateVariantsOptions<MergeProps<E, ExtraProps & Partial<VariantProps>>> = {},
-): CmBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>> => {
+): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>> => {
   const { base, variants, defaultVariants = {} } = config
   const propsToFilter = Object.keys(variants)
-  const styles: Record<string, string | number> = {}
-  const displayName = `Variants(${typeof tag === "string" ? tag : "Component"})`
+  const displayName = `Variants(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
 
   const computeClassName = (
     props: MergeProps<E, Partial<VariantProps> & ExtraProps>,
-    collectedStyles: Record<string, string | number>,
+    collectedStyles: StyleDefinition<MergeProps<E, Partial<VariantProps> & ExtraProps>> = {},
   ) => {
     const styleUtility = (styleDef: StyleDefinition<MergeProps<E, Partial<VariantProps> & ExtraProps>>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     type InterpolationProps = MergeProps<E, Partial<VariantProps> & ExtraProps> & {
@@ -53,34 +52,31 @@ const createVariantsComponent = <
     }
 
     // base classes and styles
-    const interpolationTarget = getInterpolationProps() as VariantProps &
-      ExtraProps & { style: typeof styleUtility }
-    const baseClasses = typeof base === "function" ? base(interpolationTarget) : base || ""
+    const interpolationTarget = getInterpolationProps() as VariantProps & ExtraProps & { style: typeof styleUtility }
+    const baseClasses = typeof base === 'function' ? base(interpolationTarget) : base || ''
 
     // variant classes and styles
     const variantClasses = Object.entries(variants).map(([key, variantOptions]) => {
-      const propValue =
-        props[key] ?? (defaultVariants as Record<string, string | number | boolean | undefined>)[key]
+      const propValue = props[key] ?? (defaultVariants as Record<string, string | number | boolean | undefined>)[key]
       const hasValue = propValue !== undefined && propValue !== null
       const variantClass = hasValue ? (variantOptions as Record<string, any>)?.[String(propValue)] : undefined
 
-      if (typeof variantClass === "function") {
+      if (typeof variantClass === 'function') {
         return variantClass(interpolationTarget)
       }
-      return variantClass || ""
+      return variantClass || ''
     })
 
-    return [baseClasses, ...variantClasses].filter(Boolean).join(" ").trim().replace(/\s+/g, " ").trim()
+    return [baseClasses, ...variantClasses].filter(Boolean).join(' ').trim().replace(/\s+/g, ' ').trim()
   }
 
   return createSolidElement({
     tag,
-    computeClassName: (props) => computeClassName(props, styles),
+    computeClassName,
     displayName,
-    styles,
     propsToFilter,
     logicHandlers,
-  }) as CmBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>>
+  }) as MaBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>>
 }
 
 export default createVariantsComponent

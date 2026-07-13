@@ -1,0 +1,19 @@
+```tsx title="LinkButton.tsx"
+import ma from "@marmo/react"
+
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
+
+const LinkButton = ma.transform(Button).a`
+  inline-flex no-underline
+`
+
+const Navigation = () => (
+  <LinkButton href="/docs">
+    Read the docs
+  </LinkButton>
+)
+
+```

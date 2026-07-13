@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["node", "vite/client"]
+  },
+  "include": [
+    "docs/**/*.ts",
+    "global.d.ts",
+    "pages/**/*.ts",
+    "pages/**/*.tsx",
+    "vite.config.ts"
+  ],
+  "exclude": ["dist", "node_modules"]
+}

@@ -1,7 +1,7 @@
 {
-  "name": "@classmatejs/solid",
+  "name": "@marmo/solid",
   "description": "A solidjs tool to separate class name logic, create variants and manage styles.",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs.js",
@@ -10,18 +10,18 @@
   "files": [
     "dist"
   ],
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/richard-unterberg/classmatejs.git"
   },
   "bugs": {
     "url": "https://github.com/richard-unterberg/classmatejs/issues"
   },
-  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/master/packages/solid#readme",
+  "homepage": "https://github.com/richard-unterberg/classmatejs/tree/main/packages/solid#readme",
   "keywords": [
     "solid",
     "solidjs",
-    "classmate",
+    "marmo",
     "typescript",
     "dynamic-classnames",
     "dynamic-styles",
@@ -49,9 +49,9 @@
   "scripts": {
     "clean": "rm -rf dist",
     "build": "tsup",
-    "test": "vitest run --config vitest.config.ts",
+    "test": "vitest run --config vitest.config.ts && vitest run --config vitest.ssr.config.ts",
     "test:watch": "vitest --config vitest.config.ts",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.types.json",
     "========= Build": "",
     "package": "npm run build && npm publish --access public"
   },
@@ -59,15 +59,14 @@
     "solid-js": ">=1.8.0"
   },
   "dependencies": {
-    "tailwind-merge": "^3.3.0"
+    "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.10",
-    "@testing-library/jest-dom": "^6.6.3",
-    "solid-js": "^1.9.10",
-    "tsup": "^8.3.0",
-    "typescript": "^5.7.2",
-    "vite-plugin-solid": "^2.10.2",
-    "vitest": "^4.0.13"
+    "@testing-library/jest-dom": "^6.9.1",
+    "solid-js": "^1.9.14",
+    "tsup": "^8.5.1",
+    "vite-plugin-solid": "^2.11.12",
+    "vitest": "^4.1.10"
   }
 }

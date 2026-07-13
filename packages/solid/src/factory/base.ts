@@ -1,13 +1,13 @@
-import { mergeProps } from "solid-js"
-import type { JSX } from "solid-js"
-import type { CmBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from "../types"
-import createSolidElement from "../util/createSolidElement"
+import { mergeProps } from 'solid-js'
+import type { JSX } from 'solid-js'
+import type { MaBaseComponent, Interpolation, LogicHandler, MergeProps, StyleDefinition } from '../types'
+import createSolidElement from '../util/createSolidElement'
 
 interface CreateBaseComponentOptions<T extends object> {
   logic?: LogicHandler<T>[]
 }
 /**
- * Core function to create classmate components.
+ * Core function to create marmo components.
  *
  * @typeParam T - The type of the props passed to the interpolation function.
  * @typeParam E - The type of the component or intrinsic element.
@@ -21,16 +21,15 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
   options: CreateBaseComponentOptions<MergeProps<E, T>> = {},
-): CmBaseComponent<MergeProps<E, T>> => {
-  const styles: Record<string, string | number> = {}
-  const displayName = `Styled(${typeof tag === "string" ? tag : "Component"})`
+): MaBaseComponent<MergeProps<E, T>> => {
+  const displayName = `Styled(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
-  const resolveInterpolationValue = (value: unknown) => (typeof value === "string" ? value : "")
+  const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
 
-  const computeClassName = (props: MergeProps<E, T>, collectedStyles: Record<string, string | number>) => {
+  const computeClassName = (props: MergeProps<E, T>, collectedStyles: StyleDefinition<MergeProps<E, T>> = {}) => {
     const styleUtility = (styleDef: StyleDefinition<MergeProps<E, T>>) => {
       Object.assign(collectedStyles, styleDef)
-      return ""
+      return ''
     }
 
     type InterpolationProps = MergeProps<E, T> & { style: typeof styleUtility }
@@ -45,21 +44,20 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
     return strings
       .map((str, i) => {
         const interp = interpolations[i]
-        if (typeof interp === "function") {
+        if (typeof interp === 'function') {
           return str + resolveInterpolationValue(interp(getInterpolationProps()))
         }
         return str + resolveInterpolationValue(interp)
       })
-      .join("")
-      .replace(/\s+/g, " ")
+      .join('')
+      .replace(/\s+/g, ' ')
       .trim()
   }
 
   return createSolidElement({
     tag,
-    computeClassName: (props) => computeClassName(props, styles),
+    computeClassName,
     displayName,
-    styles,
     logicHandlers,
   })
 }
