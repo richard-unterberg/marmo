@@ -6,7 +6,7 @@ const docsConfig = {
   siteTitle: 'Polished class composition for React and SolidJS | Marmo',
   siteDescription: 'Shape class names into typed components.',
   siteUrl: 'https://richard-unterberg.github.io/marmo',
-  robots: false,
+  robots: true,
   // Set customFonts to false if you want to fully own font loading in consumer CSS.
   customFonts: false,
   basePath: '/',
@@ -17,7 +17,7 @@ const docsConfig = {
   },
   social: {
     github: 'https://github.com/richard-unterberg/marmo',
-    editLinkBranch: 'main',
+    editLinkBranch: 'master',
   },
   topBarNav: {
     components: ['../components/TopNav'],
