@@ -1,5 +1,5 @@
 import type { Component, JSX } from 'solid-js'
-import { createComponent, splitProps } from 'solid-js'
+import { createComponent, mergeProps, splitProps } from 'solid-js'
 import { Dynamic } from 'solid-js/web'
 import { twMerge } from 'tailwind-merge'
 
@@ -161,15 +161,17 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
         continue
       }
       if (!key.startsWith('$')) {
-        filteredProps[key] = forwarded[key]
+        Object.defineProperty(filteredProps, key, {
+          enumerable: true,
+          get: () => forwarded[key],
+        })
       }
     }
 
-    return createComponent(Dynamic, {
+    const generatedProps = {
       get component() {
         return (typeof normalizedProps.$_as === 'string' ? normalizedProps.$_as : tag) as any
       },
-      ...filteredProps,
       get class() {
         const computedClassName = computeClassName(normalizedProps, {})
         const initialClass = typeof local.class === 'string' ? local.class : ''
@@ -193,7 +195,9 @@ const createSolidElement = <T extends object, E extends keyof JSX.IntrinsicEleme
       get children() {
         return local.children
       },
-    })
+    }
+
+    return createComponent(Dynamic, mergeProps(filteredProps, generatedProps))
   }) as MaBaseComponent<T>
 
   element.displayName = displayName || 'Ma Component'

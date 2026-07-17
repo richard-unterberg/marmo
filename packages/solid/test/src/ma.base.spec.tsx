@@ -1,6 +1,6 @@
 /** @jsxImportSource solid-js */
 import { render } from '@solidjs/testing-library'
-import type { JSX } from 'solid-js'
+import { createSignal, type JSX } from 'solid-js'
 
 import ma from '../../src'
 
@@ -83,5 +83,28 @@ describe('ma base (solid)', () => {
 
     expect(container.firstChild).not.toHaveAttribute('$tone')
     expect(container.firstChild).toHaveAttribute('custom-prop', 'forwarded')
+  })
+
+  it('keeps forwarded DOM props reactive without recreating the element', () => {
+    const StyledButton = ma.button`text-blue`
+    let setDisabled!: (disabled: boolean) => void
+
+    const { container } = render(() => {
+      const [disabled, updateDisabled] = createSignal(false)
+      setDisabled = updateDisabled
+
+      return <StyledButton disabled={disabled()} aria-label={disabled() ? 'Disabled' : 'Enabled'} />
+    })
+    const button = container.firstChild
+
+    expect(button).toBeInstanceOf(HTMLButtonElement)
+    expect(button).not.toBeDisabled()
+    expect(button).toHaveAttribute('aria-label', 'Enabled')
+
+    setDisabled(true)
+
+    expect(container.firstChild).toBe(button)
+    expect(button).toBeDisabled()
+    expect(button).toHaveAttribute('aria-label', 'Disabled')
   })
 })
