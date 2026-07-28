@@ -2,48 +2,7 @@
 
 Typed component factory for class names. For React and SolidJS.
 
-Check the new [docs](https://richard-unterberg.github.io/marmo/) for more information:
-
-https://richard-unterberg.github.io/marmo/
-
-## 🚩 Transform this
-
-```jsx
-const SomeButton = ({ isLoading, ...props }) => {
-  const activeClass = isLoading
-    ? "bg-blue-400 text-white"
-    : "bg-blue-800 text-blue-200"
-
-  return (
-    <button
-      {...props}
-      className={`transition-all mt-5 border md:text-lg text-normal ${someConfig.transitionDurationEaseClass} ${activeClass} ${
-        props.className || ""
-      }`}
-    >
-      {props.children}
-    </button>
-  )
-}
-```
-
-## 🌤️ Into
-
-```js
-const SomeButton = ma.button`
-  text-normal
-  md:text-lg
-  mt-5
-  border-1
-  transition-all
-  ${someConfig.transitionDurationEaseClass}
-  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
-`
-```
-
-*Very simplified examples—see the package docs for many more features!*
-
-https://richard-unterberg.github.io/marmo/
+check: https://richard-unterberg.github.io/marmo/
 
 ## Features
 
