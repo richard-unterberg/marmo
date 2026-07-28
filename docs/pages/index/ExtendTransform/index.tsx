@@ -37,8 +37,8 @@ const ExtendTransformSection = () => {
             Extend
           </Headline>
           <p className="text-base-muted">
-            Extend allows you to create a new component based on an existing one, while adding or overriding styles.
-            This is useful for creating variations of a component without duplicating code.
+            Create a new component based on an existing one, while adding or overriding styles. Best for creating
+            variations of a component without duplicating code.
           </p>
           <ExtendCode />
           <StyledLink href="extend">Read "extend" docs</StyledLink>
@@ -46,9 +46,8 @@ const ExtendTransformSection = () => {
         <div className="flex flex-col">
           <Headline as="h3">Transform</Headline>
           <p className="text-base-muted">
-            Transform allows you to modify the props of a component before they are passed down to the underlying
-            element. This is useful for creating higher-order components that can modify the behavior of existing
-            components.
+            Let's you modify the props of a component before they are passed down to the underlying element. Or
+            transform them on the spot.
           </p>
           <TransformCode />
           <StyledLink href="transform">Read "transform" docs</StyledLink>

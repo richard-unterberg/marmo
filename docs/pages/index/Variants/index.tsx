@@ -30,9 +30,8 @@ const VariantsSection = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-center">
           Advanced Styling with Variants
         </h1>
-        <p className="text-lg text-base-muted">
-          With variants, you can easily create reusable components with different styles and behaviors based on props.
-          This allows for a more maintainable and scalable codebase.
+        <p className="text-lg text-base-muted text-center">
+          Seen and loved for in CVA: Create reusable components with different styles and behaviors based on props.
         </p>
       </LayoutComponent>
       <LayoutComponent $size="md">
@@ -57,6 +56,7 @@ const VariantsSection = () => {
             <code>{`<Alert $severity="error" $isActive />`}</code>
           </LocalAlert>
         </div>
+        <p className="text-base-muted-medium text-center italic mt-4">* Examples are using tailwindcss + daisyUI</p>
       </LayoutComponent>
 
       <LayoutComponent $size="full" className="mt-32  mb-16">
