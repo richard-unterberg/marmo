@@ -25,7 +25,7 @@ const createVariantsComponent = <
   tag: E,
   config: VariantsConfig<VariantProps, ExtraProps>,
   options: CreateVariantsOptions<MergeProps<E, ExtraProps & Partial<VariantProps>>> = {},
-): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>> => {
+): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>, ExtraProps & Partial<VariantProps>> => {
   const { base, variants, defaultVariants = {} } = config
   const propsToFilter = Object.keys(variants)
   const displayName = `Variants(${typeof tag === 'string' ? tag : 'Component'})`
@@ -76,7 +76,7 @@ const createVariantsComponent = <
     displayName,
     propsToFilter,
     logicHandlers,
-  }) as MaBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>>
+  }) as MaBaseComponent<MergeProps<E, Partial<VariantProps> & ExtraProps>, ExtraProps & Partial<VariantProps>>
 }
 
 export default createVariantsComponent
