@@ -118,8 +118,8 @@ const registerFactory = <K extends AllowedTags>(tag: K) => {
 
 domElements.forEach(registerFactory)
 
-maTarget.extend = <BCProps extends object>(baseComponent: MaBaseComponent<BCProps> | InputComponent) =>
-  createExtendBuilder(baseComponent as MaBaseComponent<any>)
+maTarget.extend = ((baseComponent: InputComponent) =>
+  createExtendBuilder(baseComponent as MaBaseComponent<any>)) as MaComponentFactory['extend']
 
 maTarget.transform = (baseComponent: MaBaseComponent<any>) => createTransformBuilder(baseComponent) as any
 

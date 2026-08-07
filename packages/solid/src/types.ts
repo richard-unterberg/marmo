@@ -16,26 +16,20 @@ export type Interpolation<T> = InterpolationBase<T & { style: (styleDef: StyleDe
 
 export type LogicHandler<P extends object> = (props: P) => Partial<P> | undefined
 
-type DollarKeys<P> = Extract<keyof P, `$${string}`>
-type DollarProps<P> = Pick<P, DollarKeys<P>>
-type TransformProps<P, K extends keyof JSX.IntrinsicElements> = Omit<
-  JSX.IntrinsicElements[K],
-  keyof DollarProps<P> | '$_as'
-> &
-  DollarProps<P>
+type TransformProps<P, K extends keyof JSX.IntrinsicElements> = Omit<JSX.IntrinsicElements[K], keyof P | '$_as'> & P
 type TransformAsProps<P, K extends keyof JSX.IntrinsicElements> = TransformProps<P, K> & {
   $_as: K
 }
 
-export type InputComponent = Component<any> | MaBaseComponent<any>
+export type InputComponent = Component<any> | MaBaseComponent<any, any>
 
 /**
  * Base type for styled React components with forward refs.
  *
  * @typeParam P - Props of the component.
  */
-export interface MaBaseComponent<P extends object = object> extends Component<P> {
-  <K extends keyof JSX.IntrinsicElements>(props: TransformAsProps<P, K>): JSX.Element
+export interface MaBaseComponent<P extends object = object, ClassProps extends object = P> extends Component<P> {
+  <K extends keyof JSX.IntrinsicElements>(props: TransformAsProps<ClassProps, K>): JSX.Element
   displayName?: string
   __ma: true
   __maComputeClassName?: (props: P, collectedStyles?: StyleDefinition<P>) => string
@@ -97,13 +91,16 @@ export interface ExtendTemplateBuilder<
   <T extends object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<MergeProps<E, T> & JSX.IntrinsicElements[I]>[]
-  ): MaBaseComponent<MergeProps<E, T>>
+  ): MaBaseComponent<MergeProps<E, T>, MergeClassProps<E, T>>
   logic<NextLogic extends object = object>(
     handler: LogicHandler<MergeProps<E, LogicProps & NextLogic>>,
   ): ExtendTemplateBuilder<E, I, LogicProps & NextLogic>
   variants<ExtraProps extends object, VariantProps extends object = ExtraProps>(
     config: VariantsConfig<VariantProps, ExtraProps>,
-  ): MaBaseComponent<MergeProps<E, ExtraProps & Partial<VariantProps>>>
+  ): MaBaseComponent<
+    MergeProps<E, ExtraProps & Partial<VariantProps>>,
+    MergeClassProps<E, ExtraProps & Partial<VariantProps>>
+  >
 }
 
 /**
@@ -200,19 +197,24 @@ type VariantsFunction<K> =
    */
   <ExtraProps extends object, VariantProps extends object = ExtraProps>(
     config: VariantsConfig<VariantProps, ExtraProps>,
-  ) => MaBaseComponent<MergeProps<K, ExtraProps & Partial<VariantProps>>>
+  ) => MaBaseComponent<MergeProps<K, ExtraProps & Partial<VariantProps>>, ExtraProps & Partial<VariantProps>>
 
-type TransformComponentProps<E extends MaBaseComponent<any>, K extends keyof JSX.IntrinsicElements> =
-  E extends MaBaseComponent<infer P> ? TransformProps<P, K> : never
+type TransformComponentClassProps<E extends MaBaseComponent<any, any>> =
+  E extends MaBaseComponent<any, infer ClassProps> ? ClassProps : never
+
+type TransformComponentProps<
+  E extends MaBaseComponent<any, any>,
+  K extends keyof JSX.IntrinsicElements,
+> = TransformProps<TransformComponentClassProps<E>, K>
 
 export type TransformTemplateBuilder<
-  E extends MaBaseComponent<any>,
+  E extends MaBaseComponent<any, any>,
   K extends keyof JSX.IntrinsicElements,
-> = MaBaseComponent<TransformComponentProps<E, K>> &
+> = MaBaseComponent<TransformComponentProps<E, K>, TransformComponentClassProps<E>> &
   (<T extends object = object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<TransformComponentProps<E, K> & T>[]
-  ) => MaBaseComponent<TransformComponentProps<E, K> & T>)
+  ) => MaBaseComponent<TransformComponentProps<E, K> & T, TransformComponentClassProps<E> & T>)
 
 type TransformFunction =
   /**
@@ -221,7 +223,7 @@ type TransformFunction =
    * @param component - A marmo component created by `ma`, `ma.extend`, variants, or transform.
    * @returns Intrinsic element builders for transforming the component.
    */
-  <E extends MaBaseComponent<any>>(
+  <E extends MaBaseComponent<any, any>>(
     component: E,
   ) => {
     [K in keyof JSX.IntrinsicElements]: TransformTemplateBuilder<E, K>
@@ -234,7 +236,7 @@ export interface MaFactoryFunction<K extends keyof JSX.IntrinsicElements> {
   <T extends object>(
     strings: TemplateStringsArray,
     ...interpolations: Interpolation<T>[]
-  ): MaBaseComponent<MergeProps<K, T>>
+  ): MaBaseComponent<MergeProps<K, T>, T>
   logic<LogicProps extends object = object>(handler: LogicHandler<MergeProps<K, LogicProps>>): MaFactoryFunction<K>
   variants: VariantsFunction<K>
 }
@@ -265,6 +267,11 @@ export type MergeProps<E, T> = E extends keyof JSX.IntrinsicElements
   : E extends Component<infer P>
     ? P & T
     : T
+
+type ComponentClassProps<E> =
+  E extends MaBaseComponent<any, infer ClassProps> ? ClassProps : E extends Component<infer P> ? P : object
+
+type MergeClassProps<E, T> = ComponentClassProps<E> & T
 
 // styles
 type StaticStyleValue = string | number

@@ -1,6 +1,6 @@
 import { Alert } from "@unterberg/nivel"
 
-Transform renders an existing Marmo component as another intrinsic element. It keeps the original class logic and `$` props, while TypeScript validates props against the selected element.
+Transform renders an existing Marmo component as another intrinsic element. It keeps the original class logic and component props, while TypeScript validates the selected element's additional props.
 
 Features
 : works with any Marmo component
@@ -50,7 +50,7 @@ const MyComponent = () => (
 <button class="absolute min-w-300">Save</button>
 ```
 
-The selected element's props are inferred automatically. `$` props from the source Marmo component are preserved, while ordinary props are validated against the transformed intrinsic element.
+The selected element's props are inferred automatically. Props used by the source Marmo component are preserved, including ordinary custom props and variant props. Additional props are validated against the transformed intrinsic element. If a source prop and an intrinsic prop have the same name, the source component's type takes precedence.
 
 ```tsx choice="react"
 const Example = () => (

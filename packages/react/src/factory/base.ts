@@ -20,7 +20,7 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
   strings: TemplateStringsArray,
   interpolations: Interpolation<T>[],
   options: CreateBaseComponentOptions<MergeProps<E, T>> = {},
-): MaBaseComponent<MergeProps<E, T>> => {
+): MaBaseComponent<MergeProps<E, T>, T> => {
   const displayName = `Styled(${typeof tag === 'string' ? tag : 'Component'})`
   const logicHandlers = options.logic ?? []
   const resolveInterpolationValue = (value: unknown) => (typeof value === 'string' ? value : '')
@@ -49,7 +49,7 @@ const createBaseComponent = <T extends object, E extends keyof JSX.IntrinsicElem
     computeClassName,
     displayName,
     logicHandlers,
-  })
+  }) as unknown as MaBaseComponent<MergeProps<E, T>, T>
 }
 
 export default createBaseComponent
