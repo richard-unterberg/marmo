@@ -1,6 +1,6 @@
 {
   "name": "@marmo/docs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "",
   "license": "ISC",
@@ -12,7 +12,8 @@
     "preview": "vike preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "typecheck:app": "tsc --noEmit -p tsconfig.json",
-    "docs:check": "npm run generate:docs && npm run typecheck:app && vike build",
+    "docs:check": "npm run generate:docs && npm run typecheck:app && vike build && npm run test:docs",
+    "test:docs": "node --test test/*.test.mjs",
     "generate:docs": "nivel prepare",
     "predev": "npm run generate:docs",
     "prebuild": "npm run generate:docs",

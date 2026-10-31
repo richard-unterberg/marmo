@@ -5,7 +5,9 @@ Variants turn a finite set of styling choices into typed variant props. Each key
 
 ## Multiple and boolean variants
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 interface AlertExtraProps {
@@ -40,7 +42,11 @@ export const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
 const Example = () => <Alert $isActive $ringColor="currentColor">Status</Alert>
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 interface AlertExtraProps {
@@ -75,9 +81,56 @@ export const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
 const Example = () => <Alert $isActive $ringColor="currentColor">Status</Alert>
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface AlertExtraProps {
+  $isActive?: boolean
+  $ringColor?: string
+}
+
+interface AlertVariantProps {
+  $severity?: "info" | "warning" | "error"
+  $outlined?: boolean
+}
+
+const Alert = ma.div.variants<AlertExtraProps, AlertVariantProps>({
+  base: ({ $isActive }) => `p-4 rounded-md ${$isActive ? "shadow-lg" : ""}`,
+  variants: {
+    $severity: {
+      info: "bg-info text-info-content",
+      warning: "bg-warning text-warning-content",
+      error: ({ style, $ringColor }) => `bg-error text-error-content ${style({ "outline-color": $ringColor })}`,
+    },
+    $outlined: {
+      true: "outline outline-2",
+      false: "outline-none",
+    },
+  },
+  defaultVariants: {
+    $severity: "info",
+    $outlined: false,
+  },
+})
+---
+
+<Alert $isActive $ringColor="currentColor">Status</Alert>
+```
+
+:::
+
 The first generic describes extra props available to `base` and functional entries. The second describes only registered variant props. This separation is useful when a component has runtime values that affect styling without selecting a variant.
 
 `$severity` and `$outlined` are optional because defaults exist and the example intentionally omits both. Default variants apply when the corresponding variant prop is absent, `undefined`, or `null`. An explicit `false` still selects the `false` boolean entry.
+
+<Alert heading="Astro variant evaluation" type="info">
+Astro evaluates variants during the static build. Use explicit prop types as shown above for checked selections. Defaults select entries without adding their values to the props seen by callbacks; read a callback prop with an explicit fallback when needed. Variants do not update in response to browser state.
+</Alert>
 
 ## Static and functional entries
 

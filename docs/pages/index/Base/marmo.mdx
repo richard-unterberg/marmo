@@ -1,4 +1,8 @@
+:::Choice{id="react"}
+
 ```ts title="SomeButton.ts"
+import ma from "@marmo/react"
+
 const SomeButton = ma.button<{ $isLoading?: boolean }>`
   text-normal
   md:text-lg
@@ -9,3 +13,41 @@ const SomeButton = ma.button<{ $isLoading?: boolean }>`
   ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
 `;
 ```
+
+:::
+
+:::Choice{id="solidjs"}
+
+```ts title="SomeButton.ts"
+import ma from "@marmo/solid"
+
+const SomeButton = ma.button<{ $isLoading?: boolean }>`
+  text-normal
+  md:text-lg
+  mt-5
+  border-1
+  transition-all
+  ${someConfig.transitionDurationEaseClass}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`;
+```
+
+:::
+
+:::Choice{id="astro"}
+
+```ts title="SomeButton.ts"
+import ma from "@marmo/astro"
+
+const SomeButton = ma.button<{ $isLoading?: boolean }>`
+  text-normal
+  md:text-lg
+  mt-5
+  border-1
+  transition-all
+  ${someConfig.transitionDurationEaseClass}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`;
+```
+
+:::

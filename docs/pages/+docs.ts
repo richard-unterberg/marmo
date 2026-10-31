@@ -3,7 +3,7 @@ import { docsGraph } from '../content/docs.graph'
 
 const docsConfig = {
   graph: docsGraph,
-  siteTitle: 'Polished class composition for React and SolidJS | Marmo',
+  siteTitle: 'Polished class composition for React, SolidJS, and Astro | Marmo',
   siteDescription: 'Shape class names into typed components.',
   siteUrl: 'https://richard-unterberg.github.io/marmo',
   robots: true,

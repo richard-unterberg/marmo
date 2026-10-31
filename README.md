@@ -1,22 +1,23 @@
 # marmo
 
-Typed component factory for class names. For React and SolidJS.
+Typed component factory for class names. For React, SolidJS, and Astro.
 
-check: https://richard-unterberg.github.io/marmo/
+Read the [documentation](https://richard-unterberg.github.io/marmo/) for examples and the full API.
 
 ## Features
 
 - Class name-focused components
-- CVA like **Variants**
-- Extend components (template strings **or** `ma.extend(Component).variants`)
-- Transform marmo components into another intrinsic element
+- **Variants** inspired by CVA
+- Extend components in React and Solid (template strings **or** `ma.extend(Component).variants`)
+- Render marmo components as another intrinsic element with `$_as`
+- Create reusable transformed components in React and Solid
 - Dynamic styles
 - TypeScript support
-- Tested with SSR Frameworks
-- Classname merging
-- [SolidJS](https://www.solidjs.com/) / [React](https://reactjs.org/) adapters
+- Tested with SSR frameworks for React/Solid and static builds for Astro
+- Class merging
+- [SolidJS](https://www.solidjs.com/) / [React](https://react.dev/) / [Astro](https://astro.build/) adapters
 
-## Packages and Documentations:
+## Packages and documentation
 
 ### React
 
@@ -37,7 +38,7 @@ npm i -D @marmo/react
 Use a regular dependency for packages/libraries or deployments that resolve
 `node_modules` at runtime after installing only production dependencies.
 
-### SolidJs
+### SolidJS
 
 - [docs](https://richard-unterberg.github.io/marmo/)
 - [npmjs](https://www.npmjs.com/package/@marmo/solid)
@@ -56,11 +57,46 @@ npm i -D @marmo/solid
 Use a regular dependency for packages/libraries or deployments that resolve
 `node_modules` at runtime after installing only production dependencies.
 
+### Astro
+
+- [docs](https://richard-unterberg.github.io/marmo/)
+- [package README](packages/astro/README.md)
+
+```bash
+npm i @marmo/astro
+# or yarn add or pnpm add ...
+```
+
+The Astro adapter is experimental and targets static HTML. It requires Node.js
+24 or newer and Astro compatible with `^7.4.4`.
+
+Register the integration once in your Astro configuration:
+
+```js
+// astro.config.mjs
+import { defineConfig } from "astro/config"
+import marmo from "@marmo/astro/integration"
+
+export default defineConfig({
+  output: "static",
+  integrations: [marmo()],
+})
+```
+
+Then import `ma` from `@marmo/astro` in your `.astro` files. Templates, typed
+styling props, variants, `.logic()`, inline styles, class merging, and `$_as` run
+during rendering without a Marmo browser runtime.
+
+Astro supports the default slot and uses `class`. The `extend` and `transform`
+builders, named slots, client hydration, event callbacks, and DOM refs are not
+available. Numeric styles do not receive implicit `px` units. See the
+[Astro support notes](packages/astro/README.md#astro-support) for the full scope.
+
 ## Tailwind Merge
 
-`marmo` core using [tailwind-merge](https://github.com/dcastil/tailwind-merge)
-under the hood to merge class names. The last class name will always win, so you
-can use it to override classes.
+Marmo uses [tailwind-merge](https://github.com/dcastil/tailwind-merge) to combine
+generated and consumer classes. Later conflicting Tailwind utilities override
+earlier ones, while unrelated classes remain.
 
 ## Inspiration
 

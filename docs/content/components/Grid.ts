@@ -1,7 +1,7 @@
 import ma from '@marmo/react'
 
-export const StyledDualGrid = ma.div`
-  grid grid-cols-1 md:grid-cols-2 md:gap-5
+export const StyledInstallGrid = ma.div`
+  grid grid-cols-1 md:grid-cols-3 md:gap-5
   px-5 
   rounded-xl 
   bg-base-muted-superlight

@@ -1,11 +1,16 @@
+import { Alert } from "@unterberg/nivel"
+
 ## Creating a Marmo component inside another component
 
 Only reach for the in-component helpers when the Marmo factory itself needs a component-local value and moving it to module scope is not practical:
 
 - `useMarmo` for React
 - `createMarmo` for Solid
+- Astro defines local components directly in frontmatter; no helper is required.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma, { useMarmo } from "@marmo/react"
 
 const WorkoutDay = ({
@@ -33,7 +38,11 @@ const WorkoutDay = ({
 }
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma, { createMarmo } from "@marmo/solid"
 
 const WorkoutDay = (props: {
@@ -56,13 +65,48 @@ const WorkoutDay = (props: {
 }
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface Props {
+  status: "completed" | "pending"
+  compact?: boolean
+}
+const { status, compact = false } = Astro.props
+
+const StyledDay = ma.div.variants<object, { $status?: "completed" | "pending" }>({
+  base: `rounded border text-sm ${compact ? "p-2" : "p-4"}`,
+  variants: {
+    $status: {
+      completed: "border-success bg-success/10",
+      pending: "border-warning bg-warning/10",
+    },
+  },
+})
+---
+<StyledDay $status={status}><slot /></StyledDay>
+```
+
+:::
+
+<Alert type="info" heading="Astro: frontmatter needs no component-local helper">
+`@marmo/astro` exports neither `useMarmo` nor `createMarmo`. Frontmatter can read `Astro.props` and create a definition directly. Classes and variants are evaluated for the static render; they do not update from browser state. A Marmo component accepts default-slot content, but not named slots.
+</Alert>
+
 `useMarmo` recreates the React component when a dependency changes. `createMarmo` runs its Solid factory once and does not track values read inside it, so values captured by that factory should be fixed for the component's lifetime. Continue passing changing values as Marmo component props.
 
 ## Prefer module-scope composition
 
 Marmo components respond to changing props in both React and Solid. In most cases, define the Marmo component once at module scope and pass dynamic values as props. This keeps the component smaller and does not require `useMarmo` or `createMarmo`.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const StyledDay = ma.div.variants({
@@ -80,7 +124,11 @@ const WorkoutDay = ({ status }: { status: "completed" | "pending" }) => (
 )
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const StyledDay = ma.div.variants({
@@ -98,4 +146,34 @@ const WorkoutDay = (props: { status: "completed" | "pending" }) => (
 )
 ```
 
-When `status` changes, Marmo recalculates the `$status` variant. In Solid, keep props intact and read `props.status` so the value remains reactive.
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface Props {
+  status: "completed" | "pending"
+}
+const { status } = Astro.props
+
+const StyledDay = ma.div.variants<object, { $status?: "completed" | "pending" }>({
+  base: "rounded border p-4 text-sm",
+  variants: {
+    $status: {
+      completed: "border-success bg-success/10",
+      pending: "border-warning bg-warning/10",
+    },
+  },
+})
+---
+<StyledDay $status={status}><slot /></StyledDay>
+```
+
+:::
+
+In Astro, reusable definitions can also live in an ordinary `.ts` module and be imported into multiple `.astro` files. Keep per-instance values in props when the definition does not need to capture frontmatter values.
+
+In React and Solid, when `status` changes, Marmo recalculates the `$status` variant. In Solid, keep props intact and read `props.status` so the value remains reactive.

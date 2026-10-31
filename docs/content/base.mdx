@@ -5,7 +5,9 @@ Create a component by calling `ma` (or any name of your choice) with a tag name 
 
 ## Example
 
-```js choice="react"
+:::Choice{id="react"}
+
+```js
 import ma from "@marmo/react"
 
 const Container = ma.div`
@@ -14,7 +16,11 @@ const Container = ma.div`
 `
 ```
 
-```js choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```js
 import ma from "@marmo/solid"
 
 const Container = ma.div`
@@ -22,12 +28,33 @@ const Container = ma.div`
   min-h-24
 `
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+---
+
+<Container />
+```
+
+:::
 
 ---
 
 ## With Wrapper
 
-```jsx choice="react" 
+:::Choice{id="react"}
+
+```jsx
 import ma from "@marmo/react"
 
 const Container = ma.div`
@@ -46,7 +73,11 @@ const MyPage = () => {
 export default MyPage
 ```
 
-```jsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```jsx
 import ma from "@marmo/solid"
 
 const Container = ma.div`
@@ -64,6 +95,31 @@ const MyPage = () => {
 
 export default MyPage
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const Container = ma.div`
+  py-2 px-5
+  min-h-24
+`
+---
+
+<Container>
+  <h1>Hello World</h1>
+</Container>
+```
+
+:::
+
+<Alert heading="Astro slot content" type="info">
+Astro components render their children through the default slot. Named slots, client hydration, event callback props, and DOM refs are outside the Astro adapter's current scope. Register the Marmo integration as shown in the quick start before using these examples.
+</Alert>
 
 ### Result
 
@@ -79,14 +135,20 @@ export default MyPage
 Prefix styling props with a `$` sign. This distinguishes props used by Marmo from props intended for the rendered element.
 This pattern should also avoid conflicts with reserved prop names.
 
-Marmo filters `$`-prefixed props and props registered as variant keys. All other props are forwarded. Marmo does not perform runtime validation of HTML attributes.
+Marmo filters `$`-prefixed props and props registered as variant keys. All other props are forwarded. Marmo does not validate whether an ordinary attribute belongs to the selected HTML element.
 </Alert>
 
 TypeScript validates ordinary props against the selected intrinsic element when the types are known. That compile-time check does not imply runtime HTML-attribute validation: JavaScript callers, casts, and custom props can still reach the rendered element. Use `$` props for styling-only values and `data-*` or `aria-*` attributes for intentional DOM metadata.
 
+<Alert heading="Astro attributes" type="info">
+Use `class` rather than `className` in Astro. Ordinary attributes must be scalar values; object, array, and function attribute values are rejected. Styling callbacks still work during the build because Marmo consumes them before rendering HTML.
+</Alert>
+
 Pass props to the component and use them in the template literal string and in the component prop validation.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 interface ButtonProps {
@@ -110,7 +172,11 @@ const MyComponent = () => {
 }
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 interface ButtonProps {
@@ -134,6 +200,32 @@ const MyComponent = () => {
 }
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface ButtonProps {
+  $isActive?: boolean
+  $isLoading?: boolean
+}
+
+const SomeButton = ma.button<ButtonProps>`
+  text-lg
+  mt-5
+  ${({ $isActive }) => ($isActive ? "bg-blue-400 text-white" : "bg-blue-400 text-blue-200")}
+  ${({ $isLoading }) => $isLoading && "opacity-90 pointer-events-none"}
+`
+---
+
+<SomeButton $isActive $isLoading>Click Me</SomeButton>
+```
+
+:::
+
 ### Result
 
 ```html title="output.html"
@@ -146,16 +238,39 @@ const MyComponent = () => {
 
 Marmo combines generated classes with classes supplied by the consumer using `tailwind-merge`. Consumer classes are later, so conflicting Tailwind utilities from the consumer win while non-conflicting generated classes remain.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 const Panel = ma.div`rounded p-2 text-sm`
 
 const Example = () => <Panel className="p-6">Content</Panel>
-// rounded p-6 text-sm
+// rounded text-sm p-6
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 const Panel = ma.div`rounded p-2 text-sm`
 
 const Example = () => <Panel class="p-6">Content</Panel>
-// rounded p-6 text-sm
+// rounded text-sm p-6
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const Panel = ma.div`rounded p-2 text-sm`
+---
+
+<Panel class="p-6">Content</Panel>
+<!-- rounded text-sm p-6 -->
+```
+
+:::

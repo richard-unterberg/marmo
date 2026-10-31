@@ -2,6 +2,10 @@ import { Alert, Link } from "@unterberg/nivel"
 
 Extend builds a new Marmo component on top of an existing component. It preserves the component's props and class logic, then adds classes, dynamic interpolations, logic, or variants.
 
+<Alert type="info" heading="Astro: define components directly">
+`ma.extend()` is available in React and Solid. The Astro adapter does not support component inheritance or wrapping other components. Start with an intrinsic factory such as `ma.a` or `ma.button`, reuse class strings, and use variants for shared styling choices. The Astro example below shows the equivalent link styling without an extension.
+</Alert>
+
 Features
 : works with framework components and existing Marmo components
 : infers the base component's props
@@ -18,7 +22,9 @@ When creating a new Marmo component, start with a base element such as `ma.butto
 
 Pass a component to `ma.extend`, then add classes with a tagged template. In React, the base component must forward `className`; in Solid, it must forward `class`.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const Link = ({ className, ...props }: React.ComponentPropsWithoutRef<"a">) => (
@@ -34,7 +40,11 @@ const NavigationLink = ma.extend(Link)`
 const MyComponent = () => <NavigationLink href="/settings">Settings</NavigationLink>
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import type { ComponentProps } from "solid-js"
 import ma from "@marmo/solid"
 
@@ -49,6 +59,25 @@ const NavigationLink = ma.extend(Link)`
 const MyComponent = () => <NavigationLink href="/settings">Settings</NavigationLink>
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const NavigationLink = ma.a`
+  rounded-md
+  px-3 py-2
+  font-medium
+`
+---
+<NavigationLink href="/settings">Settings</NavigationLink>
+```
+
+:::
+
 **Result**
 
 ```html title=output.html
@@ -61,7 +90,9 @@ The original component remains unchanged. Rendering `Link` elsewhere does not ad
 
 Provide a type argument to make new props available to interpolations and consumers. Styling props conventionally use a `$` prefix and are removed before Marmo renders an intrinsic element.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const BaseButton = ma.button`
@@ -76,7 +107,11 @@ const ActionButton = ma.extend(BaseButton)<{ $isLoading?: boolean; $tone?: "prim
 const MyComponent = () => <ActionButton $tone="primary" $isLoading>Save</ActionButton>
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const BaseButton = ma.button`
@@ -91,6 +126,8 @@ const ActionButton = ma.extend(BaseButton)<{ $isLoading?: boolean; $tone?: "prim
 const MyComponent = () => <ActionButton $tone="primary" $isLoading>Save</ActionButton>
 ```
 
+:::
+
 The extended component retains the base button props, such as `type`, `disabled`, and event handlers, alongside the new `$isLoading` and `$tone` props.
 
 ## Recipes
@@ -99,7 +136,9 @@ The extended component retains the base button props, such as `type`, `disabled`
 
 Props are inferred from a well-typed component. This makes `extend` useful for styling icons, router links, and headless UI primitives that forward the framework's class prop: `className` in React or `class` in Solid.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import { ArrowBigDown } from "lucide-react"
 import ma from "@marmo/react"
 
@@ -111,7 +150,11 @@ const StyledArrow = ma.extend(ArrowBigDown)`
 const MyComponent = () => <StyledArrow strokeWidth={3} aria-label="Move down" />
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import { ArrowBigDown } from "lucide-solid"
 import ma from "@marmo/solid"
 
@@ -123,11 +166,15 @@ const StyledArrow = ma.extend(ArrowBigDown)`
 const MyComponent = () => <StyledArrow strokeWidth={3} aria-label="Move down" />
 ```
 
+:::
+
 ### Extend an extended component
 
 Extensions can be layered. Each layer keeps the classes, interpolations, and prop types from the components below it.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const Button = ma.button`rounded-md px-4 py-2`
@@ -137,7 +184,11 @@ const WidePrimaryButton = ma.extend(PrimaryButton)`w-full`
 const MyComponent = () => <WidePrimaryButton type="submit">Continue</WidePrimaryButton>
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const Button = ma.button`rounded-md px-4 py-2`
@@ -146,12 +197,16 @@ const WidePrimaryButton = ma.extend(PrimaryButton)`w-full`
 
 const MyComponent = () => <WidePrimaryButton type="submit">Continue</WidePrimaryButton>
 ```
+
+:::
 
 ### Extend with variants
 
 Call `.variants()` on the extend builder when the new component needs a reusable styling API instead of one-off boolean interpolation logic.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const BaseButton = ma.button`rounded-md px-4 py-2`
@@ -174,7 +229,11 @@ const Button = ma.extend(BaseButton).variants<
 const MyComponent = () => <Button $size="lg">Create account</Button>
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const BaseButton = ma.button`rounded-md px-4 py-2`
@@ -196,6 +255,8 @@ const Button = ma.extend(BaseButton).variants<
 
 const MyComponent = () => <Button $size="lg">Create account</Button>
 ```
+
+:::
 
 The base component can itself be a variants component. Its original variants continue to work, and the new extension adds another layer of classes or variants.
 
@@ -203,7 +264,9 @@ The base component can itself be a variants component. Its original variants con
 
 Call `.logic()` before the template to derive styling props without exposing them to consumers.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const Progress = ({ value, className }: { value: number; className?: string }) => (
@@ -220,7 +283,11 @@ const StyledProgress = ma
 const MyComponent = () => <StyledProgress value={100} />
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const Progress = (props: { value: number; class?: string }) => (
@@ -237,11 +304,15 @@ const StyledProgress = ma
 const MyComponent = () => <StyledProgress value={100} />
 ```
 
+:::
+
 ### Help TypeScript with loosely typed components
 
 Marmo can only infer the types exposed by the input component. If a library exports a component as `any` or with overly broad props, create a typed wrapper before extending it.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import type { ComponentPropsWithoutRef } from "react"
 import ma from "@marmo/react"
 import { Field } from "some-form-library"
@@ -255,7 +326,11 @@ const StyledField = ma.extend(TypedField)<{ $error?: boolean }>`
 `
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import type { ComponentProps } from "solid-js"
 import ma from "@marmo/solid"
 import { Field } from "some-form-library"
@@ -269,24 +344,34 @@ const StyledField = ma.extend(TypedField)<{ $error?: boolean }>`
 `
 ```
 
+:::
+
 This wrapper is also the right place to adapt a library-specific class prop to `className` in React or `class` in Solid when a component does not forward it directly.
 
 ## Class merging
 
 Classes from the base component, the extension, and the consumer's class prop are composed by Marmo. When utility classes conflict, the later class wins according to `tailwind-merge` rules.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 const Base = ma.button`px-2 bg-neutral`
 const Extended = ma.extend(Base)`px-4 bg-primary`;
 
 <Extended className="px-6" />
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 const Base = ma.button`px-2 bg-neutral`
 const Extended = ma.extend(Base)`px-4 bg-primary`;
 
 <Extended class="px-6" />
 ```
+
+:::
 
 The final class list uses `px-6` and `bg-primary` while retaining non-conflicting classes.
