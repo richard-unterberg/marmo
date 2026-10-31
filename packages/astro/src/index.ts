@@ -1,6 +1,6 @@
 import { twMerge } from 'tailwind-merge'
 import { combineStyles, resolveStyles } from './styles.js'
-import { isHtmlTag, tags, type HtmlTag } from './tags.js'
+import { type HtmlTag, isHtmlTag, tags } from './tags.js'
 import type {
   Interpolation,
   LogicHandler,
@@ -111,5 +111,5 @@ const createBuilder = <K extends HtmlTag, L extends object = object>(
 const ma = Object.fromEntries(tags.map((tag) => [tag, createBuilder(tag)])) as MaFactory
 
 export default ma
+export type { ComponentProps, MaComponent, StyleDefinition, VariantsConfig } from './types.js'
 export { twMerge as maMerge }
-export type { MaComponent, ComponentProps, VariantsConfig, StyleDefinition } from './types.js'

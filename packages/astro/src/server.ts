@@ -1,6 +1,6 @@
 import type { NamedSSRLoadedRendererValue } from 'astro'
-import type { MaComponent } from './types.js'
 import type { HtmlTag } from './tags.js'
+import type { MaComponent } from './types.js'
 
 const booleanAttributes = new Set([
   'allowfullscreen',

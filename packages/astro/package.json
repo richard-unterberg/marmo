@@ -1,11 +1,10 @@
 {
   "name": "@marmo/astro",
-  "version": "0.0.0-prototype",
-  "private": true,
+  "version": "0.0.1",
   "engines": {
-    "node": ">=22.23.4"
+    "node": ">=24"
   },
-  "description": "A server-only native Astro prototype for Marmo styling components.",
+  "description": "A astro tool to separate class name logic, create variants and manage styles.",
   "type": "module",
   "sideEffects": false,
   "files": [
@@ -31,7 +30,9 @@
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "npm run build && tsc --noEmit && astro check --root test/fixtures/static && node test/types/check-negative.mjs",
     "test": "npm run build && node --import tsx --test test/src/*.test.ts && npm run test:integration",
-    "test:integration": "astro build --root test/fixtures/static && node --test test/integration.test.mjs"
+    "test:integration": "astro build --root test/fixtures/static && node --test test/integration.test.mjs",
+    "========= Build": "",
+    "package": "npm run build && npm publish --access public"
   },
   "peerDependencies": {
     "astro": "^7.4.4"

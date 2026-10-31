@@ -23,6 +23,7 @@
     "typecheck:astro": "npm run typecheck -w @marmo/astro",
     "publish:react": "npm run test:react && npm run package -w @marmo/react",
     "publish:solid": "npm run test:solid && npm run package -w @marmo/solid",
+    "publish:astro": "npm run test:astro && npm run package -w @marmo/astro",
     "publish:all": "npm run publish:react && npm run publish:solid",
     "verify": "npm run lint && npm run format && npm run typecheck:all && npm run test:all && npm run docs:check",
     "docs:dev": "npm run dev -w @marmo/docs",
