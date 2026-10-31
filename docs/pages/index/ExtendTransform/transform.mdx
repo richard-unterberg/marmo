@@ -1,3 +1,5 @@
+:::Choice{id="react"}
+
 ```tsx title="LinkButton.tsx"
 import ma from "@marmo/react"
 
@@ -22,3 +24,53 @@ const OtherNavigation = () => (
   </Button>
 )
 ```
+
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx title="LinkButton.tsx"
+import ma from "@marmo/solid"
+
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
+
+const LinkButton = ma.transform(Button).a`
+  inline-flex no-underline
+`
+
+const Navigation = () => (
+  <LinkButton href="/docs">
+    Read the docs
+  </LinkButton>
+)
+// short version: use the "$_as" prop
+const OtherNavigation = () => (
+  <Button $_as="a" href="/docs">
+    Read the docs
+  </Button>
+)
+```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro title="LinkButton.astro"
+---
+import ma from "@marmo/astro"
+
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
+---
+<!-- Astro uses $_as; the ma.transform builder is unavailable. -->
+<Button $_as="a" href="/docs" class="inline-flex no-underline">
+  Read the docs
+</Button>
+```
+
+:::

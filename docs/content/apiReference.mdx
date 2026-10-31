@@ -1,22 +1,67 @@
+import { Alert } from "@unterberg/nivel"
+
 ## `ma` (default export)
 
-The main Marmo factory. Use intrinsic builders such as `ma.div`, `ma.button`, and `ma.progress`, plus `ma.extend()` and `ma.transform()`.
+The main Marmo factory. All adapters expose intrinsic builders such as `ma.div`, `ma.button`, and `ma.progress`, with tagged templates, `.variants()`, and `.logic()`. React and Solid also expose `ma.extend()` and `ma.transform()`. Astro supports `$_as` for inline HTML tag selection.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const Button = ma.button`rounded px-4 py-2`
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const Button = ma.button`rounded px-4 py-2`
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const Button = ma.button`rounded px-4 py-2`
+---
+<Button type="submit">Save</Button>
+```
+
+:::
+
+## Astro integration
+
+Register the server-only renderer once in `astro.config.mjs` before using Marmo components in `.astro` templates:
+
+```js
+import { defineConfig } from "astro/config"
+import marmo from "@marmo/astro/integration"
+
+export default defineConfig({
+  output: "static",
+  integrations: [marmo()],
+})
+```
+
+`@marmo/astro/server` is the integration's renderer entry point. Application components import `ma` from `@marmo/astro`; they do not need to call the renderer directly.
+
+<Alert type="info" heading="Astro: static HTML and default slots">
+The Astro adapter supports a subset of HTML tags and the default slot. SVG, custom elements, raw-text `script`/`style` tags, and named slots are not supported. It has no browser runtime, event callbacks, DOM refs, or `client:*` hydration support. Other Astro directives, such as `class:list`, `set:*`, `server:*`, and transitions, are outside its supported contract. Use string `class` and scalar HTML attributes; style objects and strings are handled separately by `style`.
+</Alert>
+
 ## `maMerge`
 
 A public re-export of `tailwind-merge`'s `twMerge`. Use it when application code needs the same later-conflict-wins class merging as Marmo.
+
+:::Choice{id="react"}
 
 ```ts
 import { maMerge } from "@marmo/react"
@@ -24,9 +69,31 @@ import { maMerge } from "@marmo/react"
 maMerge("p-2 text-sm", "p-6") // "text-sm p-6"
 ```
 
+:::
+
+:::Choice{id="solidjs"}
+
+```ts
+import { maMerge } from "@marmo/solid"
+
+maMerge("p-2 text-sm", "p-6") // "text-sm p-6"
+```
+
+:::
+
+:::Choice{id="astro"}
+
+```ts
+import { maMerge } from "@marmo/astro"
+
+maMerge("p-2 text-sm", "p-6") // "text-sm p-6"
+```
+
+:::
+
 ## `convertMaProps`
 
-Maps ordinary component props to `$` styling props without mutating the input object. Unmapped props are copied unchanged. This is an advanced adapter utility for wrappers that expose domain-friendly prop names.
+Exported by React and Solid. Maps ordinary component props to `$` styling props without mutating the input object. Unmapped props are copied unchanged. This is an advanced adapter utility for wrappers that expose domain-friendly prop names.
 
 ```ts
 import { convertMaProps } from "@marmo/react"
@@ -39,9 +106,13 @@ const output = convertMaProps(input, {
 // { $size: "lg", $disabled: true, title: "Save" }
 ```
 
+<Alert type="info" heading="Astro: no prop-conversion helper">
+`@marmo/astro` does not export `convertMaProps`. Pass typed `$` styling props directly, or map your wrapper's `Astro.props` explicitly in frontmatter.
+</Alert>
+
 ## `createVariantMap`
 
-Creates the same variants configuration for several intrinsic elements. This is an advanced design-system utility. Element names must be unique; duplicates throw an error.
+Exported by React and Solid. Creates the same variants configuration for several intrinsic elements. This is an advanced design-system utility. Element names must be unique; duplicates throw an error.
 
 ```ts
 import { createVariantMap } from "@marmo/react"
@@ -59,11 +130,17 @@ const headings = createVariantMap({
 })
 ```
 
+<Alert type="info" heading="Astro: define variants on an intrinsic builder">
+`@marmo/astro` does not export `createVariantMap`. Use `ma.div.variants()` or another supported HTML builder. Share ordinary configuration objects when their element and prop types are compatible.
+</Alert>
+
 ## Component-local helpers
 
 React exports `useMarmo`; Solid exports `createMarmo`. They create a Marmo definition within a framework component when the factory genuinely needs a component-local value. Prefer module-scope definitions for normal prop-driven styling.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 import ma, { useMarmo } from "@marmo/react"
 
 const Card = ({ compact }: { compact: boolean }) => {
@@ -72,7 +149,11 @@ const Card = ({ compact }: { compact: boolean }) => {
 }
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma, { createMarmo } from "@marmo/solid"
 
 const Card = (props: { initialCompact: boolean }) => {
@@ -81,7 +162,30 @@ const Card = (props: { initialCompact: boolean }) => {
 }
 ```
 
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface Props {
+  compact?: boolean
+}
+const { compact = false } = Astro.props
+const LocalCard = ma.div`${compact ? "p-2" : "p-6"}`
+---
+<LocalCard><slot /></LocalCard>
+```
+
+:::
+
+Astro needs no `useMarmo` or `createMarmo` helper. Define local components directly in frontmatter, or import reusable definitions from a `.ts` module. Prop-dependent styling is evaluated during the static render.
+
 ## Public types
+
+### React and Solid
 
 `VariantsConfig<VariantProps, ExtraProps>`
 : The configuration type accepted by `.variants()`. It is useful when sharing a configuration across components or passing it through a design-system helper.
@@ -89,4 +193,18 @@ const Card = (props: { initialCompact: boolean }) => {
 `MaBaseComponent<Props>`
 : The advanced component type returned by Marmo builders. Most applications should rely on inference; use it when a helper must explicitly accept or return a Marmo component.
 
-These symbols are stable public API for v1. Fields beginning with `__ma`, including metadata visible on `MaBaseComponent`, remain implementation details and should not be read or written by application code.
+### Astro
+
+`VariantsConfig<Tag, ExtraProps, VariantProps>`
+: The variants configuration for a supported HTML tag, extra props, and variant selections. The exported type takes the tag first; `.variants<ExtraProps, VariantProps>()` on a builder already knows its tag.
+
+`MaComponent<Tag, Props>`
+: A component returned by an Astro Marmo builder. Prefer inference unless a helper needs an explicit component type.
+
+`ComponentProps<Tag, Props>`
+: The input props for a component, including native attributes for its default tag and the discriminated `$_as` alternatives.
+
+`StyleDefinition<Props>`
+: A CSS property map accepting strings, numbers, nullish values, and prop callbacks. Numeric values serialize literally without implicit `px`; use explicit units for lengths. CSS property keys are permissive strings.
+
+The React and Solid symbols above are stable public API for v1. The Astro adapter is experimental. Fields beginning with `__ma`, including metadata visible on `MaBaseComponent` or `MaComponent`, remain implementation details and should not be read or written by application code.

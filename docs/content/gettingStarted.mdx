@@ -1,12 +1,13 @@
-import { StyledDualGrid, StyledGridCol } from './components/Grid'
-import { Overview } from "@unterberg/nivel"
+import { StyledInstallGrid, StyledGridCol } from './components/Grid'
+import { Alert, Overview } from "@unterberg/nivel"
 
 ## Base Install
 
-- `React` >=16.8 or `SolidJS` >=1.8.
+- `React` >=16.8, `SolidJS` >=1.8, or `Astro` ^7.4.4.
+- The Astro package requires Node.js >=24.
 - package manager: npm, yarn, or pnpm.
 
-<StyledDualGrid>
+<StyledInstallGrid>
   <StyledGridCol>
 
   ### React
@@ -24,13 +25,42 @@ npm i @marmo/solid
 ```
 
   </StyledGridCol>
-</StyledDualGrid>
+<StyledGridCol>
+
+  ### Astro
+
+```sh
+npm i @marmo/astro
+```
+
+</StyledGridCol>
+</StyledInstallGrid>
+
+Register Marmo's integration once in your Astro configuration:
+
+```js title="astro.config.mjs"
+import { defineConfig } from "astro/config"
+import marmo from "@marmo/astro/integration"
+
+export default defineConfig({
+  output: "static",
+  integrations: [marmo()],
+})
+```
+
+Use Astro's standard `astro/tsconfigs/strict` TypeScript configuration so native HTML attribute checks remain available.
+
+<Alert heading="Astro renders static HTML" type="info">
+The Astro adapter evaluates templates, variants, logic, and styles during the build. It needs no React, Solid, hydration, or Marmo browser runtime. Client state, event callbacks, DOM refs, and production SSR deployment are outside its current scope. Only the default slot is supported; `extend` and the `transform` builder are unavailable. Use `$_as` to select another supported HTML tag.
+</Alert>
 
 ## Quick start
 
 Create a Marmo component, declare a typed styling prop, and render it like any other framework component.
 
-```tsx choice="react"
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 const Greeting = ma.p<{ $excited?: boolean }>`
@@ -43,7 +73,11 @@ const App = () => <Greeting $excited>Hello Marmo</Greeting>
 export default App
 ```
 
-```tsx choice="solidjs"
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 const Greeting = ma.p<{ $excited?: boolean }>`
@@ -55,6 +89,25 @@ const App = () => <Greeting $excited>Hello Marmo</Greeting>
 
 export default App
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+const Greeting = ma.p<{ $excited?: boolean }>`
+  text-lg
+  ${({ $excited }) => ($excited ? "font-bold" : "font-normal")}
+`
+---
+
+<Greeting $excited>Hello Marmo</Greeting>
+```
+
+:::
 
 ## Pair Marmo with your styling system
 
@@ -83,12 +136,12 @@ You can also use Marmo with CSS Modules, global CSS, or any existing class-based
   {
     title: 'Extend',
     href: '/extend',
-    excerpt: 'Extend any component with Marmo',
+    excerpt: 'Extend components in React and Solid',
   },
   {
     title: 'Transform',
     href: '/transform',
-    excerpt: 'Transform into other element types',
+    excerpt: 'Switch element types with $_as; transform builders in React and Solid',
   }
 ]} />
 

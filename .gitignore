@@ -1,5 +1,6 @@
 node_modules
 dist
+.astro
 .npmrc
 .DS_Store
 
@@ -11,11 +12,5 @@ docs/dist
 
 .vscode
 *.code-workspace
-
-test-results
-old-but-working-react-lib
-old-but-working-solid-lib
-old-core
-old-factory
 
 (nivel-generated)

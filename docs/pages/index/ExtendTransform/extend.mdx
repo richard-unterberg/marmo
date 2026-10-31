@@ -1,3 +1,5 @@
+:::Choice{id="react"}
+
 ```tsx title="SubmitButton.tsx"
 import ma from "@marmo/react"
 
@@ -18,3 +20,53 @@ const FormActions = () => (
 )
 
 ```
+
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx title="SubmitButton.tsx"
+import ma from "@marmo/solid"
+
+const Button = ma.button`
+  rounded-md px-4 py-2
+  bg-primary text-primary-content
+`
+
+const SubmitButton = ma.extend(Button)<{ $loading?: boolean }>`
+  w-full
+  ${({ $loading }) => $loading && "pointer-events-none opacity-60"}
+`
+
+const FormActions = () => (
+  <SubmitButton type="submit" $loading>
+    Saving…
+  </SubmitButton>
+)
+
+```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro title="SubmitButton.astro"
+---
+import ma from "@marmo/astro"
+
+// Astro defines the component directly; ma.extend is unavailable.
+const SubmitButton = ma.button.variants<{ $loading?: boolean }>({
+  base: "rounded-md px-4 py-2 bg-primary text-primary-content w-full",
+  variants: {
+    $loading: {
+      true: "pointer-events-none opacity-60",
+    },
+  },
+})
+---
+<SubmitButton type="submit" $loading>
+  Saving…
+</SubmitButton>
+```
+
+:::

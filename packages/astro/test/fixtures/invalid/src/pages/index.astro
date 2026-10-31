@@ -1,0 +1,16 @@
+---
+import ma from '@marmo/astro'
+
+const Button = ma.button<{ $active: boolean }>`btn ${p => p.$active && 'font-bold'}`
+const Choice = ma.button.variants<{ size?: 'sm' | 'lg'; selected?: boolean }>({
+  variants: { size: { sm: 'p-2', lg: 'p-4' }, selected: { true: 'font-bold', false: 'font-normal' } },
+})
+---
+<!-- Each marked line must produce an Astro diagnostic; checked by check-negative.mjs. -->
+<Button $active type="invalid" /> <!-- invalid-native -->
+<Button $active="yes" /> <!-- invalid-custom -->
+<Button /> <!-- missing-custom -->
+<Choice size="xl" /> <!-- invalid-variant -->
+<Choice selected="true" /> <!-- invalid-boolean -->
+<Button $active href="/next" /> <!-- invalid-attribute -->
+<Button $active $_as="div" href="/next" /> <!-- invalid-target -->

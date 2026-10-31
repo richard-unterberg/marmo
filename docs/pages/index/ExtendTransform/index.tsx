@@ -38,7 +38,8 @@ const ExtendTransformSection = () => {
           </Headline>
           <p className="text-base-muted">
             Create a new component based on an existing one, while adding or overriding styles. Best for creating
-            variations of a component without duplicating code.
+            variations of a component without duplicating code in React and Solid. In Astro, define components directly
+            and use variants for shared styling choices.
           </p>
           <ExtendCode />
           <StyledLink href="extend">Read "extend" docs</StyledLink>
@@ -46,8 +47,8 @@ const ExtendTransformSection = () => {
         <div className="flex flex-col">
           <Headline as="h3">Transform</Headline>
           <p className="text-base-muted">
-            Let's you modify the props of a component before they are passed down to the underlying element. Or
-            transform them on the spot.
+            Render a Marmo component as another intrinsic element. React and Solid support the transform builder; all
+            three adapters support choosing the element inline with $_as.
           </p>
           <TransformCode />
           <StyledLink href="transform">Read "transform" docs</StyledLink>

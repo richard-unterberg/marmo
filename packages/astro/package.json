@@ -1,0 +1,48 @@
+{
+  "name": "@marmo/astro",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "description": "A astro tool to separate class name logic, create variants and manage styles.",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./integration": {
+      "types": "./dist/integration.d.ts",
+      "import": "./dist/integration.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "npm run build && tsc --noEmit && astro check --root test/fixtures/static && node test/types/check-negative.mjs",
+    "test": "npm run build && node --import tsx --test test/src/*.test.ts && npm run test:integration",
+    "test:integration": "astro build --root test/fixtures/static && node --test test/integration.test.mjs",
+    "========= Build": "",
+    "package": "npm run build && npm publish --access public"
+  },
+  "peerDependencies": {
+    "astro": "^7.4.4"
+  },
+  "dependencies": {
+    "tailwind-merge": "^3.6.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "astro": "7.4.4",
+    "tsx": "^4.23.0"
+  }
+}

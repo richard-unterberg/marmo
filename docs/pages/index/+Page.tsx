@@ -107,7 +107,7 @@ const Page = () => {
                     </span>
                   </Headline>
                   <Headline as="p" variant="h3" className="tracking-normal font-normal text-base-muted">
-                    Typed layer for class names. For React and SolidJS.
+                    Typed layer for class names. For React, SolidJS, and Astro.
                   </Headline>
                 </div>
               </div>

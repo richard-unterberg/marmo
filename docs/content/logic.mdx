@@ -1,12 +1,20 @@
+import { Alert } from "@unterberg/nivel"
+
 Use `.logic()` to derive props as part of a Marmo component. A logic handler receives the component's current props and may return a partial props object. Marmo shallow-merges that result into the props **before** it computes template interpolations, inline styles, or variants.
 
 Logic runs whenever the Marmo component renders. You do not need `useMemo`, an effect, or a second wrapper component just to calculate styling props.
+
+<Alert heading="Astro logic runs during the build" type="info">
+Astro supports synchronous `.logic()` handlers and evaluates them before templates, variants, and styles. The resulting HTML does not react to browser state changes. Async handlers are rejected; fetch data in Astro frontmatter and pass the result as props instead.
+</Alert>
 
 ## Derive a styling prop
 
 Props prefixed with `$` are available to Marmo's styling APIs but are not forwarded to the rendered DOM element. That makes them a good fit for internal state derived by `.logic()`.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 interface ProgressProps {
@@ -30,7 +38,11 @@ const Progress = ma.progress
 <Progress value={72} max={100} />
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 interface ProgressProps {
@@ -53,6 +65,38 @@ const Progress = ma.progress
 
 <Progress value={72} max={100} />
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface ProgressProps {
+  $isComplete?: boolean
+}
+
+const Progress = ma.progress
+  .logic<ProgressProps>(({ value = 0, max = 100 }) => ({
+    $isComplete: Number(value) >= Number(max),
+  }))
+  .variants<ProgressProps, { $isComplete: boolean }>({
+    base: "h-2 rounded-full",
+    variants: {
+      $isComplete: {
+        true: "bg-success",
+        false: "bg-base-300",
+      },
+    },
+  });
+---
+
+<Progress value={72} max={100} />
+```
+
+:::
 
 The consumer supplies native `progress` attributes, so forwarding `value` and `max` is intentional. The component owns the definition of “complete.” Keeping that rule next to the styles prevents callers from having to calculate and synchronize both values.
 
@@ -62,7 +106,9 @@ Marmo has no public API for omitting an arbitrary ordinary prop after `.logic()`
 
 A handler can return ordinary element attributes as well as `$` props. Ordinary props are forwarded, so the same derived value can drive styling, testing selectors, and accessible state.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 type Availability = "available" | "sold-out"
@@ -94,7 +140,11 @@ const Ticket = ma.button
 <Ticket disabled>Reserve ticket</Ticket>
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 type Availability = "available" | "sold-out"
@@ -125,6 +175,46 @@ const Ticket = ma.button
 
 <Ticket disabled>Reserve ticket</Ticket>
 ```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+type Availability = "available" | "sold-out"
+
+interface TicketProps {
+  disabled?: boolean
+  $availability?: Availability
+}
+
+const Ticket = ma.button
+  .logic<TicketProps>(({ disabled }) => {
+    const availability: Availability = disabled ? "sold-out" : "available"
+
+    return {
+      $availability: availability,
+      "data-availability": availability,
+    }
+  })
+  .variants<TicketProps, { $availability: Availability }>({
+    base: "rounded px-4 py-2",
+    variants: {
+      $availability: {
+        available: "bg-primary text-primary-content",
+        "sold-out": "cursor-not-allowed bg-base-300 text-base-content",
+      },
+    },
+  });
+---
+
+<Ticket disabled>Reserve ticket</Ticket>
+```
+
+:::
 
 `$availability` is consumed internally and filtered out. `data-availability` is intentionally rendered, while `disabled` remains a valid native button prop.
 
@@ -132,7 +222,9 @@ const Ticket = ma.button
 
 You can chain `.logic()` calls. They run from left to right, and each handler receives the result of the previous handler. Later results win when the same top-level property is returned more than once.
 
-```tsx choice=react
+:::Choice{id="react"}
+
+```tsx
 import ma from "@marmo/react"
 
 interface MeterProps {
@@ -154,7 +246,11 @@ const Meter = ma.meter
   `
 ```
 
-```tsx choice=solidjs
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
 import ma from "@marmo/solid"
 
 interface MeterProps {
@@ -176,21 +272,81 @@ const Meter = ma.meter
   `
 ```
 
-Chaining is helpful when one derived value is reusable or when an extended component adds a new layer of behavior. For a short calculation that is only used once, one handler is usually easier to read.
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+import ma from "@marmo/astro"
+
+interface MeterProps {
+  value: number
+  max: number
+  $ratio?: number
+  $level?: "low" | "high"
+}
+
+const Meter = ma.meter
+  .logic<MeterProps>(({ value, max }) => ({
+    $ratio: max > 0 ? value / max : 0,
+  }))
+  .logic<MeterProps>((props) => ({
+    $level: (props.$ratio ?? 0) >= 0.8 ? "high" : "low",
+  }))<MeterProps>`
+    h-2 rounded-full
+    ${({ $level }) => ($level === "high" ? "bg-warning" : "bg-success")}
+  `
+---
+
+<Meter value={72} max={100} />
+```
+
+:::
+
+Chaining is helpful when one derived value is reusable or, in React and Solid, when an extended component adds a new layer of behavior. For a short calculation that is only used once, one handler is usually easier to read.
 
 Because merging is shallow, returning `{ options: { active: true } }` replaces the existing `options` object; it does not deep-merge its fields.
 
 ## Updating props
 
-In both React and Solid, logic is evaluated from the current component props. When `value`, `disabled`, or another input changes, the derived props and resulting classes are recalculated. Define the Marmo component at module scope and keep changing values in props.
+In React and Solid, logic is evaluated from the current component props. When `value`, `disabled`, or another input changes, the derived props and resulting classes are recalculated. Define the Marmo component at module scope and keep changing values in props.
 
 In Solid, preserve prop reactivity in the consuming component by reading `props.value` instead of destructuring changing props before passing them to the Marmo component.
 
-```tsx choice=solidjs
+:::Choice{id="react"}
+
+```tsx
 const Example = (props: { value: number }) => (
   <Meter value={props.value} max={100} />
 )
 ```
+
+:::
+
+:::Choice{id="solidjs"}
+
+```tsx
+const Example = (props: { value: number }) => (
+  <Meter value={props.value} max={100} />
+)
+```
+
+:::
+
+:::Choice{id="astro"}
+
+```astro
+---
+const { value = 72 } = Astro.props
+---
+
+<Meter value={value} max={100} />
+```
+
+:::
+
+The Astro choice reads the incoming value from an enclosing `.astro` component's `Astro.props`, using the `Meter` definition from the previous section. Each build-time render calculates its own result; this does not establish a browser subscription.
 
 ## Type the complete logic contract
 
@@ -213,10 +369,10 @@ ma.div.variants<NoticeProps, { $hasErrors: boolean }>({ /* ... */ })
 
 `.logic()` is a strong fit for:
 
-- deriving `$` props used by templates, `.style()`, or `.variants()`;
+- deriving `$` props used by templates, `style()`, or `.variants()`;
 - keeping one domain rule shared between visual state and DOM attributes;
 - normalizing several consumer inputs into a small component state;
-- adding derived behavior while extending an existing Marmo component.
+- adding derived behavior while extending an existing Marmo component in React or Solid.
 
 Keep handlers synchronous and deterministic. They run during rendering, so they should calculate and return props—not fetch data, mutate external state, set framework state, or start subscriptions. Use React or Solid primitives for effects, asynchronous work, and state with its own lifecycle.
 
