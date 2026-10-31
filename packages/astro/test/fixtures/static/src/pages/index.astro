@@ -1,0 +1,26 @@
+---
+import ma from '@marmo/astro'
+import { Button, Choice, Derived, Input } from '../components'
+
+const Local = ma.div<{ $message: string }>`p-2 ${p => p.$message && 'font-bold'}`
+const text = '<script>alert("x")</script> & text'
+const title = 'A "quote" & <tag>'
+---
+<!doctype html>
+<html lang="en">
+  <head><title>Marmo native Astro fixture</title></head>
+  <body>
+    <Button id="first" $active type="submit" disabled title={title} class="p-8">
+      <strong>Default slot</strong>{text}
+    </Button>
+    <Button id="second" disabled={false}>Independent</Button>
+    <Choice id="default">Default</Choice>
+    <Choice id="selected" size="lg" selected $raised class="p-6">Selected</Choice>
+    <Choice id="false" selected={false}>False</Choice>
+    <Derived id="derived" $count={3} style={{ width: '20px', '--count': 9 }}>Logic and styles</Derived>
+    <Derived id="single" $count={1} style="width:30px;--count:10">Independent styles</Derived>
+    <Button id="link" $_as="a" href="/next?q=1&n=2">Link</Button>
+    <Input id="input" type="checkbox" checked disabled={false} value={title} aria-hidden={false} data-active={false} />
+    <Local id="local" $message="hello">Local factory</Local>
+  </body>
+</html>
