@@ -1,1 +1,0 @@
-import{m as e,n as t,z as n}from"./chunk-VBMWAn9j.js";var r=n({default:()=>a}),i=e(),a=({children:e})=>(0,i.jsx)(t,{children:e});export{r as t};
