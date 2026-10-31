@@ -48,7 +48,8 @@
   },
   "vcs": {
     "enabled": true,
-    "clientKind": "git"
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "css": {
     "parser": {
