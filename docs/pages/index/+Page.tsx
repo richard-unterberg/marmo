@@ -116,7 +116,7 @@ const Page = () => {
               <CTAButtons />
             </LayoutComponent>
           </div>
-          <div className="relative z-2" data-hero-code-presenter>
+          <div className="relative z-10" data-hero-code-presenter>
             <BaseSection />
           </div>
         </div>
